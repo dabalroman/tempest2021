@@ -6,12 +6,16 @@
 import * as Three from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 
 export default {
   name: 'ThreeTest',
 
   data () {
     return {
+      composer: null,
       camera: null,
       scene: null,
       renderer: null,
@@ -80,17 +84,25 @@ export default {
       this.renderer = new Three.WebGLRenderer({ antialias: true });
       this.renderer.setSize(container.clientWidth, container.clientHeight);
       container.appendChild(this.renderer.domElement);
+
+      this.composer = new EffectComposer(this.renderer);
+
+      const renderPass = new RenderPass(this.scene, this.camera);
+      this.composer.addPass(renderPass);
+
+      const unrealBloomPass = new UnrealBloomPass(undefined, 2, 1, 0.2);
+      this.composer.addPass(unrealBloomPass);
     },
 
     animate: function () {
       requestAnimationFrame(this.animate);
-      if(this.player && this.player2) {
+      if (this.player && this.player2) {
         this.player.rotation.x += 0.01;
         this.player.rotation.y += 0.02;
         this.player2.rotation.x += 0.01;
         this.player2.rotation.y += 0.02;
       }
-      this.renderer.render(this.scene, this.camera);
+      this.composer.render(this.scene, this.camera);
     }
   },
 
