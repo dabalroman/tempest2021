@@ -20,7 +20,8 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.update();
 
 //NAZWA SURFACE DO WYRENDEROWANIA
-let nameOfSurfaceToDisplay = 'Loop';
+let nameOfSurfaceToDisplay = 'Box';
+
 
 const surfacesCollection = Surface.fromDataset(surfaces);
 const surfaceToDisplay = surfacesCollection.find(surface => surface.name === nameOfSurfaceToDisplay);
