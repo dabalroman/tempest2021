@@ -29,15 +29,15 @@ export default class BoundingBox2 {
 
   findCenter () {
     this.center = new Vector2(
-      (this.top + this.bottom) / 2,
-      (this.left + this.right) / 2
+      (this.left + this.right) / 2,
+      (this.top + this.bottom) / 2
     );
   }
 
   /**
    * @return {Vector2}
    */
-  getCenter() {
+  getCenter () {
     return this.center;
   }
 

@@ -40,14 +40,12 @@ export default class SurfaceRenderer extends Group {
     this.clear();
     this.lanes = [];
 
-    //TODO: FIND BOUNDING BOX AND APPLY TRANSFORM
-
     let amountOfLanes = this.surface.lanesCoords.length;
     for (let i = 0; i < amountOfLanes; i++) {
       this.lanes.push(
         new LaneRenderer(
-          this.surface.lanesCoords[i],
-          this.surface.lanesCoords[(i + 1) % amountOfLanes],
+          this.surface.centeredLanesCoords[i],
+          this.surface.centeredLanesCoords[(i + 1) % amountOfLanes],
           10
         )
       );

@@ -1,4 +1,5 @@
 import { Vector2 } from 'three';
+import BoundingBox2 from '@/Helpers/BoundingBox2';
 
 export default class Surface {
   /** @var {string} name */
@@ -9,6 +10,8 @@ export default class Surface {
   lanesAmount;
   /** @var {Vector2[]} lanesCoords */
   lanesCoords;
+  /** @var {Vector2[]} lanesCoords */
+  centeredLanesCoords;
 
   /**
    * @param {string} name
@@ -20,6 +23,13 @@ export default class Surface {
     this.isOpen = isOpen;
     this.lanesCoords = lanesCoords;
     this.lanesAmount = lanesCoords.length - (isOpen ? 1 : 0);
+
+    this.calculateCenteredLanesCoords();
+  }
+
+  calculateCenteredLanesCoords () {
+    let boundingBox2 = BoundingBox2.create(this.lanesCoords);
+    this.centeredLanesCoords =  this.lanesCoords.map(vector2 => vector2.sub(boundingBox2.getCenter()));
   }
 
   /**
