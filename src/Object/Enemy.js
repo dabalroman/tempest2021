@@ -1,5 +1,4 @@
-const readonly = require("../utils/readonly");
-
+import readonly from '@/utils/readonly';
 
 export default class Enemy {
   @readonly
