@@ -48,11 +48,13 @@ export default class BoundingBox2 {
   static create (points) {
     let top, right, bottom, left;
 
-    let point = points.shift();
+    let data = [...points];
+    let point = data.shift();
+
     top = bottom = point.y;
     left = right = point.x;
 
-    points.forEach(point => {
+    data.forEach(point => {
       if (point.x < left) {
         left = point.x;
       }
