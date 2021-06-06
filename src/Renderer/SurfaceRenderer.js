@@ -18,8 +18,8 @@ export default class SurfaceRenderer extends Group {
   depth = 10;
   /** @var {LaneRenderer[]} surfaceCoordsCache */
   lanes = [];
-  /** @var {number} lastActiveLane */
-  lastActiveLane = 0;
+  /** @var {?number} lastActiveLane */
+  lastActiveLane = null;
 
   /**
    * @constructor
@@ -43,13 +43,15 @@ export default class SurfaceRenderer extends Group {
   }
 
   update() {
-    console.log(this.lastActiveLane, this.surface)
     if (this.lastActiveLane === this.surface.activeLane) {
       return;
     }
 
     this.lanes[this.surface.activeLane].setMaterial(SurfaceRenderer.ACTIVE_LANE_COLOR);
-    this.lanes[this.lastActiveLane].setMaterial(SurfaceRenderer.DEFAULT_LANE_COLOR);
+
+    if(this.lastActiveLane) {
+      this.lanes[this.lastActiveLane].setMaterial(SurfaceRenderer.DEFAULT_LANE_COLOR);
+    }
 
     this.lastActiveLane = this.surface.activeLane;
   }

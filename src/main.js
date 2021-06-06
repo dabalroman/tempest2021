@@ -35,6 +35,7 @@ if (surfaceToDisplay) {
 function animate () {
   requestAnimationFrame(animate);
   controls.update();
+  surfaceRenderer.update();
   renderer.render(scene, camera);
 
   if (surfaceToDisplay) {
