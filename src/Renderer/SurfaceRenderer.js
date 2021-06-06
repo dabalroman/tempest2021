@@ -1,4 +1,4 @@
-import {Group} from 'three';
+import { BufferGeometry, Group, Line, MeshBasicMaterial, Vector3 } from 'three';
 import readonly from '@/utils/readonly';
 import LaneRenderer from '@/Renderer/LaneRenderer';
 
@@ -25,7 +25,7 @@ export default class SurfaceRenderer extends Group {
    * @constructor
    * @param {Surface} surface
    */
-  constructor(surface) {
+  constructor (surface) {
     super();
 
     this.castShadow = false;
@@ -36,27 +36,27 @@ export default class SurfaceRenderer extends Group {
   /**
    * @param {Surface} surface
    */
-  setSurface(surface) {
+  setSurface (surface) {
     this.surface = surface;
 
     this.createLanes();
   }
 
-  update() {
+  update () {
     if (this.lastActiveLane === this.surface.activeLane) {
       return;
     }
 
     this.lanes[this.surface.activeLane].setMaterial(SurfaceRenderer.ACTIVE_LANE_COLOR);
 
-    if(this.lastActiveLane) {
+    if (this.lastActiveLane) {
       this.lanes[this.lastActiveLane].setMaterial(SurfaceRenderer.DEFAULT_LANE_COLOR);
     }
 
     this.lastActiveLane = this.surface.activeLane;
   }
 
-  createLanes() {
+  createLanes () {
     this.clear();
     this.lanes = [];
 
@@ -66,11 +66,23 @@ export default class SurfaceRenderer extends Group {
         new LaneRenderer(
           this.surface.centeredLanesCoords[i],
           this.surface.centeredLanesCoords[(i + 1) % amountOfLanes],
-          10
+          this.depth
         )
       );
     }
 
     this.lanes.forEach(lane => this.add(lane));
+
+    const material = new MeshBasicMaterial({
+      color: 0x00ff00,
+    });
+    this.surface.lanesCenterCoords.forEach(center => {
+      let geometry = new BufferGeometry().setFromPoints([
+        new Vector3(center.x, center.y, 0),
+        new Vector3(center.x, center.y, 1),
+      ]);
+
+      this.add(new Line(geometry, material));
+    });
   }
 }

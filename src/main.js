@@ -9,7 +9,7 @@ import surfaces from '@/maps/Surfaces';
 const scene = new THREE.Scene();
 // eslint-disable-next-line no-unused-vars
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(-5, 5, -5);
+camera.position.set(0, 0, -5);
 camera.lookAt(0, 0, 0);
 
 const renderer = new THREE.WebGLRenderer();
@@ -39,7 +39,7 @@ function animate () {
   renderer.render(scene, camera);
 
   if (surfaceToDisplay) {
-    surfaceRenderer.rotation.z += 0.01;
+    surfaceRenderer.rotation.z += 0.001;
   }
 }
 
