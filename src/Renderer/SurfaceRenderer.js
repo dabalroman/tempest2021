@@ -1,10 +1,14 @@
-import { Group } from 'three';
+import {Group} from 'three';
 import readonly from '@/utils/readonly';
 import LaneRenderer from '@/Renderer/LaneRenderer';
 
 export default class SurfaceRenderer extends Group {
   @readonly
   static WIREFRAME_LINE_WIDTH = 2;
+  @readonly
+  static ACTIVE_LANE_COLOR = 0xffff00;
+  @readonly
+  static DEFAULT_LANE_COLOR = 0xff0000;
 
   type = 'Group';
 
@@ -14,12 +18,14 @@ export default class SurfaceRenderer extends Group {
   depth = 10;
   /** @var {LaneRenderer[]} surfaceCoordsCache */
   lanes = [];
+  /** @var {number} lastActiveLane */
+  lastActiveLane = 0;
 
   /**
    * @constructor
    * @param {Surface} surface
    */
-  constructor (surface) {
+  constructor(surface) {
     super();
 
     this.castShadow = false;
@@ -30,13 +36,25 @@ export default class SurfaceRenderer extends Group {
   /**
    * @param {Surface} surface
    */
-  setSurface (surface) {
+  setSurface(surface) {
     this.surface = surface;
 
     this.createLanes();
   }
 
-  createLanes () {
+  update() {
+    console.log(this.lastActiveLane, this.surface)
+    if (this.lastActiveLane === this.surface.activeLane) {
+      return;
+    }
+
+    this.lanes[this.surface.activeLane].setMaterial(SurfaceRenderer.ACTIVE_LANE_COLOR);
+    this.lanes[this.lastActiveLane].setMaterial(SurfaceRenderer.DEFAULT_LANE_COLOR);
+
+    this.lastActiveLane = this.surface.activeLane;
+  }
+
+  createLanes() {
     this.clear();
     this.lanes = [];
 
