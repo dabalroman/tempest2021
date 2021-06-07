@@ -1,4 +1,5 @@
 import { BufferGeometry, Line, MeshBasicMaterial, Vector3 } from 'three';
+import SurfaceRenderer from '@/Renderer/SurfaceRenderer';
 
 export default class LaneRenderer extends Line {
   type = 'lane';
@@ -19,7 +20,7 @@ export default class LaneRenderer extends Line {
 
     this.setDepth(depth);
     this.setNodes(nodeA, nodeB);
-    this.setMaterial(0xff0000);
+    this.setMaterial(SurfaceRenderer.DEFAULT_LANE_COLOR);
 
     this.castShadow = false;
   }

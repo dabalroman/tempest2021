@@ -8,7 +8,7 @@ export default class SurfaceRenderer extends Group {
   @readonly
   static ACTIVE_LANE_COLOR = 0xffff00;
   @readonly
-  static DEFAULT_LANE_COLOR = 0xff0000;
+  static DEFAULT_LANE_COLOR = 0x0000ff;
 
   type = 'Group';
 
