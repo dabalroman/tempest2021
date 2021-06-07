@@ -2,6 +2,8 @@ import { Group } from 'three';
 import Shooter from '@/Object/Shooter';
 import SurfaceRenderer from '@/Renderer/SurfaceRenderer';
 import ShooterRenderer from '@/Renderer/ShooterRenderer';
+import enemies from '@/maps/Enemies';
+import EnemyRenderer from '@/Renderer/EnemyRenderer';
 
 export default class LevelContainer extends Group {
   /** @var {Surface} */
@@ -23,6 +25,16 @@ export default class LevelContainer extends Group {
 
     this.add(this.surfaceRenderer);
     this.add(this.shooterRenderer);
+
+    this.temporaryRenderAllEnemies();
+  }
+
+  temporaryRenderAllEnemies () {
+    enemies.forEach((enemyDataset, i) => {
+      let renderer = new EnemyRenderer({ type: enemyDataset.name });
+      renderer.position.z = i;
+      this.add(renderer);
+    });
   }
 
   update () {
