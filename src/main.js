@@ -1,10 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Surface from '@/Object/Surface';
-import SurfaceRenderer from '@/Renderer/SurfaceRenderer';
 
 import surfaces from '@/maps/Surfaces';
-import ShooterRenderer from '@/Renderer/ShooterRenderer';
+import LevelContainer from '@/Renderer/LevelContainer';
 
 // eslint-disable-next-line no-unused-vars
 const scene = new THREE.Scene();
@@ -25,20 +24,14 @@ let nameOfSurfaceToDisplay = 'Box';
 
 const surfacesCollection = Surface.fromDataset(surfaces);
 const surfaceToDisplay = surfacesCollection.find(surface => surface.name === nameOfSurfaceToDisplay);
-let surfaceRenderer = null;
 
-if (surfaceToDisplay) {
-  surfaceRenderer = new SurfaceRenderer(surfaceToDisplay);
-  scene.add(surfaceRenderer);
-}
-
-const shooterRenderer = ShooterRenderer.create();
-scene.add(shooterRenderer);
+const levelContainer = new LevelContainer(surfaceToDisplay);
+scene.add(levelContainer);
 
 function animate () {
   requestAnimationFrame(animate);
   controls.update();
-  surfaceRenderer.update();
+  levelContainer.update();
   renderer.render(scene, camera);
 
   if (surfaceToDisplay) {

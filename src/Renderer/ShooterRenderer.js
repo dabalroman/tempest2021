@@ -13,18 +13,23 @@ export default class ShooterRenderer extends Group {
   @readonly
   static SHOOTER_WIREFRAME_COLOR = 0xffff00;
 
-  constructor () {
+  /** @var {Shooter} */
+  shooter;
+
+  constructor (shooter) {
     super();
 
+    this.shooter = shooter;
+
+    this.loadModel();
     this.position.set(0.5, -2, -1);
   }
 
-  static create () {
-    let shooterRenderer = new ShooterRenderer();
-
+  loadModel () {
+    let that = this;
     objLoader.load(
       ShooterRenderer.MODEL_PATH,
-      function (object) {
+      (object) => {
         object.traverse(function (child) {
           if (child.isMesh) {
             const shooterWireframe = new Three.LineSegments(
@@ -45,15 +50,12 @@ export default class ShooterRenderer extends Group {
             child.scale.set(ShooterRenderer.MODEL_SCALE, ShooterRenderer.MODEL_SCALE, ShooterRenderer.MODEL_SCALE);
             child.rotation.y = ShooterRenderer.MODEL_ROTATION;
 
-            shooterRenderer.add(child);
+            that.add(child);
           }
         });
-
       },
       null,
       x => console.warn(x)
     );
-
-    return shooterRenderer;
   }
 }
