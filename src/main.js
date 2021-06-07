@@ -4,6 +4,7 @@ import Surface from '@/Object/Surface';
 import SurfaceRenderer from '@/Renderer/SurfaceRenderer';
 
 import surfaces from '@/maps/Surfaces';
+import ShooterRenderer from '@/Renderer/ShooterRenderer';
 
 // eslint-disable-next-line no-unused-vars
 const scene = new THREE.Scene();
@@ -22,7 +23,6 @@ controls.update();
 //NAZWA SURFACE DO WYRENDEROWANIA
 let nameOfSurfaceToDisplay = 'Box';
 
-
 const surfacesCollection = Surface.fromDataset(surfaces);
 const surfaceToDisplay = surfacesCollection.find(surface => surface.name === nameOfSurfaceToDisplay);
 let surfaceRenderer = null;
@@ -32,6 +32,9 @@ if (surfaceToDisplay) {
   scene.add(surfaceRenderer);
 }
 
+const shooterRenderer = ShooterRenderer.create();
+scene.add(shooterRenderer);
+
 function animate () {
   requestAnimationFrame(animate);
   controls.update();
@@ -39,7 +42,7 @@ function animate () {
   renderer.render(scene, camera);
 
   if (surfaceToDisplay) {
-    surfaceRenderer.rotation.z += 0.001;
+    scene.rotation.z += 0.001;
   }
 }
 
