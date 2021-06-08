@@ -1,6 +1,7 @@
 import { BufferGeometry, Group, Line, MeshBasicMaterial, Vector3 } from 'three';
 import readonly from '@/utils/readonly';
 import LaneRenderer from '@/Renderer/LaneRenderer';
+import Surface from '@/Object/Surface';
 
 export default class SurfaceRenderer extends Group {
   @readonly
@@ -60,12 +61,11 @@ export default class SurfaceRenderer extends Group {
     this.clear();
     this.lanes = [];
 
-    let amountOfLanes = this.surface.lanesCoords.length;
-    for (let i = 0; i < amountOfLanes - this.surface.isOpen; i++) {
+    for (let i = 0; i < this.surface.lanesAmount; i++) {
       this.lanes.push(
         new LaneRenderer(
           this.surface.centeredLanesCoords[i],
-          this.surface.centeredLanesCoords[(i + 1) % amountOfLanes],
+          this.surface.centeredLanesCoords[(i + 1) % Surface.LINES_AMOUNT],
           this.depth
         )
       );

@@ -1,7 +1,11 @@
 import { Vector2 } from 'three';
 import BoundingBox2 from '@/Helpers/BoundingBox2';
+import readonly from '@/utils/readonly';
 
 export default class Surface {
+  @readonly
+  static LINES_AMOUNT = 16;
+
   /** @var {string} name */
   name;
   /** @var {boolean} isOpen */
@@ -43,7 +47,7 @@ export default class Surface {
     for (let i = 0; i < this.lanesAmount; i++) {
       let boundingBox2 = BoundingBox2.create([
         this.centeredLanesCoords[i],
-        this.centeredLanesCoords[(i + 1) % this.lanesAmount]
+        this.centeredLanesCoords[(i + 1) % Surface.LINES_AMOUNT]
       ]);
       this.lanesCenterCoords.push(boundingBox2.center);
     }
