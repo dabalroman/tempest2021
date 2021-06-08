@@ -2,6 +2,7 @@ import * as Three from 'three';
 import { Group, MeshBasicMaterial } from 'three';
 import objLoader from '@/utils/objLoader';
 import readonly from '@/utils/readonly';
+import compareVectors from '@/utils/compareVectors';
 
 export default class ShooterRenderer extends Group {
   @readonly
@@ -15,14 +16,45 @@ export default class ShooterRenderer extends Group {
 
   /** @var {Shooter} */
   shooter;
+  /** @var {Surface} */
+  surface;
+  /** @var {number} */
+  positionChangeSpeed = 0.1;
+  /** @var {number} */
+  rotationChangeSpeed = 0.1;
 
-  constructor (shooter) {
+  constructor (shooter, surface) {
     super();
 
     this.shooter = shooter;
+    this.surface = surface;
 
     this.loadModel();
     this.position.set(0.5, -2, -1);
+  }
+
+  update () {
+    this.move();
+  }
+
+  move () {
+    let desiredPosition = this.surface.lanesCenterCoords[this.surface.activeLane];
+
+    if (!compareVectors(desiredPosition, this.position)) {
+      let movement = desiredPosition.clone();
+      movement.sub(this.position);
+      movement.setLength(this.positionChangeSpeed);
+
+      if (Math.abs(movement.x) > Math.abs(desiredPosition.x - this.position.x)) {
+        movement.x = desiredPosition.x - this.position.x;
+      }
+
+      if (Math.abs(movement.y) > Math.abs(desiredPosition.y - this.position.y)) {
+        movement.y = desiredPosition.y - this.position.y;
+      }
+
+      this.position.set(this.position.x + movement.x, this.position.y + movement.y, this.position.z);
+    }
   }
 
   loadModel () {

@@ -21,7 +21,7 @@ export default class LevelContainer extends Group {
     this.surface = surface;
     this.surfaceRenderer = new SurfaceRenderer(this.surface);
     this.shooter = new Shooter();
-    this.shooterRenderer = new ShooterRenderer(this.shooter);
+    this.shooterRenderer = new ShooterRenderer(this.shooter, this.surface);
 
     this.add(this.surfaceRenderer);
     this.add(this.shooterRenderer);
@@ -39,5 +39,6 @@ export default class LevelContainer extends Group {
 
   update () {
     this.surfaceRenderer.update();
+    this.shooterRenderer.update();
   }
 }
