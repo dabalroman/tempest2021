@@ -61,7 +61,7 @@ export default class SurfaceRenderer extends Group {
     this.lanes = [];
 
     let amountOfLanes = this.surface.lanesCoords.length;
-    for (let i = 0; i < amountOfLanes; i++) {
+    for (let i = 0; i < amountOfLanes - this.surface.isOpen; i++) {
       this.lanes.push(
         new LaneRenderer(
           this.surface.centeredLanesCoords[i],
