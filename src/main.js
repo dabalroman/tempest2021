@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Surface from '@/Object/Surface';
-
-import surfaces from '@/maps/Surfaces';
 import LevelContainer from '@/Renderer/LevelContainer';
+import surfaces from '@/maps/Surfaces';
+import keyboardInput from '@/utils/KeyboardInput';
 
 // eslint-disable-next-line no-unused-vars
 const scene = new THREE.Scene();
@@ -25,18 +25,24 @@ let nameOfSurfaceToDisplay = 'Box';
 const surfacesCollection = Surface.fromDataset(surfaces);
 const surfaceToDisplay = surfacesCollection.find(surface => surface.name === nameOfSurfaceToDisplay);
 
-const levelContainer = new LevelContainer(surfaceToDisplay);
-scene.add(levelContainer);
+let levelContainer;
+
+if (surfaceToDisplay) {
+  levelContainer = new LevelContainer(surfaceToDisplay);
+  scene.add(levelContainer);
+  animate();
+} else {
+  alert(`BAKA! There is not such surface as ${nameOfSurfaceToDisplay}...`);
+}
 
 function animate () {
   requestAnimationFrame(animate);
   controls.update();
+  keyboardInput.dispatchActions();
   levelContainer.update();
   renderer.render(scene, camera);
 
-  if (surfaceToDisplay) {
-    scene.rotation.y = Math.sin(Date.now() % (Math.PI * 2 * 4000) / 4000) / 5;
-  }
+  scene.rotation.y = Math.sin(Date.now() % (Math.PI * 2 * 4000) / 4000) / 5;
 }
 
-animate();
+

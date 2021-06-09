@@ -2,8 +2,9 @@ import { Group } from 'three';
 import Shooter from '@/Object/Shooter';
 import SurfaceRenderer from '@/Renderer/SurfaceRenderer';
 import ShooterRenderer from '@/Renderer/ShooterRenderer';
-import enemies from '@/maps/Enemies';
 import EnemyRenderer from '@/Renderer/EnemyRenderer';
+import enemies from '@/maps/Enemies';
+import keyboardInput from '@/utils/KeyboardInput';
 
 export default class LevelContainer extends Group {
   /** @var {Surface} */
@@ -28,16 +29,8 @@ export default class LevelContainer extends Group {
     this.add(this.surfaceRenderer);
     this.add(this.shooterRenderer);
 
-    document.onkeydown = e => {
-      switch (e.code) {
-        case 'KeyA':
-          this.shooter.moveLeft(this.surface);
-          break;
-        case 'KeyD':
-          this.shooter.moveRight(this.surface);
-          break;
-      }
-    };
+    keyboardInput.register('KeyA', () => {this.shooter.moveLeft(this.surface);});
+    keyboardInput.register('KeyD', () => {this.shooter.moveRight(this.surface);});
 
     // this.temporaryRenderAllEnemies();
   }
