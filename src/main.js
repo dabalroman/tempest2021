@@ -35,7 +35,7 @@ function animate () {
   renderer.render(scene, camera);
 
   if (surfaceToDisplay) {
-    scene.rotation.z += 0.001;
+    scene.rotation.y = Math.sin(Date.now() % (Math.PI * 2 * 4000) / 4000) / 5;
   }
 }
 

@@ -28,7 +28,18 @@ export default class LevelContainer extends Group {
     this.add(this.surfaceRenderer);
     this.add(this.shooterRenderer);
 
-    this.temporaryRenderAllEnemies();
+    document.onkeydown = e => {
+      switch (e.code) {
+        case 'KeyA':
+          this.shooter.moveLeft(this.surface);
+          break;
+        case 'KeyD':
+          this.shooter.moveRight(this.surface);
+          break;
+      }
+    };
+
+    // this.temporaryRenderAllEnemies();
   }
 
   temporaryRenderAllEnemies () {
