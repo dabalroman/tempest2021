@@ -70,9 +70,19 @@ export default class Surface {
     });
   }
 
-  setActiveLane (newActiveID) {
-    if (newActiveID >= 0 && newActiveID < this.lanesAmount) {
-      this.activeLane = newActiveID;
+  setActiveLane (desiredActiveLane) {
+    if (this.isOpen) {
+      if (desiredActiveLane >= 0 && desiredActiveLane < this.lanesAmount) {
+        this.activeLane = desiredActiveLane;
+      }
+    } else {
+      desiredActiveLane %= this.lanesAmount;
+
+      if (desiredActiveLane < 0) {
+        desiredActiveLane += this.lanesAmount;
+      }
+
+      this.activeLane = desiredActiveLane;
     }
   }
 
