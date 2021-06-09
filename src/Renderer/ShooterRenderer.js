@@ -58,12 +58,25 @@ export default class ShooterRenderer extends Group {
     }
 
     if (Math.abs(desiredRotation - this.rotation.z) > this.rotationChangeSpeed) {
-      let movement = this.surface.lanesCenterDirectionRadians[this.shooter.currentLane] > this.rotation.z ? 1 : -1;
-      // let up = this.surface.lanesCenterDirectionRadians[this.shooter.currentLane] - this.rotation.z;
-      // let down = this.surface.lanesCenterDirectionRadians[this.shooter.currentLane] - this.rotation.z;
-      //
-      // console.log(up, down, movement, this.surface.lanesCenterDirectionRadians[this.shooter.currentLane], this.rotation.z);
-      this.rotation.z += movement * this.rotationChangeSpeed;
+      let leftAngularDistance, rightAngularDistance;
+      if (desiredRotation < this.rotation.z) {
+        leftAngularDistance = this.rotation.z - desiredRotation;
+        rightAngularDistance = 2 * Math.PI - this.rotation.z + desiredRotation;
+      } else {
+        leftAngularDistance = 2 * Math.PI - desiredRotation + this.rotation.z;
+        rightAngularDistance = desiredRotation - this.rotation.z;
+      }
+
+      let rotationDirection = leftAngularDistance > rightAngularDistance ? 1 : -1;
+      this.rotation.z += rotationDirection * this.rotationChangeSpeed;
+
+      if (this.rotation.z >= 2 * Math.PI) {
+        this.rotation.z -= 2 * Math.PI;
+      }
+
+      if (this.rotation.z < 0) {
+        this.rotation.z += 2 * Math.PI;
+      }
     } else {
       this.rotation.z = this.surface.lanesCenterDirectionRadians[this.shooter.currentLane];
     }
