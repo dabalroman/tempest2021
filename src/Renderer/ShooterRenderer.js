@@ -30,35 +30,53 @@ export default class ShooterRenderer extends Group {
     this.surface = surface;
 
     this.loadModel();
-    this.position.set(0.5, -2, -1);
+
+    this.position.set(
+      this.surface.lanesCenterCoords[this.shooter.currentLane].x,
+      this.surface.lanesCenterCoords[this.shooter.currentLane].y,
+      -1
+    );
+
+    this.rotation.z = this.surface.lanesCenterDirectionRadians[this.shooter.currentLane];
   }
 
   update () {
     this.move();
+    this.rotate();
   }
 
   move () {
     let desiredPosition = this.surface.lanesCenterCoords[this.shooter.currentLane];
+
+    if (compareVectors(desiredPosition, this.position)) {
+      return;
+    }
+
+    let movement = desiredPosition.clone();
+    movement.sub(this.position);
+    movement.setLength(this.positionChangeSpeed);
+
+    if (Math.abs(movement.x) > Math.abs(desiredPosition.x - this.position.x)) {
+      movement.x = desiredPosition.x - this.position.x;
+    }
+
+    if (Math.abs(movement.y) > Math.abs(desiredPosition.y - this.position.y)) {
+      movement.y = desiredPosition.y - this.position.y;
+    }
+
+    this.position.set(this.position.x + movement.x, this.position.y + movement.y, this.position.z);
+  }
+
+  rotate () {
     let desiredRotation = this.surface.lanesCenterDirectionRadians[this.shooter.currentLane];
 
-    if (!compareVectors(desiredPosition, this.position)) {
-      let movement = desiredPosition.clone();
-      movement.sub(this.position);
-      movement.setLength(this.positionChangeSpeed);
-
-      if (Math.abs(movement.x) > Math.abs(desiredPosition.x - this.position.x)) {
-        movement.x = desiredPosition.x - this.position.x;
-      }
-
-      if (Math.abs(movement.y) > Math.abs(desiredPosition.y - this.position.y)) {
-        movement.y = desiredPosition.y - this.position.y;
-      }
-
-      this.position.set(this.position.x + movement.x, this.position.y + movement.y, this.position.z);
+    if (desiredRotation === this.rotation.z) {
+      return;
     }
 
     if (Math.abs(desiredRotation - this.rotation.z) > this.rotationChangeSpeed) {
       let leftAngularDistance, rightAngularDistance;
+
       if (desiredRotation < this.rotation.z) {
         leftAngularDistance = this.rotation.z - desiredRotation;
         rightAngularDistance = 2 * Math.PI - this.rotation.z + desiredRotation;
@@ -72,9 +90,7 @@ export default class ShooterRenderer extends Group {
 
       if (this.rotation.z >= 2 * Math.PI) {
         this.rotation.z -= 2 * Math.PI;
-      }
-
-      if (this.rotation.z < 0) {
+      } else if (this.rotation.z < 0) {
         this.rotation.z += 2 * Math.PI;
       }
     } else {
