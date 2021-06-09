@@ -32,12 +32,12 @@ export default class ShooterRenderer extends Group {
     this.loadModel();
 
     this.position.set(
-      this.surface.lanesCenterCoords[this.shooter.currentLane].x,
-      this.surface.lanesCenterCoords[this.shooter.currentLane].y,
+      this.surface.lanesCenterCoords[this.shooter.laneId].x,
+      this.surface.lanesCenterCoords[this.shooter.laneId].y,
       -1
     );
 
-    this.rotation.z = this.surface.lanesCenterDirectionRadians[this.shooter.currentLane];
+    this.rotation.z = this.surface.lanesCenterDirectionRadians[this.shooter.laneId];
   }
 
   update () {
@@ -46,7 +46,7 @@ export default class ShooterRenderer extends Group {
   }
 
   move () {
-    let desiredPosition = this.surface.lanesCenterCoords[this.shooter.currentLane];
+    let desiredPosition = this.surface.lanesCenterCoords[this.shooter.laneId];
 
     if (compareVectors(desiredPosition, this.position)) {
       return;
@@ -68,7 +68,7 @@ export default class ShooterRenderer extends Group {
   }
 
   rotate () {
-    let desiredRotation = this.surface.lanesCenterDirectionRadians[this.shooter.currentLane];
+    let desiredRotation = this.surface.lanesCenterDirectionRadians[this.shooter.laneId];
 
     if (desiredRotation === this.rotation.z) {
       return;
@@ -94,7 +94,7 @@ export default class ShooterRenderer extends Group {
         this.rotation.z += 2 * Math.PI;
       }
     } else {
-      this.rotation.z = this.surface.lanesCenterDirectionRadians[this.shooter.currentLane];
+      this.rotation.z = this.surface.lanesCenterDirectionRadians[this.shooter.laneId];
     }
   }
 

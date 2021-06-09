@@ -70,20 +70,34 @@ export default class Surface {
     });
   }
 
-  setActiveLane (desiredActiveLane) {
+  /**
+   * @param {number} projectedLaneId
+   * @return {number}
+   */
+  getActualLaneIdFromProjectedMovement (projectedLaneId) {
     if (this.isOpen) {
-      if (desiredActiveLane >= 0 && desiredActiveLane < this.lanesAmount) {
-        this.activeLane = desiredActiveLane;
+      if (projectedLaneId > 0) {
+        return 0;
+      } else if (projectedLaneId >= this.lanesAmount) {
+        return this.lanesAmount - 1;
       }
+      return projectedLaneId;
     } else {
-      desiredActiveLane %= this.lanesAmount;
+      projectedLaneId %= this.lanesAmount;
 
-      if (desiredActiveLane < 0) {
-        desiredActiveLane += this.lanesAmount;
+      if (projectedLaneId < 0) {
+        projectedLaneId += this.lanesAmount;
       }
 
-      this.activeLane = desiredActiveLane;
+      return projectedLaneId;
     }
+  }
+
+  /**
+   * @param {number} desiredActiveLane
+   */
+  setActiveLane (desiredActiveLane) {
+    this.activeLane = this.getActualLaneIdFromProjectedMovement(desiredActiveLane);
   }
 
   /**

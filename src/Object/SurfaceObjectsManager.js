@@ -3,22 +3,29 @@ export default class SurfaceObjectsManager {
   surface;
 
   /** {Shooter[]} */
-  shooters;
+  shooters = [];
   /** {Enemy[]} */
-  enemies;
+  enemies = [];
 
   /** {array} */
-  lanes;
+  lanes = [];
 
   /**
    * @param {Surface} surface
    */
   constructor (surface) {
     this.surface = surface;
-    console.log('hello');
+  }
+
+  addShooter (shooter) {
+    this.shooters.push(shooter);
+  }
+
+  addEnemy (enemy) {
+    this.enemies.push(enemy);
   }
 
   updateMap () {
-
+    //TODO: Create lanes map with help of hasChangedLane()
   }
 }

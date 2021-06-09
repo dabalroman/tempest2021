@@ -1,6 +1,7 @@
 import readonly from '@/utils/readonly';
+import SurfaceObject from '@/Object/SurfaceObject';
 
-export default class Enemy {
+export default class Enemy extends SurfaceObject {
   @readonly
   static ENEMY_PULSAR = 'pulsar';
   @readonly
@@ -16,20 +17,16 @@ export default class Enemy {
   type;
   /** @var {number} state */
   state;
-  /** @var {number} lane */
-  lane = 0;
-  /** @var {number} zPosition */
-  zPosition = 0;
-  /** @var {number} state */
-  zSpeed;
   /** @var {number} state */
   firstLevel;
   /** @var {boolean} state */
   canShoot = false;
 
   constructor() {
+    super();
+
     if (this.constructor === Enemy) {
-      throw new Error("Abstract classes can't be instantiated.");
+      throw new Error('Abstract classes can\'t be instantiated.');
     }
   }
 

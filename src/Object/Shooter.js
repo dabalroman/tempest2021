@@ -1,21 +1,16 @@
 import readonly from '@/utils/readonly';
+import SurfaceObject from '@/Object/SurfaceObject';
 
-export default class Shooter {
+export default class Shooter extends SurfaceObject {
   @readonly
   static MOVE_TIMEOUT_MS = 50;
   @readonly
   static SHOOT_TIMEOUT_MS = 200;
 
   /** @var {number} */
-  currentLane;
-  /** @var {number} */
   lastLaneChangeTimestamp;
   /** @var {number} */
   lastShootTimestamp;
-
-  constructor (currentLane = 0) {
-    this.currentLane = currentLane;
-  }
 
   /**
    * @param {Surface} surface
@@ -28,8 +23,9 @@ export default class Shooter {
       return;
     }
 
-    surface.setActiveLane(desiredLane);
-    this.currentLane = surface.activeLane;
+    this.setLane(surface, desiredLane);
+    surface.setActiveLane(this.laneId);
+
     this.lastLaneChangeTimestamp = now;
   }
 
@@ -37,14 +33,14 @@ export default class Shooter {
    * @param {Surface} surface
    */
   moveLeft (surface) {
-    this.moveToLane(surface, this.currentLane + 1);
+    this.moveToLane(surface, this.laneId + 1);
   }
 
   /**
    * @param {Surface} surface
    */
   moveRight (surface) {
-    this.moveToLane(surface, this.currentLane - 1);
+    this.moveToLane(surface, this.laneId - 1);
   }
 
   shoot () {
