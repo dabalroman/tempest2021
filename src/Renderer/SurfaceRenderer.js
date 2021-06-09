@@ -1,6 +1,5 @@
-import { BufferGeometry, Group, Line, MeshBasicMaterial, Vector3 } from 'three';
+import { BufferGeometry, Group, Line, LineBasicMaterial, MeshBasicMaterial, Vector3 } from 'three';
 import readonly from '@/utils/readonly';
-import LaneRenderer from '@/Renderer/LaneRenderer';
 import Surface from '@/Object/Surface';
 import Angle from '@/utils/Angle';
 
@@ -12,16 +11,30 @@ export default class SurfaceRenderer extends Group {
   @readonly
   static DEFAULT_LANE_COLOR = 0x0000ff;
 
+  /** @var {string} **/
   type = 'Group';
 
   /** @var {Surface} surface */
   surface;
+
   /** @var {number} depth */
   depth = 10;
-  /** @var {LaneRenderer[]} surfaceCoordsCache */
-  lanes = [];
+  /** @var {number} */
+  connectorFrontDepth = 0;
+  /** @var {number} */
+  connectorBackDepth = this.depth;
+
+  /** @var {Line[]} **/
+  lanesLines = [];
+  /** @var {Line[]} **/
+  lanesConnectors = [];
   /** @var {?number} lastActiveLane */
   lastActiveLane = null;
+
+  /** @var {LineBasicMaterial} **/
+  laneActiveMaterial;
+  /** @var {LineBasicMaterial} **/
+  laneDefaultMaterial;
 
   /**
    * @constructor
@@ -40,9 +53,9 @@ export default class SurfaceRenderer extends Group {
    */
   setSurface (surface) {
     this.surface = surface;
-    this.lastActiveLane = surface.activeLane;
 
     this.createLanes();
+    this.update();
   }
 
   update () {
@@ -50,11 +63,10 @@ export default class SurfaceRenderer extends Group {
       return;
     }
 
-    this.lanes[this.surface.activeLane].setMaterial(SurfaceRenderer.ACTIVE_LANE_COLOR);
-
     if (this.lastActiveLane !== null) {
-      this.lanes[this.lastActiveLane].setMaterial(SurfaceRenderer.DEFAULT_LANE_COLOR);
+      this.setLaneMaterial(this.lastActiveLane, this.laneDefaultMaterial);
     }
+    this.setLaneMaterial(this.surface.activeLane, this.laneActiveMaterial);
 
     this.lastActiveLane = this.surface.activeLane;
   }
@@ -62,19 +74,50 @@ export default class SurfaceRenderer extends Group {
   createLanes () {
     this.clear();
     this.lanes = [];
+    this.lanesLines = [];
+    this.lanesConnectors = [];
+
+    this.laneDefaultMaterial = new LineBasicMaterial({ color: SurfaceRenderer.DEFAULT_LANE_COLOR });
+    this.laneActiveMaterial = new LineBasicMaterial({ color: SurfaceRenderer.ACTIVE_LANE_COLOR });
 
     for (let i = 0; i < this.surface.lanesAmount; i++) {
-      this.lanes.push(
-        new LaneRenderer(
-          this.surface.centeredLanesCoords[i],
-          this.surface.centeredLanesCoords[(i + 1) % Surface.LINES_AMOUNT],
-          this.depth
-        )
+      let current = this.surface.centeredLanesCoords[i];
+      let next = this.surface.centeredLanesCoords[(i + 1) % Surface.LINES_AMOUNT];
+
+      //Create lines
+      let linePoints = [
+        new Vector3(current.x, current.y, 0),
+        new Vector3(current.x, current.y, this.depth)
+      ];
+
+      this.lanesLines.push(
+        new Line(new BufferGeometry().setFromPoints(linePoints), this.laneDefaultMaterial)
+      );
+
+      //Create connectors
+      let connectorFrontPoints = [
+        new Vector3(current.x, current.y, this.connectorFrontDepth),
+        new Vector3(next.x, next.y, this.connectorFrontDepth)
+      ];
+
+      let connectorBackPoints = [
+        new Vector3(current.x, current.y, this.connectorBackDepth),
+        new Vector3(next.x, next.y, this.connectorBackDepth)
+      ];
+
+      this.lanesConnectors.push(
+        new Line(new BufferGeometry().setFromPoints(connectorFrontPoints), this.laneDefaultMaterial),
+        new Line(new BufferGeometry().setFromPoints(connectorBackPoints), this.laneDefaultMaterial)
       );
     }
 
-    this.lanes.forEach(lane => this.add(lane));
+    this.lanesLines.forEach(line => this.add(line));
+    this.lanesConnectors.forEach(connector => this.add(connector));
 
+    this.createCenterIndicators();
+  }
+
+  createCenterIndicators () {
     const material = new MeshBasicMaterial({
       color: 0x00ff00,
     });
@@ -92,5 +135,16 @@ export default class SurfaceRenderer extends Group {
 
       this.add(new Line(geometry, material));
     });
+  }
+
+  /**
+   * @param {number} laneId
+   * @param {LineBasicMaterial} material
+   */
+  setLaneMaterial (laneId, material) {
+    this.lanesLines[laneId].material = material;
+    this.lanesLines[(laneId + 1) % this.surface.lanesAmount].material = material;
+    this.lanesConnectors[laneId * 2].material = material;
+    this.lanesConnectors[laneId * 2 + 1].material = material;
   }
 }
