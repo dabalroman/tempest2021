@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Surface from '@/Object/Surface';
-import LevelContainer from '@/Renderer/LevelContainer';
+import Level from '@/Object/Level';
+import LevelRenderer from '@/Renderer/LevelRenderer';
 import surfaces from '@/maps/Surfaces';
+
 import keyboardInput from '@/utils/KeyboardInput';
 
 // eslint-disable-next-line no-unused-vars
@@ -20,16 +22,18 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.update();
 
 //NAZWA SURFACE DO WYRENDEROWANIA
-let nameOfSurfaceToDisplay = 'Box';
+let nameOfSurfaceToDisplay = 'Peanut';
 
 const surfacesCollection = Surface.fromDataset(surfaces);
 const surfaceToDisplay = surfacesCollection.find(surface => surface.name === nameOfSurfaceToDisplay);
 
-let levelContainer;
+let level, levelRenderer;
 
 if (surfaceToDisplay) {
-  levelContainer = new LevelContainer(surfaceToDisplay);
-  scene.add(levelContainer);
+  level = new Level(surfaceToDisplay);
+  levelRenderer = new LevelRenderer(level);
+
+  scene.add(levelRenderer);
   animate();
 } else {
   alert(`BAKA! There is not such surface as ${nameOfSurfaceToDisplay}...`);
@@ -39,7 +43,7 @@ function animate () {
   requestAnimationFrame(animate);
   controls.update();
   keyboardInput.dispatchActions();
-  levelContainer.update();
+  levelRenderer.update();
   renderer.render(scene, camera);
 
   scene.rotation.y = Math.sin(Date.now() % (Math.PI * 2 * 4000) / 4000) / 5;
