@@ -19,9 +19,9 @@ export default class ShooterRenderer extends Group {
   /** @var {Surface} */
   surface;
   /** @var {number} */
-  positionChangeSpeed = 0.1;
+  positionChangeSpeed = 0.3;
   /** @var {number} */
-  rotationChangeSpeed = 0.1;
+  rotationChangeSpeed = 0.2;
 
   constructor (shooter, surface) {
     super();
@@ -38,7 +38,8 @@ export default class ShooterRenderer extends Group {
   }
 
   move () {
-    let desiredPosition = this.surface.lanesCenterCoords[this.surface.activeLane];
+    let desiredPosition = this.surface.lanesCenterCoords[this.shooter.currentLane];
+    let desiredRotation = this.surface.lanesCenterDirectionRadians[this.shooter.currentLane];
 
     if (!compareVectors(desiredPosition, this.position)) {
       let movement = desiredPosition.clone();
@@ -54,6 +55,17 @@ export default class ShooterRenderer extends Group {
       }
 
       this.position.set(this.position.x + movement.x, this.position.y + movement.y, this.position.z);
+    }
+
+    if (Math.abs(desiredRotation - this.rotation.z) > this.rotationChangeSpeed) {
+      let movement = this.surface.lanesCenterDirectionRadians[this.shooter.currentLane] > this.rotation.z ? 1 : -1;
+      // let up = this.surface.lanesCenterDirectionRadians[this.shooter.currentLane] - this.rotation.z;
+      // let down = this.surface.lanesCenterDirectionRadians[this.shooter.currentLane] - this.rotation.z;
+      //
+      // console.log(up, down, movement, this.surface.lanesCenterDirectionRadians[this.shooter.currentLane], this.rotation.z);
+      this.rotation.z += movement * this.rotationChangeSpeed;
+    } else {
+      this.rotation.z = this.surface.lanesCenterDirectionRadians[this.shooter.currentLane];
     }
   }
 

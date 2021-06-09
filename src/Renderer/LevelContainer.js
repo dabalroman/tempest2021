@@ -23,6 +23,8 @@ export default class LevelContainer extends Group {
     this.shooter = new Shooter();
     this.shooterRenderer = new ShooterRenderer(this.shooter, this.surface);
 
+    this.surface.activeLane = 0;
+
     this.add(this.surfaceRenderer);
     this.add(this.shooterRenderer);
 

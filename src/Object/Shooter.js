@@ -14,18 +14,37 @@ export default class Shooter {
   lastShootTimestamp;
 
   constructor (currentLane = 0) {
-    this.moveToLane(currentLane);
+    this.currentLane = currentLane;
   }
 
-  moveToLane (desiredLane) {
+  /**
+   * @param {Surface} surface
+   * @param {number} desiredLane
+   */
+  moveToLane (surface, desiredLane) {
     let now = Date.now();
 
     if (now - this.lastLaneChangeTimestamp < Shooter.MOVE_TIMEOUT_MS) {
       return;
     }
 
-    this.currentLane = desiredLane;
+    surface.setActiveLane(desiredLane);
+    this.currentLane = surface.activeLane;
     this.lastLaneChangeTimestamp = now;
+  }
+
+  /**
+   * @param {Surface} surface
+   */
+  moveLeft (surface) {
+    this.moveToLane(surface, this.currentLane + 1);
+  }
+
+  /**
+   * @param {Surface} surface
+   */
+  moveRight (surface) {
+    this.moveToLane(surface, this.currentLane - 1);
   }
 
   shoot () {

@@ -18,6 +18,8 @@ export default class Surface {
   centeredLanesCoords;
   /** @var {Vector2[]} lanesCenterCoords */
   lanesCenterCoords;
+  /** @var {number[]} lanesCenterDirectionRadians */
+  lanesCenterDirectionRadians;
   /** @var {number} activeLane */
   activeLane;
 
@@ -35,6 +37,7 @@ export default class Surface {
 
     this.calculateCenteredLanesCoords();
     this.calculateLanesCenterCoords();
+    this.calculateLanesCenterDirection();
   }
 
   calculateCenteredLanesCoords () {
@@ -44,6 +47,7 @@ export default class Surface {
 
   calculateLanesCenterCoords () {
     this.lanesCenterCoords = [];
+
     for (let i = 0; i < this.lanesAmount; i++) {
       let boundingBox2 = BoundingBox2.create([
         this.centeredLanesCoords[i],
@@ -53,8 +57,21 @@ export default class Surface {
     }
   }
 
+  calculateLanesCenterDirection () {
+    this.lanesCenterDirectionRadians = [];
+
+    this.lanesCenterCoords.forEach((center, i) => {
+      let angleVector = this.centeredLanesCoords[i].clone();
+      let axis = center.clone();
+
+      angleVector.sub(axis).normalize();
+
+      this.lanesCenterDirectionRadians.push(angleVector.angle());
+    });
+  }
+
   setActiveLane (newActiveID) {
-    if (newActiveID >= 0 && newActiveID <= this.lanesAmount) {
+    if (newActiveID >= 0 && newActiveID < this.lanesAmount) {
       this.activeLane = newActiveID;
     }
   }
