@@ -17,6 +17,8 @@ export default class Enemy extends SurfaceObject {
   type;
   /** @var {number} */
   state;
+  /** @var {boolean} */
+  alive = true;
   /** @var {number} */
   firstLevel;
   /** @var {boolean} */
