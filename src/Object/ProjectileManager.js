@@ -58,9 +58,9 @@ export default class ProjectileManager {
 
   garbageCollector () {
     let indexOfAliveProjectile = this.shooterProjectiles.findIndex(projectile => projectile.alive);
-    this.shooterProjectiles.slice(0, indexOfAliveProjectile + 1);
+    this.shooterProjectiles.splice(0, indexOfAliveProjectile);
 
     indexOfAliveProjectile = this.enemyProjectiles.findIndex(projectile => projectile.alive);
-    this.enemyProjectiles.slice(0, indexOfAliveProjectile + 1);
+    this.enemyProjectiles.splice(0, indexOfAliveProjectile);
   }
 }
