@@ -1,4 +1,6 @@
-export default class SurfaceObjectsManager {
+import FIFOManager from '@/Object/FIFOManager';
+
+export default class SurfaceObjectsManager extends FIFOManager {
   /** {Surface} */
   surface;
 
@@ -18,6 +20,8 @@ export default class SurfaceObjectsManager {
    * @param {Surface} surface
    */
   constructor (surface) {
+    super();
+
     this.surface = surface;
     this.shootersMap = new Array(this.surface.lanesAmount).fill(0).map(() => []);
     this.enemiesMap = new Array(this.surface.lanesAmount).fill(0).map(() => []);
@@ -32,7 +36,12 @@ export default class SurfaceObjectsManager {
   }
 
   update () {
-    let collectedEnemies = this.garbageCollector();
+    const collectedEnemies = this.garbageCollector(this.enemies);
+
+    if (collectedEnemies) {
+      this.forceMapsUpdate = true;
+    }
+
     const updatedShootersMap = this.updateMap(this.shooters, this.shootersMap, this.forceMapsUpdate);
     const updatedEnemiesMap = this.updateMap(this.enemies, this.enemiesMap, this.forceMapsUpdate);
 
@@ -50,38 +59,17 @@ export default class SurfaceObjectsManager {
    * @return {boolean}
    */
   updateMap (objects, map, forceUpdate) {
-    const mapNeedsUpdate = forceUpdate || objects.filter(object => object.hasChangedLane()).length;
+    const mapNeedsUpdate = objects.filter(object => object.hasChangedLane()).length;
 
-    if (!mapNeedsUpdate) {
+    if (!forceUpdate && !mapNeedsUpdate) {
       return false;
     }
 
     map.forEach(lane => lane.length = 0);
-    objects.forEach(object => map[object.laneId].push(object));
+    objects.forEach(object => {
+      map[object.laneId].push(object);
+    });
 
     return true;
-  }
-
-  garbageCollector () {
-    if (this.enemies.length === 0) {
-      return;
-    }
-
-    let indexOfAliveEnemy = this.enemies.findIndex(enemy => enemy.alive);
-
-    if (indexOfAliveEnemy === 0) {
-      return;
-    }
-
-    this.forceMapsUpdate = true;
-
-    if (indexOfAliveEnemy === -1) {
-      let temp = this.enemies.length;
-      this.enemies.length = 0;
-      return temp;
-    } else {
-      this.enemies.splice(0, indexOfAliveEnemy);
-      return indexOfAliveEnemy;
-    }
   }
 }

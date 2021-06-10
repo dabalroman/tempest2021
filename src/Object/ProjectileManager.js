@@ -1,7 +1,8 @@
 import Projectile from '@/Object/Projectile';
 import readonly from '@/utils/readonly';
+import FIFOManager from '@/Object/FIFOManager';
 
-export default class ProjectileManager {
+export default class ProjectileManager extends FIFOManager {
   @readonly
   static MAX_AMOUNT_OF_SHOOTER_PROJECTILES = 10;
   @readonly
@@ -19,6 +20,8 @@ export default class ProjectileManager {
    * @param {SurfaceObjectsManager} surfaceObjectsManager
    */
   constructor (surfaceObjectsManager) {
+    super();
+
     this.surfaceObjectsManager = surfaceObjectsManager;
   }
 
@@ -53,14 +56,10 @@ export default class ProjectileManager {
       projectile.detectCollision(this.surfaceObjectsManager.enemiesMap[projectile.laneId]);
     });
 
-    this.garbageCollector();
-  }
+    const collectedShooterProjectiles = this.garbageCollector(this.shooterProjectiles);
+    const collectedEnemyProjectiles = this.garbageCollector(this.enemyProjectiles);
 
-  garbageCollector () {
-    let indexOfAliveProjectile = this.shooterProjectiles.findIndex(projectile => projectile.alive);
-    this.shooterProjectiles.splice(0, indexOfAliveProjectile);
-
-    indexOfAliveProjectile = this.enemyProjectiles.findIndex(projectile => projectile.alive);
-    this.enemyProjectiles.splice(0, indexOfAliveProjectile);
+    if (collectedShooterProjectiles) console.log(`Collected ${collectedShooterProjectiles} shooter projectiles.`);
+    if (collectedEnemyProjectiles) console.log(`Collected ${collectedEnemyProjectiles} enemy projectiles`);
   }
 }
