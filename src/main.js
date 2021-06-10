@@ -41,9 +41,13 @@ if (surfaceToDisplay) {
 
 function animate () {
   requestAnimationFrame(animate);
+
   controls.update();
   keyboardInput.dispatchActions();
+
+  level.update();
   levelRenderer.update();
+
   renderer.render(scene, camera);
 
   scene.rotation.y = Math.sin(Date.now() % (Math.PI * 2 * 4000) / 4000) / 5;

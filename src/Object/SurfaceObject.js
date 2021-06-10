@@ -10,10 +10,19 @@ export default class SurfaceObject {
   zSpeed = 0;
 
   /**
-   * @param surface
-   * @param laneId
+   * @param {Surface} surface
+   * @param {number} laneId
+   */
+  constructor (surface, laneId) {
+    this.laneId = surface.getActualLaneIdFromProjectedMovement(laneId);
+  }
+
+  /**
+   * @param {Surface} surface
+   * @param {number} laneId
    */
   setLane (surface, laneId) {
+    this.lastLaneId = this.laneId;
     this.laneId = surface.getActualLaneIdFromProjectedMovement(laneId);
   }
 

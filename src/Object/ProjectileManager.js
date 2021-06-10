@@ -45,12 +45,12 @@ export default class ProjectileManager {
   update () {
     this.shooterProjectiles.forEach(projectile => {
       projectile.update();
-      projectile.detectCollision(this.surfaceObjectsManager.lanes[projectile.laneId]);
+      projectile.detectCollision(this.surfaceObjectsManager.enemiesMap[projectile.laneId]);
     });
 
     this.enemyProjectiles.forEach(projectile => {
       projectile.update();
-      projectile.detectCollision(this.surfaceObjectsManager.lanes[projectile.laneId]);
+      projectile.detectCollision(this.surfaceObjectsManager.enemiesMap[projectile.laneId]);
     });
 
     this.garbageCollector();

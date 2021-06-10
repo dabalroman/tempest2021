@@ -16,8 +16,10 @@ export default class Level {
 
   constructor (surface) {
     this.surface = surface;
-    this.shooter = new Shooter();
+    this.shooter = new Shooter(surface);
     this.surfaceObjectsManager = new SurfaceObjectsManager(surface);
+    this.surfaceObjectsManager.addShooter(this.shooter);
+
     this.projectileManager = new ProjectileManager(this.surfaceObjectsManager);
 
     keyboardInput.register('KeyA', () => {this.shooter.moveLeft(this.surface);});
@@ -26,5 +28,6 @@ export default class Level {
 
   update () {
     this.projectileManager.update();
+    this.surfaceObjectsManager.update();
   }
 }

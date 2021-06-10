@@ -1,6 +1,7 @@
 import readonly from '@/utils/readonly';
+import SurfaceObject from '@/Object/SurfaceObject';
 
-export default class Projectile {
+export default class Projectile extends SurfaceObject {
   @readonly
   static PROJECTILE_SPEED = 0.01;
   @readonly
@@ -14,16 +15,11 @@ export default class Projectile {
   /** @var {boolean} */
   alive = true;
   /** @var {number} */
-  laneId;
-  /** @var {number} */
   source;
-  /** @var {number} */
-  zPosition;
-  /** @var {number} */
-  zSpeed;
 
-  constructor (laneId, source) {
-    this.laneId = laneId;
+  constructor (surface, laneId, source) {
+    super(surface, laneId);
+
     this.source = source;
 
     if (this.source === Projectile.SOURCE_SHOOTER) {

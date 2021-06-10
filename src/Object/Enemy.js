@@ -3,35 +3,42 @@ import SurfaceObject from '@/Object/SurfaceObject';
 
 export default class Enemy extends SurfaceObject {
   @readonly
-  static ENEMY_PULSAR = 'pulsar';
+  static TYPE_PULSAR = 'pulsar';
   @readonly
-  static ENEMY_SPIKER = 'spiker';
+  static TYPE_SPIKER = 'spiker';
   @readonly
-  static ENEMY_TANKER = 'tanker';
+  static TYPE_TANKER = 'tanker';
   @readonly
-  static ENEMY_FLIPPER = 'flipper';
+  static TYPE_FLIPPER = 'flipper';
   @readonly
-  static ENEMY_FUSEBALL = 'fuseball';
+  static TYPE_FUSEBALL = 'fuseball';
 
-  /** @var {string} type */
+  /** @var {string} */
   type;
-  /** @var {number} state */
+  /** @var {number} */
   state;
-  /** @var {number} state */
+  /** @var {number} */
   firstLevel;
-  /** @var {boolean} state */
+  /** @var {boolean} */
   canShoot = false;
 
-  constructor() {
-    super();
+  /**
+   * @param {Surface} surface
+   * @param {number} laneId
+   * @param {string} type
+   */
+  constructor (surface, laneId, type) {
+    super(surface, laneId);
+
+    this.type = type;
 
     if (this.constructor === Enemy) {
       throw new Error('Abstract classes can\'t be instantiated.');
     }
   }
 
-  update() {
-    throw new Error("Method 'update()' must be implemented.");
+  update () {
+    throw new Error('Method \'update()\' must be implemented.');
   }
 
   makeMove() {

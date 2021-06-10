@@ -14,6 +14,14 @@ export default class Shooter extends SurfaceObject {
 
   /**
    * @param {Surface} surface
+   * @param {number} laneId
+   */
+  constructor (surface, laneId = 0) {
+    super(surface, laneId);
+  }
+
+  /**
+   * @param {Surface} surface
    * @param {number} desiredLane
    */
   moveToLane (surface, desiredLane) {
