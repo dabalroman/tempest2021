@@ -1,4 +1,5 @@
 import readonly from '@/utils/readonly';
+import objectIdManagerInstance from '@/Object/Manager/ObjectIdManagerInstance';
 
 export default class SurfaceObject {
   @readonly
@@ -15,6 +16,9 @@ export default class SurfaceObject {
   static TYPE_FUSEBALL = 'fuseball';
   @readonly
   static TYPE_PROJECTILE = 'projectile';
+
+  /** @var {number} */
+  objectId;
 
   /** @var {number} */
   laneId = 0;
@@ -39,6 +43,7 @@ export default class SurfaceObject {
   constructor (surface, laneId, type) {
     this.laneId = surface.getActualLaneIdFromProjectedMovement(laneId);
     this.type = type;
+    this.objectId = objectIdManagerInstance.getNewId();
   }
 
   update () {

@@ -4,9 +4,9 @@ import FIFOManager from '@/Object/Manager/FIFOManager';
 
 export default class ProjectileManager extends FIFOManager {
   @readonly
-  static MAX_AMOUNT_OF_SHOOTER_PROJECTILES = 10;
+  static MAX_AMOUNT_OF_SHOOTER_PROJECTILES = 32;
   @readonly
-  static MAX_AMOUNT_OF_ENEMY_PROJECTILES = 10;
+  static MAX_AMOUNT_OF_ENEMY_PROJECTILES = 32;
 
   /** @var {SurfaceObjectsManager} */
   surfaceObjectsManager;
@@ -15,6 +15,9 @@ export default class ProjectileManager extends FIFOManager {
   shooterProjectiles = [];
   /** @var {Projectile[]} */
   enemyProjectiles = [];
+
+  /** @var {number[]} */
+  rendererHelperNewProjectilesIds = [];
 
   /**
    * @param {SurfaceObjectsManager} surfaceObjectsManager
@@ -37,6 +40,7 @@ export default class ProjectileManager extends FIFOManager {
       }
 
       this.shooterProjectiles.push(new Projectile(this.surfaceObjectsManager.surface, laneId, source));
+      this.rendererHelperNewProjectilesIds.push(this.shooterProjectiles[this.shooterProjectiles.length - 1].objectId);
     } else {
       if (this.enemyProjectiles.length >= ProjectileManager.MAX_AMOUNT_OF_ENEMY_PROJECTILES) {
         console.log('Too much enemy projectiles!');
@@ -44,6 +48,7 @@ export default class ProjectileManager extends FIFOManager {
       }
 
       this.enemyProjectiles.push(new Projectile(this.surfaceObjectsManager.surface, laneId, source));
+      this.rendererHelperNewProjectilesIds.push(this.enemyProjectiles[this.enemyProjectiles.length - 1].objectId);
     }
   }
 
@@ -55,13 +60,15 @@ export default class ProjectileManager extends FIFOManager {
 
     this.enemyProjectiles.forEach(projectile => {
       projectile.update();
-      projectile.detectCollision(this.surfaceObjectsManager.enemiesMap[projectile.laneId]);
+      projectile.detectCollision(this.surfaceObjectsManager.shootersMap[projectile.laneId]);
     });
 
-    const collectedShooterProjectiles = FIFOManager.garbageCollector(this.shooterProjectiles);
-    const collectedEnemyProjectiles = FIFOManager.garbageCollector(this.enemyProjectiles);
+    if (this.shouldTriggerGarbageCollector()) {
+      const collectedShooterProjectiles = FIFOManager.garbageCollector(this.shooterProjectiles);
+      const collectedEnemyProjectiles = FIFOManager.garbageCollector(this.enemyProjectiles);
 
-    if (collectedShooterProjectiles) console.log(`Collected ${collectedShooterProjectiles} shooter projectiles.`);
-    if (collectedEnemyProjectiles) console.log(`Collected ${collectedEnemyProjectiles} enemy projectiles`);
+      if (collectedShooterProjectiles) console.log(`Collected ${collectedShooterProjectiles} shooter projectiles.`);
+      if (collectedEnemyProjectiles) console.log(`Collected ${collectedEnemyProjectiles} enemy projectiles`);
+    }
   }
 }

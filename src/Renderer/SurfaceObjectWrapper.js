@@ -13,8 +13,8 @@ export default class SurfaceObjectWrapper extends Group {
   constructor (object, surface) {
     super();
 
-    this.setObjectRef(object);
     this.surface = surface;
+    this.setObjectRef(object);
 
     this.loadModel();
 
@@ -46,10 +46,20 @@ export default class SurfaceObjectWrapper extends Group {
    */
   setObjectRef (object) {
     this.object = object;
+
+    this.position.set(
+      this.surface.lanesCenterCoords[this.object.laneId].x,
+      this.surface.lanesCenterCoords[this.object.laneId].y,
+      this.object.zPosition * this.surface.depth
+    );
+
+    this.rotation.z = this.surface.lanesCenterDirectionRadians[this.object.laneId];
+    this.visible = true;
   }
 
   breakObjectRef () {
     this.object = null;
+    this.visible = false;
   }
 
   move () {

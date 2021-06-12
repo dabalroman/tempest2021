@@ -6,7 +6,7 @@ export default class Shooter extends SurfaceObject {
   @readonly
   static MOVE_TIMEOUT_MS = 50;
   @readonly
-  static SHOOT_TIMEOUT_MS = 200;
+  static SHOOT_TIMEOUT_MS = 100;
 
   /** @var {number} */
   lastLaneChangeTimestamp;
@@ -69,7 +69,6 @@ export default class Shooter extends SurfaceObject {
     }
 
     projectileManager.fire(this.laneId, Projectile.SOURCE_SHOOTER);
-    console.log('pow!');
     this.lastShootTimestamp = now;
   }
 }

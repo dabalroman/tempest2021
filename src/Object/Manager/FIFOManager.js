@@ -1,4 +1,26 @@
+import readonly from '@/utils/readonly';
+
 export default class FIFOManager {
+  @readonly
+  static GARBAGE_COLLECTION_TIMEOUT_MS = 1000;
+
+  /** @var {number} */
+  lastGarbageCollectorExecutionTimestamp = 0;
+
+  /**
+   * @return {boolean}
+   */
+  shouldTriggerGarbageCollector () {
+    let now = Date.now();
+
+    if (now - this.lastGarbageCollectorExecutionTimestamp < FIFOManager.GARBAGE_COLLECTION_TIMEOUT_MS) {
+      return false;
+    }
+
+    this.lastGarbageCollectorExecutionTimestamp = now;
+    return true;
+  }
+
   /**
    * @param {Object[]} objects
    * @return {number}

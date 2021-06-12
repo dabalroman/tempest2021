@@ -4,7 +4,7 @@ import ShooterRenderer from '@/Renderer/ShooterRenderer';
 import EnemyRenderer from '@/Renderer/EnemyRenderer';
 import enemies from '@/maps/Enemies';
 import EnemyFlipper from '@/Object/Enemies/EnemyFlipper';
-import ProjectileRenderer from '@/Renderer/ProjectileRenderer';
+import ProjectileRendererManager from '@/Renderer/ProjectileRendererManager';
 
 export default class LevelRenderer extends Group {
   /** @var {Level} */
@@ -14,9 +14,8 @@ export default class LevelRenderer extends Group {
   surfaceRenderer;
   /** @var {ShooterRenderer} */
   shooterRenderer;
-
-  projectile;
-  projectileRenderer;
+  /** @var {ProjectileRendererManager} */
+  projectileRendererManager;
 
   /**
    * @param {Level} level
@@ -27,17 +26,15 @@ export default class LevelRenderer extends Group {
     this.level = level;
     this.surfaceRenderer = new SurfaceRenderer(this.level.surface);
     this.shooterRenderer = new ShooterRenderer(this.level.shooter, this.level.surface);
+    this.projectileRendererManager = new ProjectileRendererManager(this.level.projectileManager, this.level.surface);
 
     let enemy = new EnemyFlipper(this.level.surface);
     let enemyRenderer = new EnemyRenderer(enemy, this.level.surface);
 
-    this.projectile = this.level.projectileManager.shooterProjectiles[0];
-    this.projectileRenderer = new ProjectileRenderer(this.projectile, this.level.surface);
-
     this.add(this.surfaceRenderer);
     this.add(this.shooterRenderer);
+    this.add(this.projectileRendererManager);
     this.add(enemyRenderer);
-    this.add(this.projectileRenderer);
   }
 
   temporaryRenderAllEnemies () {
@@ -51,7 +48,6 @@ export default class LevelRenderer extends Group {
   update () {
     this.surfaceRenderer.update();
     this.shooterRenderer.update();
-    this.projectile.update();
-    this.projectileRenderer.update();
+    this.projectileRendererManager.update();
   }
 }
