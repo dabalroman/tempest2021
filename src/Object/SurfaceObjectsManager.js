@@ -36,7 +36,7 @@ export default class SurfaceObjectsManager extends FIFOManager {
   }
 
   update () {
-    const collectedEnemies = this.garbageCollector(this.enemies);
+    const collectedEnemies = FIFOManager.garbageCollector(this.enemies);
 
     if (collectedEnemies) {
       this.forceMapsUpdate = true;
@@ -61,7 +61,7 @@ export default class SurfaceObjectsManager extends FIFOManager {
   updateMap (objects, map, forceUpdate) {
     const mapNeedsUpdate = objects.filter(object => object.hasChangedLane()).length;
 
-    if (!forceUpdate && !mapNeedsUpdate) {
+    if (!(forceUpdate || mapNeedsUpdate)) {
       return false;
     }
 

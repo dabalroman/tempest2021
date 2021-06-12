@@ -56,8 +56,8 @@ export default class ProjectileManager extends FIFOManager {
       projectile.detectCollision(this.surfaceObjectsManager.enemiesMap[projectile.laneId]);
     });
 
-    const collectedShooterProjectiles = this.garbageCollector(this.shooterProjectiles);
-    const collectedEnemyProjectiles = this.garbageCollector(this.enemyProjectiles);
+    const collectedShooterProjectiles = FIFOManager.garbageCollector(this.shooterProjectiles);
+    const collectedEnemyProjectiles = FIFOManager.garbageCollector(this.enemyProjectiles);
 
     if (collectedShooterProjectiles) console.log(`Collected ${collectedShooterProjectiles} shooter projectiles.`);
     if (collectedEnemyProjectiles) console.log(`Collected ${collectedEnemyProjectiles} enemy projectiles`);

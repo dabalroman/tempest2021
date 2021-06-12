@@ -3,7 +3,7 @@ export default class FIFOManager {
    * @param {Object[]} objects
    * @return {number}
    */
-  garbageCollector (objects) {
+  static garbageCollector (objects) {
     if (objects.length === 0) {
       return 0;
     }
