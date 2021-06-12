@@ -4,6 +4,7 @@ import ProjectileManager from '@/Object/Manager/ProjectileManager';
 
 import keyboardInput from '@/utils/KeyboardInput';
 import EnemyFlipper from '@/Object/Enemies/EnemyFlipper';
+import Projectile from '@/Object/Projectiles/Projectile';
 
 export default class Level {
   /** @var {Surface} */
@@ -29,9 +30,11 @@ export default class Level {
     this.surfaceObjectsManager.addEnemy(enemy2);
 
     this.projectileManager = new ProjectileManager(this.surfaceObjectsManager);
+    this.projectileManager.fire(0, Projectile.SOURCE_SHOOTER);
 
     keyboardInput.register('KeyA', () => {this.shooter.moveLeft(this.surface);});
     keyboardInput.register('KeyD', () => {this.shooter.moveRight(this.surface);});
+    keyboardInput.register('Space', () => {this.shooter.fire(this.projectileManager);});
   }
 
   update () {

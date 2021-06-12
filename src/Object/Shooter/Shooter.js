@@ -1,5 +1,6 @@
 import readonly from '@/utils/readonly';
 import SurfaceObject from '@/Object/Surface/SurfaceObject';
+import Projectile from '@/Object/Projectiles/Projectile';
 
 export default class Shooter extends SurfaceObject {
   @readonly
@@ -57,13 +58,17 @@ export default class Shooter extends SurfaceObject {
     this.moveToLane(surface, this.laneId - 1);
   }
 
-  shoot () {
+  /**
+   * @param {ProjectileManager} projectileManager
+   */
+  fire (projectileManager) {
     let now = Date.now();
 
     if (now - this.lastShootTimestamp < Shooter.SHOOT_TIMEOUT_MS) {
       return;
     }
 
+    projectileManager.fire(this.laneId, Projectile.SOURCE_SHOOTER);
     console.log('pow!');
     this.lastShootTimestamp = now;
   }

@@ -15,6 +15,11 @@ export default class Projectile extends SurfaceObject {
   /** @var {number} */
   source;
 
+  /**
+   * @param {Surface} surface
+   * @param {number} laneId
+   * @param {number} source
+   */
   constructor (surface, laneId, source) {
     super(surface, laneId, SurfaceObject.TYPE_PROJECTILE);
 

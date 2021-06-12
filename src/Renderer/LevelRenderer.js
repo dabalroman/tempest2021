@@ -5,7 +5,6 @@ import EnemyRenderer from '@/Renderer/EnemyRenderer';
 import enemies from '@/maps/Enemies';
 import EnemyFlipper from '@/Object/Enemies/EnemyFlipper';
 import ProjectileRenderer from '@/Renderer/ProjectileRenderer';
-import Projectile from '@/Object/Projectiles/Projectile';
 
 export default class LevelRenderer extends Group {
   /** @var {Level} */
@@ -32,7 +31,7 @@ export default class LevelRenderer extends Group {
     let enemy = new EnemyFlipper(this.level.surface);
     let enemyRenderer = new EnemyRenderer(enemy, this.level.surface);
 
-    this.projectile = new Projectile(this.level.surface, 6, Projectile.SOURCE_SHOOTER);
+    this.projectile = this.level.projectileManager.shooterProjectiles[0];
     this.projectileRenderer = new ProjectileRenderer(this.projectile, this.level.surface);
 
     this.add(this.surfaceRenderer);
