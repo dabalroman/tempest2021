@@ -13,7 +13,7 @@ export default class SurfaceObjectWrapper extends Group {
   constructor (object, surface) {
     super();
 
-    this.object = object;
+    this.setObjectRef(object);
     this.surface = surface;
 
     this.loadModel();
@@ -28,6 +28,10 @@ export default class SurfaceObjectWrapper extends Group {
   }
 
   update () {
+    if (this.object === null) {
+      return;
+    }
+
     this.show();
     this.move();
     this.rotate();
@@ -35,6 +39,17 @@ export default class SurfaceObjectWrapper extends Group {
 
   show () {
     this.visible = this.object.alive;
+  }
+
+  /**
+   * @param {SurfaceObject} object
+   */
+  setObjectRef (object) {
+    this.object = object;
+  }
+
+  breakObjectRef () {
+    this.object = null;
   }
 
   move () {
