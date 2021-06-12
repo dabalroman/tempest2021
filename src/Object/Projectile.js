@@ -12,13 +12,11 @@ export default class Projectile extends SurfaceObject {
   @readonly
   static SOURCE_ENEMY = -1;
 
-  /** @var {boolean} */
-  alive = true;
   /** @var {number} */
   source;
 
   constructor (surface, laneId, source) {
-    super(surface, laneId);
+    super(surface, laneId, SurfaceObject.TYPE_PROJECTILE);
 
     this.source = source;
 
@@ -32,7 +30,7 @@ export default class Projectile extends SurfaceObject {
   }
 
   update () {
-    this.zSpeed += this.zSpeed;
+    this.zPosition += this.zSpeed;
   }
 
   /**

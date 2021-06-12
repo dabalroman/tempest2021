@@ -1,10 +1,11 @@
 import * as Three from 'three';
-import { Group, MeshBasicMaterial } from 'three';
+import { MeshBasicMaterial } from 'three';
 import objLoader from '@/utils/objLoader';
 import readonly from '@/utils/readonly';
 import compareVectors from '@/utils/compareVectors';
+import SurfaceObjectWrapper from '@/Renderer/SurfaceObjectWrapper';
 
-export default class ShooterRenderer extends Group {
+export default class ShooterRenderer extends SurfaceObjectWrapper {
   @readonly
   static MODEL_PATH = '../models/player.obj';
   @readonly
@@ -14,39 +15,17 @@ export default class ShooterRenderer extends Group {
   @readonly
   static SHOOTER_WIREFRAME_COLOR = 0xffff00;
 
-  /** @var {Shooter} */
-  shooter;
-  /** @var {Surface} */
-  surface;
   /** @var {number} */
   positionChangeSpeed = 0.3;
   /** @var {number} */
   rotationChangeSpeed = 0.2;
 
   constructor (shooter, surface) {
-    super();
-
-    this.shooter = shooter;
-    this.surface = surface;
-
-    this.loadModel();
-
-    this.position.set(
-      this.surface.lanesCenterCoords[this.shooter.laneId].x,
-      this.surface.lanesCenterCoords[this.shooter.laneId].y,
-      -1
-    );
-
-    this.rotation.z = this.surface.lanesCenterDirectionRadians[this.shooter.laneId];
-  }
-
-  update () {
-    this.move();
-    this.rotate();
+    super(shooter, surface);
   }
 
   move () {
-    let desiredPosition = this.surface.lanesCenterCoords[this.shooter.laneId];
+    let desiredPosition = this.surface.lanesCenterCoords[this.object.laneId];
 
     if (compareVectors(desiredPosition, this.position)) {
       return;
@@ -68,7 +47,7 @@ export default class ShooterRenderer extends Group {
   }
 
   rotate () {
-    let desiredRotation = this.surface.lanesCenterDirectionRadians[this.shooter.laneId];
+    let desiredRotation = this.surface.lanesCenterDirectionRadians[this.object.laneId];
 
     if (desiredRotation === this.rotation.z) {
       return;
@@ -94,7 +73,7 @@ export default class ShooterRenderer extends Group {
         this.rotation.z += 2 * Math.PI;
       }
     } else {
-      this.rotation.z = this.surface.lanesCenterDirectionRadians[this.shooter.laneId];
+      this.rotation.z = this.surface.lanesCenterDirectionRadians[this.object.laneId];
     }
   }
 

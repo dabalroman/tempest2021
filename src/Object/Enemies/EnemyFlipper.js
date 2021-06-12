@@ -1,4 +1,5 @@
 import Enemy from '@/Object/Enemy';
+import SurfaceObject from '@/Object/SurfaceObject';
 
 export default class EnemyFlipper extends Enemy {
   /**
@@ -6,6 +7,6 @@ export default class EnemyFlipper extends Enemy {
    * @param {number} laneId
    */
   constructor (surface, laneId = 0) {
-    super(surface, laneId, Enemy.TYPE_FLIPPER);
+    super(surface, laneId, SurfaceObject.TYPE_FLIPPER);
   }
 }

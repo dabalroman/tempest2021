@@ -22,6 +22,8 @@ export default class Surface {
   lanesCenterDirectionRadians;
   /** @var {number} activeLane */
   activeLane;
+  /** @var {number} depth */
+  depth;
 
   /**
    * @param {string} name
@@ -34,6 +36,7 @@ export default class Surface {
     this.lanesCoords = lanesCoords;
     this.lanesAmount = lanesCoords.length - (isOpen ? 1 : 0);
     this.activeLane = 0;
+    this.depth = 10;
 
     this.calculateCenteredLanesCoords();
     this.calculateLanesCenterCoords();

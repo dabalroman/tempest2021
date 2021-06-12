@@ -1,10 +1,9 @@
-import { BufferGeometry, Group, Line, MeshBasicMaterial, Vector2, Vector3 } from 'three';
+import { BufferGeometry, Line, MeshBasicMaterial, Vector2, Vector3 } from 'three';
 import enemies from '@/maps/Enemies';
 import BoundingBox2 from '@/Helpers/BoundingBox2';
+import SurfaceObjectWrapper from '@/Renderer/SurfaceObjectWrapper';
 
-export default class EnemyRenderer extends Group {
-  /** @var {Enemy} */
-  enemy;
+export default class EnemyRenderer extends SurfaceObjectWrapper {
   /** @var {BufferGeometry[]} */
   geometry;
   /** @var {MeshBasicMaterial[]} */
@@ -12,11 +11,8 @@ export default class EnemyRenderer extends Group {
   /** @var {BoundingBox2} */
   boundingBox2;
 
-  constructor (enemy) {
-    super();
-
-    this.enemy = enemy;
-    this.loadModel();
+  constructor (enemy, surface) {
+    super(enemy, surface);
   }
 
   loadModel () {
@@ -24,9 +20,9 @@ export default class EnemyRenderer extends Group {
     this.geometry = [];
     this.materials = [];
 
-    let enemyDataset = enemies.find(x => x.name === this.enemy.type);
+    let enemyDataset = enemies.find(x => x.name === this.object.type);
     if (enemyDataset === undefined) {
-      throw new Error('Unknown enemy: ' + this.enemy.type);
+      throw new Error('Unknown object: ' + this.object.type);
     }
 
     this.boundingBox2 = BoundingBox2.create([].concat(...enemyDataset.coords));

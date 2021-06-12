@@ -17,7 +17,13 @@ export default class Shooter extends SurfaceObject {
    * @param {number} laneId
    */
   constructor (surface, laneId = 0) {
-    super(surface, laneId);
+    super(surface, laneId, SurfaceObject.TYPE_SHOOTER);
+
+    this.zPosition = -0.1;
+  }
+
+  update () {
+
   }
 
   /**

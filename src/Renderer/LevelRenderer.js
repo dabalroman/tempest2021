@@ -3,6 +3,7 @@ import SurfaceRenderer from '@/Renderer/SurfaceRenderer';
 import ShooterRenderer from '@/Renderer/ShooterRenderer';
 import EnemyRenderer from '@/Renderer/EnemyRenderer';
 import enemies from '@/maps/Enemies';
+import EnemyFlipper from '@/Object/Enemies/EnemyFlipper';
 
 export default class LevelRenderer extends Group {
   /** @var {Level} */
@@ -23,8 +24,12 @@ export default class LevelRenderer extends Group {
     this.surfaceRenderer = new SurfaceRenderer(this.level.surface);
     this.shooterRenderer = new ShooterRenderer(this.level.shooter, this.level.surface);
 
+    let enemy = new EnemyFlipper(this.level.surface);
+    let enemyRenderer = new EnemyRenderer(enemy, this.level.surface);
+
     this.add(this.surfaceRenderer);
     this.add(this.shooterRenderer);
+    this.add(enemyRenderer);
   }
 
   temporaryRenderAllEnemies () {
