@@ -1,19 +1,17 @@
 import { BoxGeometry, LineBasicMaterial, LineSegments, Mesh, MeshBasicMaterial, WireframeGeometry } from 'three';
 import SurfaceObjectWrapper from '@/Renderer/SurfaceObjectWrapper';
 import readonly from '@/utils/readonly';
+import Projectile from '@/Object/Projectiles/Projectile';
 
 export default class ProjectileRenderer extends SurfaceObjectWrapper {
   @readonly
   static PROJECTILE_SIZE = 0.1;
   @readonly
-  static PROJECTILE_WIREFRAME_COLOR = 0xffff00;
+  static PROJECTILE_SHOOTER_COLOR = 0xffff00;
+  @readonly
+  static PROJECTILE_ENEMY_COLOR = 0xff00ff;
   @readonly
   static ROTATION_SPEED = 0.1;
-
-  /** @var {BoxGeometry} */
-  geometry;
-  /** @var {LineBasicMaterial} */
-  material;
 
   /**
    * @param {Projectile} projectile
@@ -21,6 +19,16 @@ export default class ProjectileRenderer extends SurfaceObjectWrapper {
    */
   constructor (projectile, surface) {
     super(projectile, surface);
+  }
+
+  setObjectRef (object) {
+    super.setObjectRef(object);
+
+    if (this.children.length) {
+      this.children[1].material = new LineBasicMaterial({
+        color: this.getMaterialColor()
+      });
+    }
   }
 
   move () {
@@ -34,27 +42,33 @@ export default class ProjectileRenderer extends SurfaceObjectWrapper {
 
   loadModel () {
     this.clear();
-    this.geometry = new BoxGeometry(
+    let geometry = new BoxGeometry(
       ProjectileRenderer.PROJECTILE_SIZE,
       ProjectileRenderer.PROJECTILE_SIZE,
       ProjectileRenderer.PROJECTILE_SIZE
     );
 
-    this.material = new MeshBasicMaterial({
+    let material = new MeshBasicMaterial({
       color: 0,
       polygonOffset: true,
       polygonOffsetFactor: 2,
       polygonOffsetUnits: 1
     });
 
-    this.add(new Mesh(this.geometry, this.material));
+    this.add(new Mesh(geometry, material));
 
     const projectileWireframe = new LineSegments(
-      new WireframeGeometry(this.geometry),
+      new WireframeGeometry(geometry),
       new LineBasicMaterial({
-        color: ProjectileRenderer.PROJECTILE_WIREFRAME_COLOR,
+        color: this.getMaterialColor()
       })
     );
     this.add(projectileWireframe);
+  }
+
+  getMaterialColor () {
+    return this.object.source === Projectile.SOURCE_SHOOTER
+      ? ProjectileRenderer.PROJECTILE_SHOOTER_COLOR
+      : ProjectileRenderer.PROJECTILE_ENEMY_COLOR;
   }
 }
