@@ -1,6 +1,6 @@
-import Projectile from '@/Object/Projectile';
+import Projectile from '@/Object/Projectiles/Projectile';
 import readonly from '@/utils/readonly';
-import FIFOManager from '@/Object/FIFOManager';
+import FIFOManager from '@/Object/Manager/FIFOManager';
 
 export default class ProjectileManager extends FIFOManager {
   @readonly

@@ -1,5 +1,5 @@
-import Enemy from '@/Object/Enemy';
-import SurfaceObject from '@/Object/SurfaceObject';
+import Enemy from '@/Object/Enemies/Enemy';
+import SurfaceObject from '@/Object/Surface/SurfaceObject';
 
 export default class EnemyFlipper extends Enemy {
   /**

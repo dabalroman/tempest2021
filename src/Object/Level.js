@@ -1,6 +1,6 @@
-import Shooter from '@/Object/Shooter';
-import SurfaceObjectsManager from '@/Object/SurfaceObjectsManager';
-import ProjectileManager from '@/Object/ProjectileManager';
+import Shooter from '@/Object/Shooter/Shooter';
+import SurfaceObjectsManager from '@/Object/Manager/SurfaceObjectsManager';
+import ProjectileManager from '@/Object/Manager/ProjectileManager';
 
 import keyboardInput from '@/utils/KeyboardInput';
 import EnemyFlipper from '@/Object/Enemies/EnemyFlipper';

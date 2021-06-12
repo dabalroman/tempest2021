@@ -5,7 +5,7 @@ import EnemyRenderer from '@/Renderer/EnemyRenderer';
 import enemies from '@/maps/Enemies';
 import EnemyFlipper from '@/Object/Enemies/EnemyFlipper';
 import ProjectileRenderer from '@/Renderer/ProjectileRenderer';
-import Projectile from '@/Object/Projectile';
+import Projectile from '@/Object/Projectiles/Projectile';
 
 export default class LevelRenderer extends Group {
   /** @var {Level} */

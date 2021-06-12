@@ -1,6 +1,6 @@
 import { BufferGeometry, Group, Line, LineBasicMaterial, MeshBasicMaterial, Vector3 } from 'three';
 import readonly from '@/utils/readonly';
-import Surface from '@/Object/Surface';
+import Surface from '@/Object/Surface/Surface';
 import Angle from '@/utils/Angle';
 
 export default class SurfaceRenderer extends Group {

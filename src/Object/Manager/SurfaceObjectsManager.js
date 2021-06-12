@@ -1,4 +1,4 @@
-import FIFOManager from '@/Object/FIFOManager';
+import FIFOManager from '@/Object/Manager/FIFOManager';
 
 export default class SurfaceObjectsManager extends FIFOManager {
   /** {Surface} */

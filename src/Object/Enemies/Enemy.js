@@ -1,4 +1,4 @@
-import SurfaceObject from '@/Object/SurfaceObject';
+import SurfaceObject from '@/Object/Surface/SurfaceObject';
 
 export default class Enemy extends SurfaceObject {
   /** @var {number} */

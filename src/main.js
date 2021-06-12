@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import Surface from '@/Object/Surface';
+import Surface from '@/Object/Surface/Surface';
 import Level from '@/Object/Level';
 import LevelRenderer from '@/Renderer/LevelRenderer';
 import surfaces from '@/maps/Surfaces';
