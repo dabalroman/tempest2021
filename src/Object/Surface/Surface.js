@@ -79,7 +79,7 @@ export default class Surface {
    */
   getActualLaneIdFromProjectedMovement (projectedLaneId) {
     if (this.isOpen) {
-      if (projectedLaneId > 0) {
+      if (projectedLaneId < 0) {
         return 0;
       } else if (projectedLaneId >= this.lanesAmount) {
         return this.lanesAmount - 1;

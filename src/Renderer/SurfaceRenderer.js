@@ -81,9 +81,8 @@ export default class SurfaceRenderer extends Group {
     this.laneDefaultMaterial = new LineBasicMaterial({ color: SurfaceRenderer.DEFAULT_LANE_COLOR });
     this.laneActiveMaterial = new LineBasicMaterial({ color: SurfaceRenderer.ACTIVE_LANE_COLOR });
 
-    for (let i = 0; i < this.surface.lanesAmount; i++) {
+    for (let i = 0; i < this.getAmountOfLanes(); i++) {
       let current = this.surface.centeredLanesCoords[i];
-      let next = this.surface.centeredLanesCoords[(i + 1) % Surface.LINES_AMOUNT];
 
       //Create lines
       let linePoints = [
@@ -94,6 +93,11 @@ export default class SurfaceRenderer extends Group {
       this.lanesLines.push(
         new Line(new BufferGeometry().setFromPoints(linePoints), this.laneDefaultMaterial)
       );
+    }
+
+    for (let i = 0; i < this.getAmountOfLanes(false); i++) {
+      let current = this.surface.centeredLanesCoords[i];
+      let next = this.surface.centeredLanesCoords[(i + 1) % Surface.LINES_AMOUNT];
 
       //Create connectors
       let connectorFrontPoints = [
@@ -144,8 +148,15 @@ export default class SurfaceRenderer extends Group {
    */
   setLaneMaterial (laneId, material) {
     this.lanesLines[laneId].material = material;
-    this.lanesLines[(laneId + 1) % this.surface.lanesAmount].material = material;
+    this.lanesLines[(laneId + 1) % this.getAmountOfLanes()].material = material;
     this.lanesConnectors[laneId * 2].material = material;
     this.lanesConnectors[laneId * 2 + 1].material = material;
+  }
+
+  /**
+   * @return {boolean}
+   */
+  getAmountOfLanes (includeOpen = true) {
+    return this.surface.lanesAmount + (includeOpen && this.surface.isOpen ? 1 : 0);
   }
 }
