@@ -28,8 +28,13 @@ export default class SurfaceObjectWrapper extends Group {
   }
 
   update () {
+    this.show();
     this.move();
     this.rotate();
+  }
+
+  show () {
+    this.visible = this.object.alive;
   }
 
   move () {

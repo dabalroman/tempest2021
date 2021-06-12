@@ -17,12 +17,10 @@ export default class SurfaceRenderer extends Group {
   /** @var {Surface} surface */
   surface;
 
-  /** @var {number} depth */
-  depth = 10;
   /** @var {number} */
   connectorFrontDepth = 0;
   /** @var {number} */
-  connectorBackDepth = this.depth;
+  connectorBackDepth = 0;
 
   /** @var {Line[]} **/
   lanesLines = [];
@@ -73,6 +71,9 @@ export default class SurfaceRenderer extends Group {
 
   createLanes () {
     this.clear();
+
+    this.connectorBackDepth = this.surface.depth;
+
     this.lanes = [];
     this.lanesLines = [];
     this.lanesConnectors = [];
@@ -87,7 +88,7 @@ export default class SurfaceRenderer extends Group {
       //Create lines
       let linePoints = [
         new Vector3(current.x, current.y, 0),
-        new Vector3(current.x, current.y, this.depth)
+        new Vector3(current.x, current.y, this.surface.depth)
       ];
 
       this.lanesLines.push(

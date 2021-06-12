@@ -30,7 +30,16 @@ export default class Projectile extends SurfaceObject {
   }
 
   update () {
+    if (!this.alive) {
+      return;
+    }
+
     this.zPosition += this.zSpeed;
+
+    this.alive = (
+      (this.source === Projectile.SOURCE_SHOOTER && this.zPosition >= 1)
+      || (this.source === Projectile.SOURCE_ENEMY && this.zPosition <= 0)
+    ) === false;
   }
 
   /**
@@ -38,6 +47,10 @@ export default class Projectile extends SurfaceObject {
    * @return {number} index of colliding object or -1
    */
   detectCollision (laneObjects) {
+    if (!this.alive) {
+      return -1;
+    }
+
     let collision = laneObjects.findIndex(object => (
         object.zPosition >= this.zPosition - Projectile.PROJECTILE_KILL_RADIUS
         && object.zPosition <= this.zPosition + Projectile.PROJECTILE_KILL_RADIUS
