@@ -54,10 +54,10 @@ export default class EnemyRendererManager extends Group {
    */
   pushEnemy (enemy) {
     if (this.enemyRenderersAvailabilityMap.length) {
-      console.log(`Reusing enemy renderer #${this.enemyRenderersAvailabilityMap.slice(0, 1)}`);
+      // console.log(`Reusing enemy renderer #${this.enemyRenderersAvailabilityMap.slice(0, 1)}`);
       this.enemyRenderers[this.enemyRenderersAvailabilityMap.shift()].setObjectRef(enemy);
     } else {
-      console.log(`Creating new enemy renderer #${this.enemyRenderers.length}`);
+      // console.log(`Creating new enemy renderer #${this.enemyRenderers.length}`);
       this.enemyRenderers.push(new EnemyRenderer(enemy, this.surface));
       this.add(this.enemyRenderers[this.enemyRenderers.length - 1]);
     }

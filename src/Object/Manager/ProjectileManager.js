@@ -31,15 +31,16 @@ export default class ProjectileManager extends FIFOManager {
   /**
    * @param {number} laneId
    * @param {number} source
+   * @param {?number} zPosition
    */
-  fire (laneId, source) {
+  fire (laneId, source, zPosition = null) {
     if (source === Projectile.SOURCE_SHOOTER) {
       if (this.shooterProjectiles.length >= ProjectileManager.MAX_AMOUNT_OF_SHOOTER_PROJECTILES) {
         console.log('Too much shooter projectiles!');
         return;
       }
 
-      this.shooterProjectiles.push(new Projectile(this.surfaceObjectsManager.surface, laneId, source));
+      this.shooterProjectiles.push(new Projectile(this.surfaceObjectsManager.surface, laneId, source, zPosition));
       this.rendererHelperNewProjectilesIds.push(this.shooterProjectiles[this.shooterProjectiles.length - 1].objectId);
     } else {
       if (this.enemyProjectiles.length >= ProjectileManager.MAX_AMOUNT_OF_ENEMY_PROJECTILES) {
@@ -47,7 +48,7 @@ export default class ProjectileManager extends FIFOManager {
         return;
       }
 
-      this.enemyProjectiles.push(new Projectile(this.surfaceObjectsManager.surface, laneId, source));
+      this.enemyProjectiles.push(new Projectile(this.surfaceObjectsManager.surface, laneId, source, zPosition));
       this.rendererHelperNewProjectilesIds.push(this.enemyProjectiles[this.enemyProjectiles.length - 1].objectId);
     }
   }
@@ -68,11 +69,11 @@ export default class ProjectileManager extends FIFOManager {
 
   runGarbageCollector () {
     if (this.shouldTriggerGarbageCollector()) {
-      const collectedShooterProjectiles = FIFOManager.garbageCollector(this.shooterProjectiles);
-      const collectedEnemyProjectiles = FIFOManager.garbageCollector(this.enemyProjectiles);
+      FIFOManager.garbageCollector(this.shooterProjectiles);
+      FIFOManager.garbageCollector(this.enemyProjectiles);
 
-      if (collectedShooterProjectiles) console.log(`Collected ${collectedShooterProjectiles} shooter projectiles.`);
-      if (collectedEnemyProjectiles) console.log(`Collected ${collectedEnemyProjectiles} enemy projectiles`);
+      // if (collectedShooterProjectiles) console.log(`Collected ${collectedShooterProjectiles} shooter projectiles.`);
+      // if (collectedEnemyProjectiles) console.log(`Collected ${collectedEnemyProjectiles} enemy projectiles`);
     }
   }
 }

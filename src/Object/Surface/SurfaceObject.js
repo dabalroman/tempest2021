@@ -54,6 +54,10 @@ export default class SurfaceObject {
     throw new Error('Method \'update()\' must be implemented.');
   }
 
+  hitByProjectile () {
+    throw new Error('Method \'hitByProjectile()\' must be implemented.');
+  }
+
   /**
    * @param {number} laneId
    */

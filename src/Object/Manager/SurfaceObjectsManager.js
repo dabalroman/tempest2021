@@ -61,11 +61,11 @@ export default class SurfaceObjectsManager extends FIFOManager {
   }
 
   updateObjectsMap () {
-    const updatedShootersMap = this.updateMap(this.shooters, this.shootersMap, this.forceMapsUpdate);
-    const updatedEnemiesMap = this.updateMap(this.enemies, this.enemiesMap, this.forceMapsUpdate);
+    this.updateMap(this.shooters, this.shootersMap, this.forceMapsUpdate);
+    this.updateMap(this.enemies, this.enemiesMap, this.forceMapsUpdate);
 
-    if (updatedShootersMap) console.log('Updated shooters map');
-    if (updatedEnemiesMap) console.log('Updated enemies map');
+    // if (updatedShootersMap) console.log('Updated shooters map');
+    // if (updatedEnemiesMap) console.log('Updated enemies map');
 
     this.forceMapsUpdate = false;
   }

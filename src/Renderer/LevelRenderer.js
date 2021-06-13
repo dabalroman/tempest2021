@@ -39,7 +39,7 @@ export default class LevelRenderer extends Group {
 
   temporaryRenderAllEnemies () {
     enemies.forEach((enemyDataset, i) => {
-      let renderer = new EnemyRenderer({ type: enemyDataset.name });
+      let renderer = new EnemyRenderer({ type: enemyDataset.name, laneId: 0, zPosition: 0 }, this.level.surface);
       renderer.position.z = i;
       this.add(renderer);
     });

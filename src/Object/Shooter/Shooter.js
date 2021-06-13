@@ -8,6 +8,9 @@ export default class Shooter extends SurfaceObject {
   @readonly
   static SHOOT_TIMEOUT_MS = 100;
 
+  /** @var {ProjectileManager} */
+  projectileManager;
+
   /** @var {number} */
   lastLaneChangeTimestamp;
   /** @var {number} */
@@ -15,11 +18,13 @@ export default class Shooter extends SurfaceObject {
 
   /**
    * @param {Surface} surface
+   * @param {ProjectileManager} projectileManager
    * @param {number} laneId
    */
-  constructor (surface, laneId = 0) {
+  constructor (surface, projectileManager, laneId = 0) {
     super(surface, laneId, SurfaceObject.TYPE_SHOOTER);
 
+    this.projectileManager = projectileManager;
     this.zPosition = -0.1;
   }
 
@@ -51,17 +56,14 @@ export default class Shooter extends SurfaceObject {
     this.moveToLane(this.laneId - 1);
   }
 
-  /**
-   * @param {ProjectileManager} projectileManager
-   */
-  fire (projectileManager) {
+  fire () {
     let now = Date.now();
 
     if (now - this.lastShootTimestamp < Shooter.SHOOT_TIMEOUT_MS) {
       return;
     }
 
-    projectileManager.fire(this.laneId, Projectile.SOURCE_SHOOTER);
+    this.projectileManager.fire(this.laneId, Projectile.SOURCE_SHOOTER);
     this.lastShootTimestamp = now;
   }
 }

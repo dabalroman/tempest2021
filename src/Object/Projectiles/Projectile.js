@@ -19,17 +19,18 @@ export default class Projectile extends SurfaceObject {
    * @param {Surface} surface
    * @param {number} laneId
    * @param {number} source
+   * @param {?number} zPosition
    */
-  constructor (surface, laneId, source) {
+  constructor (surface, laneId, source, zPosition = null) {
     super(surface, laneId, SurfaceObject.TYPE_PROJECTILE);
 
     this.source = source;
 
     if (this.source === Projectile.SOURCE_SHOOTER) {
-      this.zPosition = 0;
+      this.zPosition = zPosition ?? 0;
       this.zSpeed = Projectile.PROJECTILE_SPEED;
     } else {
-      this.zPosition = 1;
+      this.zPosition = zPosition ?? 1;
       this.zSpeed = -Projectile.PROJECTILE_SPEED;
     }
   }
@@ -63,6 +64,7 @@ export default class Projectile extends SurfaceObject {
     );
 
     if (collision >= 0) {
+      laneObjects[collision].hitByProjectile();
       this.alive = false;
     }
 
