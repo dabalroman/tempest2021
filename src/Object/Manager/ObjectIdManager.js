@@ -1,4 +1,4 @@
-export default class ObjectIdManager {
+class ObjectIdManager {
   /** {number} */
   lastId = 0;
 
@@ -9,3 +9,6 @@ export default class ObjectIdManager {
     return this.lastId++;
   }
 }
+
+const objectIdManager = new ObjectIdManager();
+export default objectIdManager;

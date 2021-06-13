@@ -1,5 +1,5 @@
 import readonly from '@/utils/readonly';
-import objectIdManagerInstance from '@/Object/Manager/ObjectIdManagerInstance';
+import ObjectIdManager from '@/Object/Manager/ObjectIdManager';
 
 export default class SurfaceObject {
   @readonly
@@ -47,7 +47,7 @@ export default class SurfaceObject {
     this.surface = surface;
     this.laneId = this.surface.getActualLaneIdFromProjectedMovement(laneId);
     this.type = type;
-    this.objectId = objectIdManagerInstance.getNewId();
+    this.objectId = ObjectIdManager.getNewId();
   }
 
   update () {
