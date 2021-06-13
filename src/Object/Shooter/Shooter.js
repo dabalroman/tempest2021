@@ -28,34 +28,27 @@ export default class Shooter extends SurfaceObject {
   }
 
   /**
-   * @param {Surface} surface
    * @param {number} desiredLane
    */
-  moveToLane (surface, desiredLane) {
+  moveToLane (desiredLane) {
     let now = Date.now();
 
     if (now - this.lastLaneChangeTimestamp < Shooter.MOVE_TIMEOUT_MS) {
       return;
     }
 
-    this.setLane(surface, desiredLane);
-    surface.setActiveLane(this.laneId);
+    this.setLane(desiredLane);
+    this.surface.setActiveLane(this.laneId);
 
     this.lastLaneChangeTimestamp = now;
   }
 
-  /**
-   * @param {Surface} surface
-   */
-  moveLeft (surface) {
-    this.moveToLane(surface, this.laneId + 1);
+  moveLeft () {
+    this.moveToLane(this.laneId + 1);
   }
 
-  /**
-   * @param {Surface} surface
-   */
-  moveRight (surface) {
-    this.moveToLane(surface, this.laneId - 1);
+  moveRight () {
+    this.moveToLane(this.laneId - 1);
   }
 
   /**

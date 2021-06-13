@@ -17,6 +17,9 @@ export default class SurfaceObject {
   @readonly
   static TYPE_PROJECTILE = 'projectile';
 
+  /** @var {Surface} */
+  surface;
+
   /** @var {number} */
   objectId;
 
@@ -41,7 +44,8 @@ export default class SurfaceObject {
    * @param {string} type
    */
   constructor (surface, laneId, type) {
-    this.laneId = surface.getActualLaneIdFromProjectedMovement(laneId);
+    this.surface = surface;
+    this.laneId = this.surface.getActualLaneIdFromProjectedMovement(laneId);
     this.type = type;
     this.objectId = objectIdManagerInstance.getNewId();
   }
@@ -51,12 +55,11 @@ export default class SurfaceObject {
   }
 
   /**
-   * @param {Surface} surface
    * @param {number} laneId
    */
-  setLane (surface, laneId) {
+  setLane (laneId) {
     this.lastLaneId = this.laneId;
-    this.laneId = surface.getActualLaneIdFromProjectedMovement(laneId);
+    this.laneId = this.surface.getActualLaneIdFromProjectedMovement(laneId);
   }
 
   /**

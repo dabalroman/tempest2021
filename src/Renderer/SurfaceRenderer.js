@@ -119,7 +119,7 @@ export default class SurfaceRenderer extends Group {
     this.lanesLines.forEach(line => this.add(line));
     this.lanesConnectors.forEach(connector => this.add(connector));
 
-    this.createCenterIndicators();
+    // this.createCenterIndicators();
   }
 
   createCenterIndicators () {

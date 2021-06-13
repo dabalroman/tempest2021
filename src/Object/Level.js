@@ -22,14 +22,15 @@ export default class Level {
     this.surfaceObjectsManager = new SurfaceObjectsManager(surface);
     this.surfaceObjectsManager.addShooter(this.shooter);
 
-    let enemy1 = new EnemyFlipper(surface, 0);
-    this.surfaceObjectsManager.addEnemy(enemy1);
+    this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, 0));
+    this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, 5));
+    this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, 12));
 
     this.projectileManager = new ProjectileManager(this.surfaceObjectsManager);
     this.projectileManager.fire(0, Projectile.SOURCE_ENEMY);
 
-    keyboardInput.register('KeyA', () => {this.shooter.moveLeft(this.surface);});
-    keyboardInput.register('KeyD', () => {this.shooter.moveRight(this.surface);});
+    keyboardInput.register('KeyA', () => {this.shooter.moveLeft();});
+    keyboardInput.register('KeyD', () => {this.shooter.moveRight();});
     keyboardInput.register('Space', () => {this.shooter.fire(this.projectileManager);});
   }
 

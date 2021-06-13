@@ -16,6 +16,9 @@ export default class SurfaceObjectsManager extends FIFOManager {
   /** {boolean} */
   forceMapsUpdate = false;
 
+  /** @var {number[]} */
+  rendererHelperNewObjectsIds = [];
+
   /**
    * @param {Surface} surface
    */
@@ -29,13 +32,23 @@ export default class SurfaceObjectsManager extends FIFOManager {
 
   addShooter (shooter) {
     this.shooters.push(shooter);
+    this.rendererHelperNewObjectsIds.push(this.shooters[this.shooters.length - 1].objectId);
   }
 
   addEnemy (enemy) {
     this.enemies.push(enemy);
+    this.rendererHelperNewObjectsIds.push(this.enemies[this.enemies.length - 1].objectId);
   }
 
   update () {
+    this.shooters.forEach(shooter => shooter.update());
+    this.enemies.forEach(enemy => enemy.update());
+
+    this.runGarbageCollector();
+    this.updateObjectsMap();
+  }
+
+  runGarbageCollector () {
     if (this.shouldTriggerGarbageCollector()) {
       const collectedEnemies = FIFOManager.garbageCollector(this.enemies);
 
@@ -45,7 +58,9 @@ export default class SurfaceObjectsManager extends FIFOManager {
 
       if (collectedEnemies) console.log(`Collected ${collectedEnemies} enemies`);
     }
+  }
 
+  updateObjectsMap () {
     const updatedShootersMap = this.updateMap(this.shooters, this.shootersMap, this.forceMapsUpdate);
     const updatedEnemiesMap = this.updateMap(this.enemies, this.enemiesMap, this.forceMapsUpdate);
 

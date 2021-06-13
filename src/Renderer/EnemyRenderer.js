@@ -15,6 +15,15 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
     super(enemy, surface);
   }
 
+  move () {
+    let desiredPosition = this.surface.lanesCenterCoords[this.object.laneId];
+    this.position.set(desiredPosition.x, desiredPosition.y, this.object.zPosition * this.surface.depth);
+  }
+
+  rotate () {
+    this.rotation.z = this.surface.lanesCenterDirectionRadians[this.object.laneId];
+  }
+
   loadModel () {
     this.clear();
     this.geometry = [];
