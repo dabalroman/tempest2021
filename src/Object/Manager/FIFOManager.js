@@ -6,6 +6,8 @@ export default class FIFOManager {
 
   /** @var {number} */
   lastGarbageCollectorExecutionTimestamp = 0;
+  /** {boolean} */
+  forceMapsUpdate = false;
 
   /**
    * @return {boolean}
@@ -44,5 +46,26 @@ export default class FIFOManager {
       objects.splice(0, indexOfAliveObject);
       return indexOfAliveObject;
     }
+  }
+
+  /**
+   * @param {SurfaceObject[]} objects
+   * @param {array} map
+   * @param {boolean} forceUpdate
+   * @return {boolean}
+   */
+  static updateMap (objects, map, forceUpdate) {
+    const mapNeedsUpdate = objects.filter(object => object.hasChangedLane()).length;
+
+    if (!(forceUpdate || mapNeedsUpdate)) {
+      return false;
+    }
+
+    map.forEach(lane => lane.length = 0);
+    objects.forEach(object => {
+      map[object.laneId].push(object);
+    });
+
+    return true;
   }
 }

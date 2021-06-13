@@ -13,8 +13,6 @@ export default class SurfaceObjectsManager extends FIFOManager {
   shootersMap;
   /** {array} */
   enemiesMap;
-  /** {boolean} */
-  forceMapsUpdate = false;
 
   /** @var {number[]} */
   rendererHelperNewObjectsIds = [];
@@ -61,33 +59,9 @@ export default class SurfaceObjectsManager extends FIFOManager {
   }
 
   updateObjectsMap () {
-    this.updateMap(this.shooters, this.shootersMap, this.forceMapsUpdate);
-    this.updateMap(this.enemies, this.enemiesMap, this.forceMapsUpdate);
-
-    // if (updatedShootersMap) console.log('Updated shooters map');
-    // if (updatedEnemiesMap) console.log('Updated enemies map');
+    FIFOManager.updateMap(this.shooters, this.shootersMap, this.forceMapsUpdate);
+    FIFOManager.updateMap(this.enemies, this.enemiesMap, this.forceMapsUpdate);
 
     this.forceMapsUpdate = false;
-  }
-
-  /**
-   * @param {SurfaceObject[]} objects
-   * @param {array} map
-   * @param {boolean} forceUpdate
-   * @return {boolean}
-   */
-  updateMap (objects, map, forceUpdate) {
-    const mapNeedsUpdate = objects.filter(object => object.hasChangedLane()).length;
-
-    if (!(forceUpdate || mapNeedsUpdate)) {
-      return false;
-    }
-
-    map.forEach(lane => lane.length = 0);
-    objects.forEach(object => {
-      map[object.laneId].push(object);
-    });
-
-    return true;
   }
 }

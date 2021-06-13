@@ -49,7 +49,7 @@ export default class Projectile extends SurfaceObject {
   }
 
   /**
-   * @param {object} laneObjects
+   * @param {array} laneObjects
    * @return {number} index of colliding object or -1
    */
   detectCollision (laneObjects) {
@@ -69,5 +69,10 @@ export default class Projectile extends SurfaceObject {
     }
 
     return collision;
+  }
+
+  hitByProjectile () {
+    console.log('Projectile collision detected');
+    this.alive = false;
   }
 }

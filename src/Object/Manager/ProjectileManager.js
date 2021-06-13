@@ -16,6 +16,9 @@ export default class ProjectileManager extends FIFOManager {
   /** @var {Projectile[]} */
   enemyProjectiles = [];
 
+  /** {array} */
+  enemyProjectilesMap;
+
   /** @var {number[]} */
   rendererHelperNewProjectilesIds = [];
 
@@ -26,6 +29,7 @@ export default class ProjectileManager extends FIFOManager {
     super();
 
     this.surfaceObjectsManager = surfaceObjectsManager;
+    this.enemyProjectilesMap = new Array(this.surfaceObjectsManager.surface.lanesAmount).fill(0).map(() => []);
   }
 
   /**
@@ -51,12 +55,15 @@ export default class ProjectileManager extends FIFOManager {
       this.enemyProjectiles.push(new Projectile(this.surfaceObjectsManager.surface, laneId, source, zPosition));
       this.rendererHelperNewProjectilesIds.push(this.enemyProjectiles[this.enemyProjectiles.length - 1].objectId);
     }
+
+    this.forceMapsUpdate = true;
   }
 
   update () {
     this.shooterProjectiles.forEach(projectile => {
       projectile.update();
       projectile.detectCollision(this.surfaceObjectsManager.enemiesMap[projectile.laneId]);
+      projectile.detectCollision(this.enemyProjectilesMap[projectile.laneId]);
     });
 
     this.enemyProjectiles.forEach(projectile => {
@@ -65,15 +72,26 @@ export default class ProjectileManager extends FIFOManager {
     });
 
     this.runGarbageCollector();
+    this.updateObjectsMap();
   }
 
   runGarbageCollector () {
     if (this.shouldTriggerGarbageCollector()) {
       FIFOManager.garbageCollector(this.shooterProjectiles);
-      FIFOManager.garbageCollector(this.enemyProjectiles);
+      const collectedEnemyProjectiles = FIFOManager.garbageCollector(this.enemyProjectiles);
+
+      if (collectedEnemyProjectiles) {
+        this.forceMapsUpdate = true;
+      }
 
       // if (collectedShooterProjectiles) console.log(`Collected ${collectedShooterProjectiles} shooter projectiles.`);
       // if (collectedEnemyProjectiles) console.log(`Collected ${collectedEnemyProjectiles} enemy projectiles`);
     }
+  }
+
+  updateObjectsMap () {
+    FIFOManager.updateMap(this.enemyProjectiles, this.enemyProjectilesMap, this.forceMapsUpdate);
+
+    this.forceMapsUpdate = false;
   }
 }
