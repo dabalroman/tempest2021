@@ -6,7 +6,7 @@ import LevelRenderer from '@/Renderer/LevelRenderer';
 import surfaces from '@/maps/Surfaces';
 
 import keyboardInput from '@/utils/KeyboardInput';
-import ScreenPlay from '@/Object/Screen/ScreenPlay';
+import ScreenHighScores from '@/Object/Screen/ScreenHighScores';
 
 // eslint-disable-next-line no-unused-vars
 const scene = new THREE.Scene();
@@ -30,7 +30,8 @@ const surfaceToDisplay = surfacesCollection.find(surface => surface.name === nam
 
 let level, levelRenderer;
 
-const canvas3d = new ScreenPlay(8, 8);
+//EKRAN DO WYRENDEROWANIA
+const canvas3d = new ScreenHighScores(8, 8);
 canvas3d.rotation.y = Math.PI;
 
 if (surfaceToDisplay) {
