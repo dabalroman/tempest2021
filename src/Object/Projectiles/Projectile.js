@@ -3,7 +3,7 @@ import SurfaceObject from '@/Object/Surface/SurfaceObject';
 
 export default class Projectile extends SurfaceObject {
   @readonly
-  static PROJECTILE_SPEED = 0.01;
+  static PROJECTILE_SPEED = 0.028;
   @readonly
   static PROJECTILE_KILL_RADIUS = 0.02;
 

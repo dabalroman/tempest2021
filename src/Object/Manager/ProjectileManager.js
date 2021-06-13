@@ -4,7 +4,7 @@ import FIFOManager from '@/Object/Manager/FIFOManager';
 
 export default class ProjectileManager extends FIFOManager {
   @readonly
-  static MAX_AMOUNT_OF_SHOOTER_PROJECTILES = 32;
+  static MAX_AMOUNT_OF_SHOOTER_PROJECTILES = 8;
   @readonly
   static MAX_AMOUNT_OF_ENEMY_PROJECTILES = 32;
 
