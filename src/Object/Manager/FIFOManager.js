@@ -2,7 +2,7 @@ import readonly from '@/utils/readonly';
 
 export default class FIFOManager {
   @readonly
-  static GARBAGE_COLLECTION_TIMEOUT_MS = 1000;
+  static GARBAGE_COLLECTION_TIMEOUT_MS = 200;
 
   /** @var {number} */
   lastGarbageCollectorExecutionTimestamp = 0;
