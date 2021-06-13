@@ -6,6 +6,10 @@ import LevelRenderer from '@/Renderer/LevelRenderer';
 import surfaces from '@/maps/Surfaces';
 
 import keyboardInput from '@/utils/KeyboardInput';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass';
 import ScreenHighScores from '@/Object/Screen/ScreenHighScores';
 
 // eslint-disable-next-line no-unused-vars
@@ -18,6 +22,16 @@ camera.lookAt(0, 0, 0);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
+
+const composer = new EffectComposer(renderer);
+const renderPass = new RenderPass(scene, camera);
+composer.addPass(renderPass);
+
+const unrealBloomPass = new UnrealBloomPass({ x: 256, y: 256 }, 2.2, 1.3, 0);
+composer.addPass(unrealBloomPass);
+const smaaPass = new SMAAPass(window.innerWidth, window.innerHeight);
+
+composer.addPass(smaaPass);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.update();
@@ -56,7 +70,7 @@ function animate () {
   level.update();
   levelRenderer.update();
 
-  renderer.render(scene, camera);
+  composer.render();
 
   scene.rotation.y = Math.sin(Date.now() % (Math.PI * 2 * 4000) / 4000) / 5;
 }

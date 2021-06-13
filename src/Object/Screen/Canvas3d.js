@@ -109,7 +109,7 @@ export default class Canvas3d extends Mesh {
 
   displayCanvasBorder () {
     this.context.strokeStyle = Canvas3d.COLOR_RED;
-    this.context.strokeRect(0, 0, this.canvasResX, this.canvasResY);
+    this.context.strokeRect(1, 1, this.canvasResX - 2, this.canvasResY - 2);
   }
 
   update () {
