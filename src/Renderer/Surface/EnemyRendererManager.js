@@ -1,4 +1,4 @@
-import EnemyRenderer from '@/Renderer/EnemyRenderer';
+import EnemyRenderer from '@/Renderer/Enemies/EnemyRenderer';
 import { Group } from 'three';
 
 export default class EnemyRendererManager extends Group {

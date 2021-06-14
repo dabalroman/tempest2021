@@ -1,5 +1,5 @@
 import { BufferGeometry, Line, MeshBasicMaterial, Vector3 } from 'three';
-import SurfaceRenderer from '@/Renderer/SurfaceRenderer';
+import SurfaceRenderer from '@/Renderer/Surface/SurfaceRenderer';
 
 export default class LaneRenderer extends Line {
   type = 'lane';

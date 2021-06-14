@@ -1,10 +1,10 @@
 import { Group } from 'three';
-import SurfaceRenderer from '@/Renderer/SurfaceRenderer';
-import ShooterRenderer from '@/Renderer/ShooterRenderer';
-import EnemyRenderer from '@/Renderer/EnemyRenderer';
-import enemies from '@/maps/Enemies';
-import ProjectileRendererManager from '@/Renderer/ProjectileRendererManager';
-import EnemyRendererManager from '@/Renderer/EnemyRendererManager';
+import SurfaceRenderer from '@/Renderer/Surface/SurfaceRenderer';
+import ShooterRenderer from '@/Renderer/Shooters/ShooterRenderer';
+import EnemyRenderer from '@/Renderer/Enemies/EnemyRenderer';
+import enemies from '@/Assets/Enemies';
+import ProjectileRendererManager from '@/Renderer/Surface/ProjectileRendererManager';
+import EnemyRendererManager from '@/Renderer/Surface/EnemyRendererManager';
 
 export default class LevelRenderer extends Group {
   /** @var {Level} */

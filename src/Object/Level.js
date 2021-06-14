@@ -1,4 +1,4 @@
-import Shooter from '@/Object/Shooter/Shooter';
+import Shooter from '@/Object/Shooters/Shooter';
 import SurfaceObjectsManager from '@/Object/Manager/SurfaceObjectsManager';
 import ProjectileManager from '@/Object/Manager/ProjectileManager';
 
@@ -8,7 +8,7 @@ import EnemyFlipper from '@/Object/Enemies/EnemyFlipper';
 export default class Level {
   /** @var {Surface} */
   surface;
-  /** @var {Shooter} */
+  /** @var {Shooters} */
   shooter;
   /** @var {SurfaceObjectsManager} */
   surfaceObjectsManager;

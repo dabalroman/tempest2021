@@ -1,7 +1,7 @@
 import { BufferGeometry, Line, MeshBasicMaterial, Vector2, Vector3 } from 'three';
-import enemies from '@/maps/Enemies';
+import enemies from '@/Assets/Enemies';
 import BoundingBox2 from '@/Helpers/BoundingBox2';
-import SurfaceObjectWrapper from '@/Renderer/SurfaceObjectWrapper';
+import SurfaceObjectWrapper from '@/Renderer/Surface/SurfaceObjectWrapper';
 
 export default class EnemyRenderer extends SurfaceObjectWrapper {
   /** @var {BufferGeometry[]} */

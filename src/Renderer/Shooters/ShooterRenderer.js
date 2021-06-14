@@ -3,7 +3,7 @@ import { MeshBasicMaterial } from 'three';
 import objLoader from '@/utils/objLoader';
 import readonly from '@/utils/readonly';
 import compareVectors from '@/utils/compareVectors';
-import SurfaceObjectWrapper from '@/Renderer/SurfaceObjectWrapper';
+import SurfaceObjectWrapper from '@/Renderer/Surface/SurfaceObjectWrapper';
 
 export default class ShooterRenderer extends SurfaceObjectWrapper {
   @readonly

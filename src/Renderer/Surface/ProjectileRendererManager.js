@@ -1,4 +1,4 @@
-import ProjectileRenderer from '@/Renderer/ProjectileRenderer';
+import ProjectileRenderer from '@/Renderer/Projectiles/ProjectileRenderer';
 import { Group } from 'three';
 
 export default class ProjectileRendererManager extends Group {

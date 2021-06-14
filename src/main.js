@@ -3,14 +3,14 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Surface from '@/Object/Surface/Surface';
 import Level from '@/Object/Level';
 import LevelRenderer from '@/Renderer/LevelRenderer';
-import surfaces from '@/maps/Surfaces';
+import surfaces from '@/Assets/Surfaces';
 
 import keyboardInput from '@/utils/KeyboardInput';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass';
-import ScreenHighScores from '@/Object/Screen/ScreenHighScores';
+import ScreenPlay from '@/Object/Screen/ScreenPlay';
 
 // eslint-disable-next-line no-unused-vars
 const scene = new THREE.Scene();
@@ -45,7 +45,7 @@ const surfaceToDisplay = surfacesCollection.find(surface => surface.name === nam
 let level, levelRenderer;
 
 //EKRAN DO WYRENDEROWANIA
-const canvas3d = new ScreenHighScores(8, 8);
+const canvas3d = new ScreenPlay(8, 8);
 canvas3d.rotation.y = Math.PI;
 
 if (surfaceToDisplay) {

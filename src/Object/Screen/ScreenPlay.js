@@ -8,7 +8,7 @@ export default class ScreenPlay extends Canvas3d {
     this.setContent('lives', 5);
     this.setContent('level', 81);
     this.setContent('bestScore', { score: 62150, name: 'AAA' });
-    this.debug = true;
+    // this.debug = true;
   }
 
   draw () {

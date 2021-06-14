@@ -4,7 +4,7 @@ export default class SurfaceObjectsManager extends FIFOManager {
   /** {Surface} */
   surface;
 
-  /** {Shooter[]} */
+  /** {Shooters[]} */
   shooters = [];
   /** {Enemy[]} */
   enemies = [];

@@ -1,5 +1,5 @@
 import { BoxGeometry, LineBasicMaterial, LineSegments, Mesh, MeshBasicMaterial, WireframeGeometry } from 'three';
-import SurfaceObjectWrapper from '@/Renderer/SurfaceObjectWrapper';
+import SurfaceObjectWrapper from '@/Renderer/Surface/SurfaceObjectWrapper';
 import readonly from '@/utils/readonly';
 import Projectile from '@/Object/Projectiles/Projectile';
 
