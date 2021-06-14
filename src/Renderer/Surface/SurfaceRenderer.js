@@ -64,7 +64,7 @@ export default class SurfaceRenderer extends Group {
     if (this.lastActiveLane !== null) {
       this.setLaneMaterial(this.lastActiveLane, this.laneDefaultMaterial);
     }
-    this.setLaneMaterial(this.surface.activeLane, this.laneActiveMaterial);
+    this.setLaneMaterial(this.surface.activeLane, this.laneActiveMaterial, false);
 
     this.lastActiveLane = this.surface.activeLane;
   }
@@ -145,12 +145,15 @@ export default class SurfaceRenderer extends Group {
   /**
    * @param {number} laneId
    * @param {LineBasicMaterial} material
+   * @param {boolean} frontConnectorVisible
    */
-  setLaneMaterial (laneId, material) {
+  setLaneMaterial (laneId, material, frontConnectorVisible = true) {
     this.lanesLines[laneId].material = material;
     this.lanesLines[(laneId + 1) % this.getAmountOfLanes()].material = material;
     this.lanesConnectors[laneId * 2].material = material;
     this.lanesConnectors[laneId * 2 + 1].material = material;
+
+    this.lanesConnectors[laneId * 2].visible = frontConnectorVisible;
   }
 
   /**

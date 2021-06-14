@@ -1,20 +1,11 @@
-import SurfaceObject from '@/Object/Surface/SurfaceObject';
-import Projectile from '@/Object/Projectiles/Projectile';
 import readonly from '@/utils/readonly';
+import ShootingSurfaceObject from '@/Object/Surface/ShootingSurfaceObject';
 
-export default class Enemy extends SurfaceObject {
+export default class Enemy extends ShootingSurfaceObject {
   @readonly
-  static MOVE_TIMEOUT_MS = 50;
+  static LANE_CHANGE_TIMEOUT_MS = 50;
   @readonly
   static SHOOT_TIMEOUT_MS = 100;
-
-  /** @var {ProjectileManager} */
-  projectileManager;
-
-  /** @var {number} */
-  lastLaneChangeTimestamp;
-  /** @var {number} */
-  lastShootTimestamp;
 
   /** @var {number} */
   state;
@@ -30,9 +21,10 @@ export default class Enemy extends SurfaceObject {
    * @param {string} type
    */
   constructor (surface, projectileManager, laneId, type) {
-    super(surface, laneId, type);
+    super(surface, projectileManager, laneId, type);
 
-    this.projectileManager = projectileManager;
+    this.shootTimeoutMs = Enemy.SHOOT_TIMEOUT_MS;
+    this.laneChangeTimeoutMs = Enemy.LANE_CHANGE_TIMEOUT_MS;
     this.zPosition = 1;
 
     if (this.constructor === Enemy) {
@@ -42,16 +34,5 @@ export default class Enemy extends SurfaceObject {
 
   makeMove () {
     throw new Error('Method \'makeMove()\' must be implemented.');
-  }
-
-  fire () {
-    let now = Date.now();
-
-    if (now - this.lastShootTimestamp < Enemy.SHOOT_TIMEOUT_MS) {
-      return;
-    }
-
-    this.projectileManager.fire(this.laneId, Projectile.SOURCE_ENEMY, this.zPosition);
-    this.lastShootTimestamp = now;
   }
 }

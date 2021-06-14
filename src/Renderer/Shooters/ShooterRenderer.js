@@ -13,6 +13,8 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
   @readonly
   static MODEL_ROTATION = -Math.PI / 2;
   @readonly
+  static MODEL_Z_OFFSET = -0.3;
+  @readonly
   static SHOOTER_WIREFRAME_COLOR = 0xffff00;
 
   /** @var {number} */
@@ -43,7 +45,11 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
       movement.y = desiredPosition.y - this.position.y;
     }
 
-    this.position.set(this.position.x + movement.x, this.position.y + movement.y, this.position.z);
+    this.position.set(
+      this.position.x + movement.x,
+      this.position.y + movement.y,
+      this.object.zPosition * this.surface.depth
+    );
   }
 
   rotate () {
@@ -101,6 +107,7 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
 
             child.scale.set(ShooterRenderer.MODEL_SCALE, ShooterRenderer.MODEL_SCALE, ShooterRenderer.MODEL_SCALE);
             child.rotation.y = ShooterRenderer.MODEL_ROTATION;
+            child.position.z = ShooterRenderer.MODEL_Z_OFFSET;
 
             that.add(child);
           }
