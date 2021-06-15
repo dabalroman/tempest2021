@@ -10,6 +10,12 @@ export default class Canvas3d extends Mesh {
   static COLOR_BLUE = 'rgb(20,20,255)';
   @readonly
   static COLOR_GREEN = 'rgb(13,194,13)';
+  @readonly
+  static COLOR_WHITE = 'rgb(255,255,255)';
+  @readonly
+  static COLOR_YELLOW = 'rgb(255,255,0)';
+  @readonly
+  static COLOR_CYAN = 'rgb(100,255,200)';
 
   /** @var {CanvasRenderingContext2D} */
   context;
