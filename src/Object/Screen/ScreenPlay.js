@@ -16,15 +16,15 @@ export default class ScreenPlay extends Canvas3d {
     this.drawText(this.alignNumberToRight(this.getContent('score')), 50, 120, Canvas3d.COLOR_BLUE);
 
     for (let i = 0; i < this.getContent('lives'); i++) {
-      this.drawLiveIcon(50 + i * 58, 150);
+      this.drawLiveIcon(50 + i * 62, 150);
     }
 
     this.setFontSizePx(30);
     this.drawText(this.alignNumberToRight(this.getContent('bestScore').score), 400, 90, Canvas3d.COLOR_BLUE);
-    this.drawText(this.getContent('bestScore').name, 560, 90, Canvas3d.COLOR_BLUE);
+    this.drawText(this.getContent('bestScore').name, 580, 90, Canvas3d.COLOR_BLUE);
 
-    this.drawText('LEVEL', 400, 135, Canvas3d.COLOR_GREEN);
-    this.drawText(this.getContent('level'), 560, 135, Canvas3d.COLOR_GREEN);
+    this.drawText('LEVEL', 400, 140, Canvas3d.COLOR_GREEN);
+    this.drawText(this.alignNumberToRight(this.getContent('level')), 505, 140, Canvas3d.COLOR_GREEN);
   }
 
   /**

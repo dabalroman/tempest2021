@@ -11,13 +11,13 @@ export default class ScreenHighScores extends Canvas3d {
     this.setContent('bestScore', { score: 147098, name: 'AAA' });
     this.setContent('highScores', [
         { score: 147098, name: 'AAA', position: 1 },
-        { score: 62650, name: 'AAA' , position: 2},
-        { score: 10101, name: 'EJD' , position: 3},
-        { score: 10101, name: 'DES' , position: 4},
-        { score: 10, name: 'MPH' , position: 5},
-        { score: 10101, name: 'DFT' , position: 6},
-        { score: 10101, name: 'SDL' , position: 7},
-        { score: 10101, name: 'MJP' , position: 8},
+        { score: 62650, name: 'AAA', position: 2 },
+        { score: 10101, name: 'EJD', position: 3 },
+        { score: 10101, name: 'DES', position: 4 },
+        { score: 10, name: 'MPH', position: 5 },
+        { score: 10101, name: 'DFT', position: 6 },
+        { score: 10101, name: 'SDL', position: 7 },
+        { score: 10101, name: 'MJP', position: 8 },
       ]
     );
     this.setContent('rankPosition', 1);
@@ -44,10 +44,11 @@ export default class ScreenHighScores extends Canvas3d {
 
     this.drawText(this.getContent('bestScore').name, 560, 90, Canvas3d.COLOR_BLUE);
 
-    for (let i = 2; i < i+5; i++) {
-      this.drawText(this.alignNumberToRight(this.getContent('highScores')[i].score), 550,  340 + (i*50), Canvas3d.COLOR_GREEN);
-      this.drawText(this.getContent('highScores')[i].name, 400,  340 + (i*50), Canvas3d.COLOR_GREEN);
-      this.drawText(this.alignNumberToRight(this.getContent('highScores')[i].position), 350,  340 + (i*50), Canvas3d.COLOR_GREEN);
+    let highScores = this.getContent('highScores');
+    for (let i = 0; i < highScores.length; i++) {
+      this.drawText(this.alignNumberToRight(highScores[i].score), 550, 340 + (i * 50), Canvas3d.COLOR_GREEN);
+      this.drawText(highScores[i].name, 400, 340 + (i * 50), Canvas3d.COLOR_GREEN);
+      this.drawText(this.alignNumberToRight(highScores[i].position), 200, 340 + (i * 50), Canvas3d.COLOR_GREEN);
     }
 
     this.drawText('Ranking from 1 to 99', 280, 760, Canvas3d.COLOR_YELLOW);

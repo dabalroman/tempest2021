@@ -70,7 +70,7 @@ export default class Canvas3d extends Mesh {
     this.canvasResX = canvasResX;
     this.canvasResY = canvasResY;
 
-    this.setLineWidth(2);
+    this.setLineWidth();
     this.setFontSizePx(60);
 
     // noinspection JSUnresolvedFunction
@@ -89,7 +89,7 @@ export default class Canvas3d extends Mesh {
   /**
    * @param {number} width
    */
-  setLineWidth (width) {
+  setLineWidth (width = 2) {
     this.context.lineWidth = width;
   }
 
@@ -105,17 +105,72 @@ export default class Canvas3d extends Mesh {
    * @param {number} x
    * @param {number} y
    * @param {string} color
+   * @param {number} spacing
    */
-  drawText (text, x, y, color) {
+  drawText (text, x, y, color, spacing = 2) {
+    if (typeof text === 'number') {
+      text = text.toString();
+    }
+
+    if (spacing > 0 && spacing < 3) {
+      text = text.split('').join(String.fromCharCode(8200 + spacing));
+    }
+
+    if (this.debug) {
+      this.setLineWidth(1);
+      let textMetrics = this.context.measureText(text);
+      let offset = 8;
+
+      this.drawRect(
+        x - offset, y + offset,
+        textMetrics.width + offset * 2, -textMetrics.actualBoundingBoxAscent - offset * 2,
+        Canvas3d.COLOR_WHITE
+      );
+
+      this.drawLine(
+        x + textMetrics.width / 2, y - textMetrics.actualBoundingBoxAscent / 2 - 50,
+        x + textMetrics.width / 2, y + 50,
+        Canvas3d.COLOR_WHITE
+      );
+
+      this.setLineWidth();
+    }
+
     this.context.strokeStyle = color;
     this.context.strokeText(text, x, y);
     this.context.fillStyle = color;
     this.context.fillText(text, x, y);
   }
 
+  /**
+   * @param {number} x
+   * @param {number} y
+   * @param {number} x2
+   * @param {number} y2
+   * @param {string} color
+   */
+  drawLine (x, y, x2, y2, color) {
+    this.context.strokeStyle = color;
+    this.context.beginPath();
+    this.context.moveTo(x, y);
+    this.context.lineTo(x2, y2);
+    this.context.stroke();
+  }
+
+  /**
+   * @param {number} x
+   * @param {number} y
+   * @param {number} w
+   * @param {number} h
+   * @param {string} color
+   */
+  drawRect (x, y, w, h, color) {
+    this.context.strokeStyle = color;
+    this.context.strokeRect(x, y, w, h);
+  }
+
   displayCanvasBorder () {
-    this.context.strokeStyle = Canvas3d.COLOR_RED;
-    this.context.strokeRect(1, 1, this.canvasResX - 2, this.canvasResY - 2);
+    this.drawRect(1, 1, this.canvasResX - 2, this.canvasResY - 2, Canvas3d.COLOR_RED);
   }
 
   update () {
