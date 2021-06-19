@@ -97,6 +97,35 @@ export default class Surface {
   }
 
   /**
+   * @param {number} fromLaneId
+   * @param {number} toLaneId
+   * @return {number}
+   */
+  getShortestPathDirection (fromLaneId, toLaneId) {
+    if (fromLaneId === toLaneId) {
+      return 0;
+    }
+
+    if (this.isOpen) {
+      return (toLaneId - fromLaneId) > 0 ? 1 : -1;
+    } else {
+      let isDiffPositive = (toLaneId - fromLaneId) > 0;
+      let cwDistance, ccwDistance;
+
+      if (isDiffPositive) {
+        cwDistance = Math.abs(toLaneId - fromLaneId);
+        ccwDistance = Math.abs(toLaneId - fromLaneId - this.lanesAmount);
+      } else {
+        cwDistance = Math.abs(toLaneId - fromLaneId + this.lanesAmount);
+        ccwDistance = Math.abs(toLaneId - fromLaneId);
+      }
+
+      let isCwShortest = cwDistance <= ccwDistance;
+      return isCwShortest ? 1 : -1;
+    }
+  }
+
+  /**
    * @param {number} desiredActiveLane
    */
   setActiveLane (desiredActiveLane) {

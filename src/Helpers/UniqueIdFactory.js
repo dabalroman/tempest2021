@@ -1,4 +1,4 @@
-class ObjectIdManager {
+class UniqueIdFactory {
   /** {number} */
   lastId = 0;
 
@@ -10,5 +10,5 @@ class ObjectIdManager {
   }
 }
 
-const objectIdManager = new ObjectIdManager();
-export default objectIdManager;
+const uniqueIdFactory = new UniqueIdFactory();
+export default uniqueIdFactory;

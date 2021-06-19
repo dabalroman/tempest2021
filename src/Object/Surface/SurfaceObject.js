@@ -1,5 +1,6 @@
 import readonly from '@/utils/readonly';
-import ObjectIdManager from '@/Object/Manager/ObjectIdManager';
+import ObjectIdManager from '@/Helpers/UniqueIdFactory';
+import State from '@/Object/Enemies/State';
 
 export default class SurfaceObject {
   @readonly
@@ -38,6 +39,16 @@ export default class SurfaceObject {
   /** @var {number} */
   zSpeed = 0;
 
+  /** @var {State} */
+  state = new State(0);
+  /** @var {State} */
+  prevState = new State(0);
+  /** @var {number} */
+  lastStateChange;
+
+  /** @var {number} */
+  flags = 0;
+
   /**
    * @param {Surface} surface
    * @param {number} laneId
@@ -73,5 +84,85 @@ export default class SurfaceObject {
     let hasChangedLane = this.laneId !== this.lastLaneId;
     this.lastLaneId = this.laneId;
     return hasChangedLane;
+  }
+
+  /** @param {State} state */
+  setState (state) {
+    this.prevState = this.state;
+    this.state = state;
+    this.lastStateChange = Date.now();
+  }
+
+  /**
+   * @return {number}
+   */
+  timeSinceLastStateChange () {
+    return Date.now() - this.lastStateChange;
+  }
+
+  /**
+   * @return {number} 0 - 100%
+   */
+  stateProgressInTime () {
+    let timeSienceLastStateChange = this.timeSinceLastStateChange();
+
+    if (timeSienceLastStateChange >= this.state.duration) {
+      return 1;
+    } else {
+      return timeSienceLastStateChange / this.state.duration;
+    }
+  }
+
+  /**
+   * @return {boolean}
+   */
+  canChangeState () {
+    return this.timeSinceLastStateChange() > this.state.duration;
+  }
+
+  /**
+   * @param {State} state
+   * @return {boolean}
+   */
+  inState (state) {
+    return this.state.sameAs(state);
+  }
+
+  /**
+   * @param {State} state
+   * @return {boolean}
+   */
+  prevInState (state) {
+    return this.prevState.sameAs(state);
+  }
+
+  /**
+   * @param {number} flag
+   */
+  setFlag (flag) {
+    this.flags |= flag;
+  }
+
+  /**
+   * @param {number} flag
+   */
+  unsetFlag (flag) {
+    this.flags &= ~flag;
+  }
+
+  /**
+   * @param {number} flag
+   * @return {boolean}
+   */
+  isFlagSet (flag) {
+    return (this.flags & flag) > 0;
+  }
+
+  /**
+   * @param {number} flag
+   * @return {boolean}
+   */
+  isFlagNotSet (flag) {
+    return !this.isFlagSet(flag);
   }
 }

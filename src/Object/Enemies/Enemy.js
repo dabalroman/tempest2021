@@ -8,8 +8,6 @@ export default class Enemy extends ShootingSurfaceObject {
   static SHOOT_TIMEOUT_MS = 100;
 
   /** @var {number} */
-  state;
-  /** @var {number} */
   firstLevel;
   /** @var {boolean} */
   canShoot = false;
@@ -34,5 +32,22 @@ export default class Enemy extends ShootingSurfaceObject {
 
   makeMove () {
     throw new Error('Method \'makeMove()\' must be implemented.');
+  }
+
+  updateState () {
+    throw new Error('Method \'updateState()\' must be implemented.');
+  }
+
+  updateEntity () {
+    throw new Error('Method \'updateEntity()\' must be implemented.');
+  }
+
+  update () {
+    if (!this.alive) {
+      return;
+    }
+
+    this.updateState();
+    this.updateEntity();
   }
 }
