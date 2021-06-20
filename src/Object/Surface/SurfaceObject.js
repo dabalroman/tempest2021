@@ -27,7 +27,9 @@ export default class SurfaceObject {
   /** @var {number} */
   laneId = 0;
   /** @var {number} */
-  lastLaneId = -1;
+  prevLaneId = -1;
+  /** @var {boolean} */
+  laneChangeMapsNeedUpdate = true;
 
   /** @var {string} */
   type;
@@ -73,17 +75,21 @@ export default class SurfaceObject {
    * @param {number} laneId
    */
   setLane (laneId) {
-    this.lastLaneId = this.laneId;
+    this.prevLaneId = this.laneId;
     this.laneId = this.surface.getActualLaneIdFromProjectedMovement(laneId);
+    this.laneChangeMapsNeedUpdate = true;
   }
 
   /**
    * @return {boolean}
    */
-  hasChangedLane () {
-    let hasChangedLane = this.laneId !== this.lastLaneId;
-    this.lastLaneId = this.laneId;
-    return hasChangedLane;
+  shouldUpdateFIFOMaps () {
+    if (!this.laneChangeMapsNeedUpdate) {
+      return false;
+    }
+
+    this.laneChangeMapsNeedUpdate = false;
+    return this.laneId !== this.prevLaneId;
   }
 
   /** @param {State} state */
@@ -125,7 +131,7 @@ export default class SurfaceObject {
    * @return {boolean}
    */
   inState (state) {
-    return this.state.sameAs(state);
+    return this.state.equals(state);
   }
 
   /**
@@ -133,7 +139,7 @@ export default class SurfaceObject {
    * @return {boolean}
    */
   prevInState (state) {
-    return this.prevState.sameAs(state);
+    return this.prevState.equals(state);
   }
 
   /**

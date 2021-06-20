@@ -55,7 +55,7 @@ export default class FIFOManager {
    * @return {boolean}
    */
   static updateMap (objects, map, forceUpdate) {
-    const mapNeedsUpdate = objects.filter(object => object.hasChangedLane()).length;
+    const mapNeedsUpdate = objects.filter(object => object.shouldUpdateFIFOMaps()).length;
 
     if (!(forceUpdate || mapNeedsUpdate)) {
       return false;

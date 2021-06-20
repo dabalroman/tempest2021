@@ -26,7 +26,7 @@ export default class State {
    * @param {State} state
    * @return {boolean}
    */
-  sameAs (state) {
+  equals (state) {
     return this.id === state.id;
   }
 

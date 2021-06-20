@@ -8,9 +8,9 @@ export default class EnemyFlipper extends Enemy {
   @readonly
   static STATE_IDLE = new State(100, 1, 'idle');
   @readonly
-  static STATE_ROTATING_BEGIN = new State(500, 0.2, 'rotate_begin');
+  static STATE_ROTATING_BEGIN = new State(200, 0.2, 'rotate_begin');
   @readonly
-  static STATE_ROTATING_END = new State(500, 1, 'rotate_end');
+  static STATE_ROTATING_END = new State(200, 1, 'rotate_end');
   @readonly
   static STATE_SHOOTING = new State(100, 0.4, 'shooting');
   @readonly
@@ -28,6 +28,8 @@ export default class EnemyFlipper extends Enemy {
   static FLAG_ROTATION_CW = 0x8;
   @readonly
   static FLAG_ROTATION_CCW = 0x10;
+  @readonly
+  static FLAG_ROTATION_DIR_CHOSEN = 0x20;
 
   /**
    * @param {Surface} surface
@@ -45,13 +47,18 @@ export default class EnemyFlipper extends Enemy {
   updateState () {
     if (this.canChangeState()) {
       if (this.inState(EnemyFlipper.STATE_IDLE)) {
-        this.setState(
-          State.drawNextState(
-            EnemyFlipper.STATE_IDLE,
-            EnemyFlipper.STATE_SHOOTING,
-            EnemyFlipper.STATE_ROTATING_BEGIN
-          )
-        );
+        if (this.isFlagSet(EnemyFlipper.FLAG_REACHED_TOP)) {
+          this.setState(EnemyFlipper.STATE_ROTATING_BEGIN);
+
+        } else {
+          this.setState(
+            State.drawNextState(
+              EnemyFlipper.STATE_IDLE,
+              EnemyFlipper.STATE_SHOOTING,
+              EnemyFlipper.STATE_ROTATING_BEGIN
+            )
+          );
+        }
 
       } else if (this.inState(EnemyFlipper.STATE_ROTATING_BEGIN)) {
         this.setState(EnemyFlipper.STATE_ROTATING_END);
@@ -65,6 +72,7 @@ export default class EnemyFlipper extends Enemy {
         this.unsetFlag(EnemyFlipper.FLAG_LANE_CHANGED);
         this.unsetFlag(EnemyFlipper.FLAG_ROTATION_CW);
         this.unsetFlag(EnemyFlipper.FLAG_ROTATION_CCW);
+        this.unsetFlag(EnemyFlipper.FLAG_ROTATION_DIR_CHOSEN);
 
       } else if (this.inState(EnemyFlipper.STATE_SHOOTING)) {
         this.setState(EnemyFlipper.STATE_IDLE);
@@ -83,18 +91,21 @@ export default class EnemyFlipper extends Enemy {
 
     if (this.zPosition <= 0 && this.isFlagNotSet(EnemyFlipper.FLAG_REACHED_TOP)) {
       this.setFlag(EnemyFlipper.FLAG_REACHED_TOP);
-
       this.zPosition = 0;
     }
 
-    if (this.inState(EnemyFlipper.STATE_ROTATING_BEGIN)) {
+    if (this.inState(EnemyFlipper.STATE_ROTATING_BEGIN) && this.isFlagNotSet(EnemyFlipper.FLAG_ROTATION_DIR_CHOSEN)) {
+      this.setFlag(EnemyFlipper.FLAG_ROTATION_DIR_CHOSEN);
+
       if (this.isFlagSet(EnemyFlipper.FLAG_REACHED_TOP)) {
         let direction = this.surface.getShortestPathDirection(this.laneId, this.surface.activeLane);
 
         if (direction === 1) {
           this.setFlag(EnemyFlipper.FLAG_ROTATION_CCW);
+          this.unsetFlag(EnemyFlipper.FLAG_ROTATION_CW);
         } else if (direction === -1) {
           this.setFlag(EnemyFlipper.FLAG_ROTATION_CW);
+          this.unsetFlag(EnemyFlipper.FLAG_ROTATION_CCW);
         }
       } else {
         if (this.isFlagNotSet(EnemyFlipper.FLAG_ROTATION_CW) && this.isFlagNotSet(EnemyFlipper.FLAG_ROTATION_CCW)) {

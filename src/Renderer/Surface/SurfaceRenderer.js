@@ -82,7 +82,7 @@ export default class SurfaceRenderer extends Group {
     this.laneActiveMaterial = new LineBasicMaterial({ color: SurfaceRenderer.ACTIVE_LANE_COLOR });
 
     for (let i = 0; i < this.getAmountOfLanes(); i++) {
-      let current = this.surface.centeredLanesCoords[i];
+      let current = this.surface.lanesCoords[i];
 
       //Create lines
       let linePoints = [
@@ -96,8 +96,8 @@ export default class SurfaceRenderer extends Group {
     }
 
     for (let i = 0; i < this.getAmountOfLanes(false); i++) {
-      let current = this.surface.centeredLanesCoords[i];
-      let next = this.surface.centeredLanesCoords[(i + 1) % Surface.LINES_AMOUNT];
+      let current = this.surface.lanesCoords[i];
+      let next = this.surface.lanesCoords[(i + 1) % Surface.LINES_AMOUNT];
 
       //Create connectors
       let connectorFrontPoints = [
@@ -127,8 +127,8 @@ export default class SurfaceRenderer extends Group {
       color: 0x00ff00,
     });
 
-    this.surface.lanesCenterCoords.forEach((center, i) => {
-      let angle = this.surface.centeredLanesCoords[i].clone();
+    this.surface.lanesMiddleCoords.forEach((center, i) => {
+      let angle = this.surface.lanesCoords[i].clone();
       let axis = center.clone();
 
       angle.rotateAround(axis, Angle.toRadians(-90));

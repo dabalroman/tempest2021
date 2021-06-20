@@ -12,12 +12,12 @@ export default class Surface {
   isOpen;
   /** @var {number} lanesAmount */
   lanesAmount;
-  /** @var {Vector2[]} lanesCoords */
+  /** @var {Vector2[]} rawLanesCoords */
+  rawLanesCoords;
+  /** @var {Vector2[]} rawLanesCoords */
   lanesCoords;
-  /** @var {Vector2[]} lanesCoords */
-  centeredLanesCoords;
-  /** @var {Vector2[]} lanesCenterCoords */
-  lanesCenterCoords;
+  /** @var {Vector2[]} lanesMiddleCoords */
+  lanesMiddleCoords;
   /** @var {number[]} lanesCenterDirectionRadians */
   lanesCenterDirectionRadians;
   /** @var {number} activeLane */
@@ -33,7 +33,7 @@ export default class Surface {
   constructor (name, isOpen, lanesCoords) {
     this.name = name;
     this.isOpen = isOpen;
-    this.lanesCoords = lanesCoords;
+    this.rawLanesCoords = lanesCoords;
     this.lanesAmount = lanesCoords.length - (isOpen ? 1 : 0);
     this.activeLane = 0;
     this.depth = 20;
@@ -44,27 +44,27 @@ export default class Surface {
   }
 
   calculateCenteredLanesCoords () {
-    let boundingBox2 = BoundingBox2.create(this.lanesCoords);
-    this.centeredLanesCoords = this.lanesCoords.map(vector2 => vector2.sub(boundingBox2.getCenter()));
+    let boundingBox2 = BoundingBox2.create(this.rawLanesCoords);
+    this.lanesCoords = this.rawLanesCoords.map(vector2 => vector2.sub(boundingBox2.getCenter()));
   }
 
   calculateLanesCenterCoords () {
-    this.lanesCenterCoords = [];
+    this.lanesMiddleCoords = [];
 
     for (let i = 0; i < this.lanesAmount; i++) {
       let boundingBox2 = BoundingBox2.create([
-        this.centeredLanesCoords[i],
-        this.centeredLanesCoords[(i + 1) % Surface.LINES_AMOUNT]
+        this.lanesCoords[i],
+        this.lanesCoords[(i + 1) % Surface.LINES_AMOUNT]
       ]);
-      this.lanesCenterCoords.push(boundingBox2.center);
+      this.lanesMiddleCoords.push(boundingBox2.center);
     }
   }
 
   calculateLanesCenterDirection () {
     this.lanesCenterDirectionRadians = [];
 
-    this.lanesCenterCoords.forEach((center, i) => {
-      let angleVector = this.centeredLanesCoords[i].clone();
+    this.lanesMiddleCoords.forEach((center, i) => {
+      let angleVector = this.lanesCoords[i].clone();
       let axis = center.clone();
 
       angleVector.sub(axis).normalize();

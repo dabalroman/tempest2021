@@ -27,7 +27,7 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
   }
 
   move () {
-    let desiredPosition = this.surface.lanesCenterCoords[this.object.laneId];
+    let desiredPosition = this.surface.lanesMiddleCoords[this.object.laneId];
 
     if (compareVectors(desiredPosition, this.position)) {
       return;

@@ -19,8 +19,8 @@ export default class SurfaceObjectWrapper extends Group {
     this.loadModel();
 
     this.position.set(
-      this.surface.lanesCenterCoords[this.object.laneId].x,
-      this.surface.lanesCenterCoords[this.object.laneId].y,
+      this.surface.lanesMiddleCoords[this.object.laneId].x,
+      this.surface.lanesMiddleCoords[this.object.laneId].y,
       this.object.zPosition * this.surface.depth
     );
 
@@ -48,8 +48,8 @@ export default class SurfaceObjectWrapper extends Group {
     this.object = object;
 
     this.position.set(
-      this.surface.lanesCenterCoords[this.object.laneId].x,
-      this.surface.lanesCenterCoords[this.object.laneId].y,
+      this.surface.lanesMiddleCoords[this.object.laneId].x,
+      this.surface.lanesMiddleCoords[this.object.laneId].y,
       this.object.zPosition * this.surface.depth
     );
 
