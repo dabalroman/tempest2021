@@ -75,8 +75,6 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
       this.zRotationBase = this.surface.lanesCenterDirectionRadians[rotationAxisLaneId];
       this.positionBase = this.surface.lanesMiddleCoords[rotationAxisLaneId].clone();
 
-      console.log(this.rotatingStateCache.sourceLaneId, this.rotatingStateCache.targetLaneId);
-
       if (this.object.inState(EnemyFlipper.STATE_ROTATING_BEGIN)) {
         if (this.object.isFlagSet(EnemyFlipper.FLAG_ROTATION_CW)) {
           this.zRotationOffset = this.rotatingStateCache.relativeHalfStep * this.object.stateProgressInTime();
