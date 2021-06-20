@@ -6,14 +6,19 @@ export default class SurfaceObjectWrapper extends Group {
   /** @var {Surface} */
   surface;
 
+  /** @var {?string} */
+  objectType = null;
+
   /**
    * @param {SurfaceObject} object
    * @param {Surface} surface
+   * @param {string} objectType
    */
-  constructor (object, surface) {
+  constructor (object, surface, objectType) {
     super();
 
     this.surface = surface;
+    this.objectType = objectType;
     this.setObjectRef(object);
 
     this.loadModel();
@@ -32,12 +37,12 @@ export default class SurfaceObjectWrapper extends Group {
       return;
     }
 
-    this.show();
+    this.manageVisibility();
     this.move();
     this.rotate();
   }
 
-  show () {
+  manageVisibility () {
     this.visible = this.object.alive;
   }
 

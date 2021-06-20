@@ -4,6 +4,7 @@ import objLoader from '@/utils/objLoader';
 import readonly from '@/utils/readonly';
 import compareVectors from '@/utils/compareVectors';
 import SurfaceObjectWrapper from '@/Renderer/Surface/SurfaceObjectWrapper';
+import Shooter from '@/Object/Shooters/Shooter';
 
 export default class ShooterRenderer extends SurfaceObjectWrapper {
   @readonly
@@ -23,7 +24,7 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
   rotationChangeSpeed = 0.2;
 
   constructor (shooter, surface) {
-    super(shooter, surface);
+    super(shooter, surface, Shooter.TYPE_SHOOTER);
   }
 
   move () {

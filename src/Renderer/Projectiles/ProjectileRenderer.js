@@ -18,7 +18,7 @@ export default class ProjectileRenderer extends SurfaceObjectWrapper {
    * @param {Surface} surface
    */
   constructor (projectile, surface) {
-    super(projectile, surface);
+    super(projectile, surface, Projectile.TYPE_PROJECTILE);
   }
 
   setObjectRef (object) {

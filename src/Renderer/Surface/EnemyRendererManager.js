@@ -1,5 +1,6 @@
-import EnemyRenderer from '@/Renderer/Enemies/EnemyRenderer';
 import { Group } from 'three';
+import Enemy from '@/Object/Enemies/Enemy';
+import EnemyFlipperRenderer from '@/Renderer/Enemies/EnemyFlipperRenderer';
 
 export default class EnemyRendererManager extends Group {
   /** @var {SurfaceObjectsManager} */
@@ -9,7 +10,7 @@ export default class EnemyRendererManager extends Group {
 
   /** @var {EnemyRenderer[]} */
   enemyRenderers = [];
-  /** @var {number[]} */
+  /** @var {number[][]} */
   enemyRenderersAvailabilityMap = [];
 
   /**
@@ -40,9 +41,13 @@ export default class EnemyRendererManager extends Group {
       }
 
       if (!enemyRenderer.object.alive) {
-        enemyRenderer.breakObjectRef();
+        if (!(enemyRenderer.objectType in this.enemyRenderersAvailabilityMap)) {
+          this.enemyRenderersAvailabilityMap[enemyRenderer.objectType] = [];
+        }
 
-        this.enemyRenderersAvailabilityMap.push(index);
+        this.enemyRenderersAvailabilityMap[enemyRenderer.objectType].push(index);
+
+        enemyRenderer.breakObjectRef();
       } else {
         enemyRenderer.update();
       }
@@ -53,13 +58,24 @@ export default class EnemyRendererManager extends Group {
    * @param {Enemy} enemy
    */
   pushEnemy (enemy) {
-    if (this.enemyRenderersAvailabilityMap.length) {
-      // console.log(`Reusing enemy renderer #${this.enemyRenderersAvailabilityMap.slice(0, 1)}`);
-      this.enemyRenderers[this.enemyRenderersAvailabilityMap.shift()].setObjectRef(enemy);
+    console.log(this.enemyRenderersAvailabilityMap);
+    if (enemy.type in this.enemyRenderersAvailabilityMap && this.enemyRenderersAvailabilityMap[enemy.type].length) {
+      console.log(`Reusing enemy renderer #${this.enemyRenderersAvailabilityMap[enemy.type].slice(0, 1)}`);
+      this.enemyRenderers[this.enemyRenderersAvailabilityMap[enemy.type].shift()].setObjectRef(enemy);
     } else {
-      // console.log(`Creating new enemy renderer #${this.enemyRenderers.length}`);
-      this.enemyRenderers.push(new EnemyRenderer(enemy, this.surface));
+      console.log(`Creating new enemy renderer #${this.enemyRenderers.length}`);
+      this.enemyRenderers.push(this.enemyRendererFactory(enemy));
       this.add(this.enemyRenderers[this.enemyRenderers.length - 1]);
+    }
+  }
+
+  /**
+   * @param {Enemy} enemy
+   */
+  enemyRendererFactory (enemy) {
+    switch (enemy.type) {
+      case Enemy.TYPE_FLIPPER:
+        return new EnemyFlipperRenderer(enemy, this.surface);
     }
   }
 }
