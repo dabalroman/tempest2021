@@ -8,7 +8,7 @@ import EnemyFlipper from '@/Object/Enemies/EnemyFlipper';
 export default class Level {
   /** @var {Surface} */
   surface;
-  /** @var {Shooters} */
+  /** @var {Shooter} */
   shooter;
   /** @var {SurfaceObjectsManager} */
   surfaceObjectsManager;
@@ -23,10 +23,10 @@ export default class Level {
     this.shooter = new Shooter(surface, this.projectileManager);
     this.surfaceObjectsManager.addShooter(this.shooter);
     this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 0));
-    // this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 5));
-    // this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 12));
-    // this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 15));
-    // this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 2));
+    this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 5));
+    this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 12));
+    this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 15));
+    this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 2));
 
     keyboardInput.register('KeyA', () => {this.shooter.moveLeft();});
     keyboardInput.register('KeyD', () => {this.shooter.moveRight();});

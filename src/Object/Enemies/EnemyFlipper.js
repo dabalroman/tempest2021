@@ -45,42 +45,40 @@ export default class EnemyFlipper extends Enemy {
   }
 
   updateState () {
-    if (this.canChangeState()) {
-      if (this.inState(EnemyFlipper.STATE_IDLE)) {
-        if (this.isFlagSet(EnemyFlipper.FLAG_REACHED_TOP)) {
-          this.setState(EnemyFlipper.STATE_ROTATING_BEGIN);
+    if (this.inState(EnemyFlipper.STATE_IDLE)) {
+      if (this.isFlagSet(EnemyFlipper.FLAG_REACHED_TOP)) {
+        this.setState(EnemyFlipper.STATE_ROTATING_BEGIN);
 
-        } else {
-          this.setState(
-            State.drawNextState(
-              EnemyFlipper.STATE_IDLE,
-              EnemyFlipper.STATE_SHOOTING,
-              EnemyFlipper.STATE_ROTATING_BEGIN
-            )
-          );
-        }
-
-      } else if (this.inState(EnemyFlipper.STATE_ROTATING_BEGIN)) {
-        this.setState(EnemyFlipper.STATE_ROTATING_END);
-
-      } else if (this.inState(EnemyFlipper.STATE_ROTATING_END)) {
-        if (this.isFlagSet(EnemyFlipper.FLAG_REACHED_TOP)) {
-          this.setState(EnemyFlipper.STATE_ROTATING_BEGIN);
-        } else {
-          this.setState(EnemyFlipper.STATE_IDLE);
-        }
-        this.unsetFlag(EnemyFlipper.FLAG_LANE_CHANGED);
-        this.unsetFlag(EnemyFlipper.FLAG_ROTATION_CW);
-        this.unsetFlag(EnemyFlipper.FLAG_ROTATION_CCW);
-        this.unsetFlag(EnemyFlipper.FLAG_ROTATION_DIR_CHOSEN);
-
-      } else if (this.inState(EnemyFlipper.STATE_SHOOTING)) {
-        this.setState(EnemyFlipper.STATE_IDLE);
-        this.unsetFlag(EnemyFlipper.FLAG_SHOOTS_FIRED);
-
-      } else if (this.inState(EnemyFlipper.STATE_EXPLODING)) {
-        this.setState(EnemyFlipper.STATE_DEAD);
+      } else {
+        this.setState(
+          State.drawNextState(
+            EnemyFlipper.STATE_IDLE,
+            EnemyFlipper.STATE_SHOOTING,
+            EnemyFlipper.STATE_ROTATING_BEGIN
+          )
+        );
       }
+
+    } else if (this.inState(EnemyFlipper.STATE_ROTATING_BEGIN)) {
+      this.setState(EnemyFlipper.STATE_ROTATING_END);
+
+    } else if (this.inState(EnemyFlipper.STATE_ROTATING_END)) {
+      if (this.isFlagSet(EnemyFlipper.FLAG_REACHED_TOP)) {
+        this.setState(EnemyFlipper.STATE_ROTATING_BEGIN);
+      } else {
+        this.setState(EnemyFlipper.STATE_IDLE);
+      }
+      this.unsetFlag(EnemyFlipper.FLAG_LANE_CHANGED);
+      this.unsetFlag(EnemyFlipper.FLAG_ROTATION_CW);
+      this.unsetFlag(EnemyFlipper.FLAG_ROTATION_CCW);
+      this.unsetFlag(EnemyFlipper.FLAG_ROTATION_DIR_CHOSEN);
+
+    } else if (this.inState(EnemyFlipper.STATE_SHOOTING)) {
+      this.setState(EnemyFlipper.STATE_IDLE);
+      this.unsetFlag(EnemyFlipper.FLAG_SHOOTS_FIRED);
+
+    } else if (this.inState(EnemyFlipper.STATE_EXPLODING)) {
+      this.setState(EnemyFlipper.STATE_DEAD);
     }
   }
 

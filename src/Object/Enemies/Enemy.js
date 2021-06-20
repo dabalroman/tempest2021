@@ -2,8 +2,8 @@ import readonly from '@/utils/readonly';
 import ShootingSurfaceObject from '@/Object/Surface/ShootingSurfaceObject';
 
 export default class Enemy extends ShootingSurfaceObject {
-  @readonly
-  static LANE_CHANGE_TIMEOUT_MS = 50;
+  // @readonly
+  // static LANE_CHANGE_TIMEOUT_MS = 50;
   @readonly
   static SHOOT_TIMEOUT_MS = 100;
 
@@ -22,16 +22,12 @@ export default class Enemy extends ShootingSurfaceObject {
     super(surface, projectileManager, laneId, type);
 
     this.shootTimeoutMs = Enemy.SHOOT_TIMEOUT_MS;
-    this.laneChangeTimeoutMs = Enemy.LANE_CHANGE_TIMEOUT_MS;
+    // this.laneChangeTimeoutMs = Enemy.LANE_CHANGE_TIMEOUT_MS;
     this.zPosition = 1;
 
     if (this.constructor === Enemy) {
       throw new Error('Abstract classes can\'t be instantiated.');
     }
-  }
-
-  makeMove () {
-    throw new Error('Method \'makeMove()\' must be implemented.');
   }
 
   updateState () {
@@ -47,7 +43,10 @@ export default class Enemy extends ShootingSurfaceObject {
       return;
     }
 
-    this.updateState();
+    if (this.canChangeState()) {
+      this.updateState();
+    }
+
     this.updateEntity();
   }
 }
