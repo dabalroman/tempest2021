@@ -1,6 +1,7 @@
 import EnemyRenderer from '@/Renderer/Enemies/EnemyRenderer';
 import Enemy from '@/Object/Enemies/Enemy';
 import readonly from '@/utils/readonly';
+import EnemySpiker from '@/Object/Enemies/EnemySpiker';
 
 export default class EnemySpikerRenderer extends EnemyRenderer {
   @readonly
@@ -12,12 +13,17 @@ export default class EnemySpikerRenderer extends EnemyRenderer {
    */
   constructor (enemySpiker, surface) {
     super(enemySpiker, surface, Enemy.TYPE_SPIKER);
-
-    this.positionBase = this.surface.lanesMiddleCoords[this.object.laneId].clone();
-    this.zRotationBase = this.surface.lanesCenterDirectionRadians[this.object.laneId];
   }
 
   updatePosition () {
-    this.zRotationOffset += EnemySpikerRenderer.ROTATION_SPEED;
+    this.positionBase = this.surface.lanesMiddleCoords[this.object.laneId].clone();
+    this.zRotationBase = this.surface.lanesCenterDirectionRadians[this.object.laneId];
+
+    if (this.object.inState(EnemySpiker.STATE_EXPLODING)) {
+      //Temporary
+      this.zRotationOffset--;
+    } else {
+      this.zRotationOffset += EnemySpikerRenderer.ROTATION_SPEED;
+    }
   }
 }
