@@ -64,6 +64,7 @@ export default class EnemySpiker extends Enemy {
 
   hitByProjectile () {
     this.setState(EnemySpiker.STATE_EXPLODING);
+    this.hittable = false;
     this.clearFlags();
   }
 }

@@ -4,6 +4,7 @@ import ProjectileManager from '@/Object/Manager/ProjectileManager';
 
 import keyboardInput from '@/utils/KeyboardInput';
 import EnemyFlipper from '@/Object/Enemies/EnemyFlipper';
+import randomRange from '@/utils/randomRange';
 
 export default class Level {
   /** @var {Surface} */
@@ -31,6 +32,17 @@ export default class Level {
     keyboardInput.register('KeyA', () => {this.shooter.moveLeft();});
     keyboardInput.register('KeyD', () => {this.shooter.moveRight();});
     keyboardInput.register('Space', () => {this.shooter.fire();});
+
+    //Spawners
+    keyboardInput.register('KeyF', () => {
+      this.surfaceObjectsManager.addEnemy(
+        new EnemyFlipper(
+          surface,
+          this.projectileManager,
+          randomRange(0, 15)
+        )
+      );
+    });
   }
 
   update () {

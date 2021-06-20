@@ -35,6 +35,8 @@ export default class SurfaceObject {
   type;
   /** @var {boolean} */
   alive = true;
+  /** @var {boolean} */
+  hittable = true;
 
   /** @var {number} */
   zPosition = 0;
@@ -155,7 +157,7 @@ export default class SurfaceObject {
   unsetFlag (flag) {
     this.flags &= ~flag;
   }
-  
+
   clearFlags () {
     this.flags = 0;
   }
