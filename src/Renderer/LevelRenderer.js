@@ -1,8 +1,6 @@
 import { Group } from 'three';
 import SurfaceRenderer from '@/Renderer/Surface/SurfaceRenderer';
 import ShooterRenderer from '@/Renderer/Shooters/ShooterRenderer';
-import EnemyRenderer from '@/Renderer/Enemies/EnemyRenderer';
-import enemies from '@/Assets/Enemies';
 import ProjectileRendererManager from '@/Renderer/Surface/ProjectileRendererManager';
 import EnemyRendererManager from '@/Renderer/Surface/EnemyRendererManager';
 
@@ -35,14 +33,6 @@ export default class LevelRenderer extends Group {
     this.add(this.shooterRenderer);
     this.add(this.enemyRendererManager);
     this.add(this.projectileRendererManager);
-  }
-
-  temporaryRenderAllEnemies () {
-    enemies.forEach((enemyDataset, i) => {
-      let renderer = new EnemyRenderer({ type: enemyDataset.name, laneId: 0, zPosition: 0 }, this.level.surface);
-      renderer.position.z = i;
-      this.add(renderer);
-    });
   }
 
   update () {
