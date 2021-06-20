@@ -155,6 +155,10 @@ export default class SurfaceObject {
   unsetFlag (flag) {
     this.flags &= ~flag;
   }
+  
+  clearFlags () {
+    this.flags = 0;
+  }
 
   /**
    * @param {number} flag

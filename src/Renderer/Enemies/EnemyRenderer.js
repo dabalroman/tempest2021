@@ -95,6 +95,9 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
       ).rotateAround(new Vector2(0, 0), this.zRotationOffset);
 
       this.positionBase = this.surface.lanesCoords[rotationAxisLaneId].clone().sub(positionRotationXYOffset);
+    } else if (this.object.inState(EnemyFlipper.STATE_EXPLODING)) {
+      //Temporary
+      this.zRotationOffset++;
     } else {
       this.zRotationBase = this.surface.lanesCenterDirectionRadians[this.object.laneId];
       this.positionBase = this.surface.lanesMiddleCoords[this.object.laneId].clone();

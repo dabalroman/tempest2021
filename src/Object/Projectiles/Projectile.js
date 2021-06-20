@@ -57,8 +57,6 @@ export default class Projectile extends SurfaceObject {
       return -1;
     }
 
-    console.log(this.zPosition, Projectile.PROJECTILE_KILL_RADIUS);
-
     let collision = laneObjects.findIndex(object => (
         object.zPosition >= this.zPosition - Projectile.PROJECTILE_KILL_RADIUS * 2
         && object.zPosition <= this.zPosition + Projectile.PROJECTILE_KILL_RADIUS
