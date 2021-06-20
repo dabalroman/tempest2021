@@ -5,6 +5,7 @@ import ProjectileManager from '@/Object/Manager/ProjectileManager';
 import keyboardInput from '@/utils/KeyboardInput';
 import EnemyFlipper from '@/Object/Enemies/EnemyFlipper';
 import randomRange from '@/utils/randomRange';
+import EnemySpiker from '@/Object/Enemies/EnemySpiker';
 
 export default class Level {
   /** @var {Surface} */
@@ -37,6 +38,16 @@ export default class Level {
     keyboardInput.register('KeyF', () => {
       this.surfaceObjectsManager.addEnemy(
         new EnemyFlipper(
+          surface,
+          this.projectileManager,
+          randomRange(0, 15)
+        )
+      );
+    });
+
+    keyboardInput.register('KeyS', () => {
+      this.surfaceObjectsManager.addEnemy(
+        new EnemySpiker(
           surface,
           this.projectileManager,
           randomRange(0, 15)

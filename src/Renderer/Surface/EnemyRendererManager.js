@@ -1,6 +1,7 @@
 import { Group } from 'three';
 import Enemy from '@/Object/Enemies/Enemy';
 import EnemyFlipperRenderer from '@/Renderer/Enemies/EnemyFlipperRenderer';
+import EnemySpikerRenderer from '@/Renderer/Enemies/EnemySpikerRenderer';
 
 export default class EnemyRendererManager extends Group {
   /** @var {SurfaceObjectsManager} */
@@ -58,24 +59,27 @@ export default class EnemyRendererManager extends Group {
    * @param {Enemy} enemy
    */
   pushEnemy (enemy) {
-    console.log(this.enemyRenderersAvailabilityMap);
     if (enemy.type in this.enemyRenderersAvailabilityMap && this.enemyRenderersAvailabilityMap[enemy.type].length) {
-      console.log(`Reusing enemy renderer #${this.enemyRenderersAvailabilityMap[enemy.type].slice(0, 1)}`);
+      // console.log(`Reusing enemy renderer #${this.enemyRenderersAvailabilityMap[enemy.type].slice(0, 1)}`);
       this.enemyRenderers[this.enemyRenderersAvailabilityMap[enemy.type].shift()].setObjectRef(enemy);
     } else {
-      console.log(`Creating new enemy renderer #${this.enemyRenderers.length}`);
+      // console.log(`Creating new enemy renderer #${this.enemyRenderers.length}`);
       this.enemyRenderers.push(this.enemyRendererFactory(enemy));
       this.add(this.enemyRenderers[this.enemyRenderers.length - 1]);
     }
   }
 
   /**
-   * @param {Enemy} enemy
+   * @param {Enemy|EnemyFlipper|EnemySpiker} enemy
    */
   enemyRendererFactory (enemy) {
     switch (enemy.type) {
       case Enemy.TYPE_FLIPPER:
         return new EnemyFlipperRenderer(enemy, this.surface);
+      case Enemy.TYPE_SPIKER:
+        return new EnemySpikerRenderer(enemy, this.surface);
+      default:
+        throw new Error(`Can't find constructor for enemy of type ${enemy.type}`);
     }
   }
 }
