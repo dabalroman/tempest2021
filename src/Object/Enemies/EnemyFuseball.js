@@ -15,9 +15,9 @@ export default class EnemyFuseball extends Enemy {
   static MAX_AMOUNT_OF_LANE_CHANGES_UNTIL_TOP = 10;
 
   @readonly
-  static STATE_MOVING_ALONG_LINE = new State(1000, 1, 'moving_along_line');
+  static STATE_MOVING_ALONG_LINE = new State(2000, 1, 'moving_along_line');
   @readonly
-  static STATE_SWITCHING_LANE = new State(1000, 1, 'switching_lane');
+  static STATE_SWITCHING_LANE = new State(3000, 1, 'switching_lane');
   @readonly
   static STATE_EXPLODING = new State(500, 1, 'exploding');
   @readonly
@@ -55,25 +55,25 @@ export default class EnemyFuseball extends Enemy {
     super(surface, projectileManager, laneId, SurfaceObject.TYPE_FUSEBALL);
 
     this.firstLevel = 1;
-    this.zSpeed = -randomRange(3, 6) * 0.001;
     this.setState(EnemyFuseball.STATE_MOVING_ALONG_LINE);
+    this.setFlag(EnemyFuseball.FLAG_IMMUNE);
   }
 
   updateState () {
     if (this.inState(EnemyFuseball.STATE_MOVING_ALONG_LINE)) {
       this.setState(EnemyFuseball.STATE_SWITCHING_LANE);
-      this.setFlag(EnemyFuseball.FLAG_IMMUNE);
 
+      this.unsetFlag(EnemyFuseball.FLAG_IMMUNE);
       this.unsetFlag(EnemyFuseball.FLAG_MOVING_TARGET_CHOSEN);
 
     } else if (this.inState(EnemyFuseball.STATE_SWITCHING_LANE)) {
       if (this.isFlagSet(EnemyFuseball.FLAG_REACHED_TOP)) {
-        this.setState(EnemyFuseball.STATE_MOVING_ALONG_LINE);
-      } else {
         this.setState(EnemyFuseball.STATE_SWITCHING_LANE);
+      } else {
+        this.setState(EnemyFuseball.STATE_MOVING_ALONG_LINE);
       }
 
-      this.unsetFlag(EnemyFuseball.FLAG_IMMUNE);
+      this.setFlag(EnemyFuseball.FLAG_IMMUNE);
       this.unsetFlag(EnemyFuseball.FLAG_SWITCHING_DIR_CHOSEN);
       this.unsetFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CCW);
       this.unsetFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CW);
@@ -150,7 +150,7 @@ export default class EnemyFuseball extends Enemy {
     ) {
       this.setFlag(EnemyFuseball.FLAG_MOVING_TARGET_CHOSEN);
       this.zBase = this.zPosition;
-      this.zTarget = Math.round(randomRange(EnemyFuseball.MIN_Z_POSITION, EnemyFuseball.MAX_Z_POSITION) * 10) / 10;
+      this.zTarget = randomRange(EnemyFuseball.MIN_Z_POSITION * 10, EnemyFuseball.MAX_Z_POSITION * 10) / 10;
 
       if (this.laneChanges >= EnemyFuseball.MIN_AMOUNT_OF_LANE_CHANGES_UNTIL_TOP) {
         let x = (this.laneChanges - EnemyFuseball.MIN_AMOUNT_OF_LANE_CHANGES_UNTIL_TOP)
@@ -170,7 +170,11 @@ export default class EnemyFuseball extends Enemy {
       }
     }
 
-    if (this.isFlagNotSet(EnemyFuseball.FLAG_REACHED_TOP) && !this.inState(EnemyFuseball.STATE_EXPLODING)) {
+    if (
+      this.isFlagNotSet(EnemyFuseball.FLAG_REACHED_TOP)
+      && !this.inState(EnemyFuseball.STATE_SWITCHING_LANE)
+      && !this.inState(EnemyFuseball.STATE_EXPLODING)
+    ) {
       this.zPosition = this.zBase + (this.zTarget - this.zBase) * this.stateProgressInTime();
     }
   }
