@@ -4,7 +4,8 @@ import EnemyFlipperRenderer from '@/Renderer/Enemies/EnemyFlipperRenderer';
 import EnemySpikerRenderer from '@/Renderer/Enemies/EnemySpikerRenderer';
 import EnemySpikeRenderer from '@/Renderer/Enemies/EnemySpikeRenderer';
 import EnemyFlipperTankerRenderer from '@/Renderer/Enemies/EnemyFlipperTankerRenderer';
-import EnemyFuseballRenderer from '@/Renderer/Enemies/EnemyFussballRenderer';
+import EnemyFuseballRenderer from '@/Renderer/Enemies/EnemyFuseballRenderer';
+import EnemyFuseballTankerRenderer from '@/Renderer/Enemies/EnemyFuseballTankerRenderer';
 
 export default class EnemyRendererManager extends Group {
   /** @var {SurfaceObjectsManager} */
@@ -93,6 +94,8 @@ export default class EnemyRendererManager extends Group {
         return new EnemyFlipperTankerRenderer(enemy, this.surface);
       case Enemy.TYPE_FUSEBALL:
         return new EnemyFuseballRenderer(enemy, this.surface);
+      case Enemy.TYPE_FUSEBALL_TANKER:
+        return new EnemyFuseballTankerRenderer(enemy, this.surface);
       default:
         throw new Error(`Can't find constructor for enemy of type ${enemy.type}`);
     }

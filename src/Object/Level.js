@@ -8,6 +8,7 @@ import randomRange from '@/utils/randomRange';
 import EnemySpiker from '@/Object/Enemies/EnemySpiker';
 import EnemyFuseball from '@/Object/Enemies/EnemyFuseball';
 import EnemyFlipperTanker from '@/Object/Enemies/EnemyFlipperTanker';
+import EnemyFuseballTanker from '@/Object/Enemies/EnemyFuseballTanker';
 
 export default class Level {
   /** @var {Surface} */
@@ -31,7 +32,10 @@ export default class Level {
     this.surfaceObjectsManager.addEnemy(
       new EnemyFlipperTanker(surface, this.projectileManager, this.surfaceObjectsManager, 4)
     );
-    this.surfaceObjectsManager.addEnemy(new EnemyFuseball(surface, this.projectileManager, 0));
+    this.surfaceObjectsManager.addEnemy(new EnemyFuseball(surface, this.projectileManager, 8));
+    this.surfaceObjectsManager.addEnemy(
+      new EnemyFuseballTanker(surface, this.projectileManager, this.surfaceObjectsManager, 10)
+    );
 
     keyboardInput.register('KeyA', () => {this.shooter.moveLeft();});
     keyboardInput.register('KeyD', () => {this.shooter.moveRight();});

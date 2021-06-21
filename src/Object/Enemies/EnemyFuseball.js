@@ -151,7 +151,6 @@ export default class EnemyFuseball extends Enemy {
     if (this.isFlagSet(EnemyFuseball.FLAG_SET_LANE_CW) || this.isFlagSet(EnemyFuseball.FLAG_SET_LANE_CCW)) {
       let direction = this.isFlagSet(EnemyFuseball.FLAG_SET_LANE_CW) ? 1 : -1;
 
-      console.log(this.state.name, this.laneId, this.laneId + direction);
       this.setLane(this.laneId + direction);
 
       this.unsetFlag(EnemyFuseball.FLAG_SET_LANE_CW);
