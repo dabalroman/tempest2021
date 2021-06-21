@@ -53,17 +53,17 @@ const enemies = ([
     ]
   },
   {
-    name: 'tanker',
+    name: 'flipperTanker',
     color: 0xff00cc,
-    scale: {x: 1, y: 1, z: 1},
+    scale: { x: 1, y: 1, z: 1 },
     coords: [
       [
-        {x: 0.5, y: 0.1}, {x: 0.5, y: 0.4},
-        {x: 0.1, y: 0.5}, {x: 0.5, y: 0.1},
+        { x: 0.5, y: 0.1 }, { x: 0.5, y: 0.4 },
+        { x: 0.1, y: 0.5 }, { x: 0.5, y: 0.1 },
       ],
       [
-        {x: 0.5, y: 0.1}, {x: 0.6, y: 0.5},
-        {x: 0.9, y: 0.5}, {x: 0.5, y: 0.1},
+        { x: 0.5, y: 0.1 }, { x: 0.6, y: 0.5 },
+        { x: 0.9, y: 0.5 }, { x: 0.5, y: 0.1 },
       ],
       [
         {x: 0.9, y: 0.5}, {x: 0.5, y: 0.9},
@@ -81,7 +81,7 @@ const enemies = ([
     ]
   },
   {
-    name: 'fuseball tanker',
+    name: 'fuseballTanker',
     color: [
       0xff00cc,
       0xff00cc,
@@ -132,7 +132,7 @@ const enemies = ([
   },
 
   {
-    name: 'pulsar tanker',
+    name: 'pulsarTanker',
     color: [
       0xff00cc,
       0xff00cc,
@@ -141,7 +141,7 @@ const enemies = ([
       0xff00cc,
       0x6666ff,
     ],
-    scale: {x: 1, y: 1, z: 1},
+    scale: { x: 1, y: 1, z: 1 },
     coords: [
       [
         {x: 0.5, y: 0.1}, {x: 0.5, y: 0.4},
@@ -171,8 +171,6 @@ const enemies = ([
       ],
     ]
   },
-
-
   {
     name: 'pulsar',
     color: 0xffffff,

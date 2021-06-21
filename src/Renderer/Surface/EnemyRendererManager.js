@@ -3,6 +3,7 @@ import Enemy from '@/Object/Enemies/Enemy';
 import EnemyFlipperRenderer from '@/Renderer/Enemies/EnemyFlipperRenderer';
 import EnemySpikerRenderer from '@/Renderer/Enemies/EnemySpikerRenderer';
 import EnemySpikeRenderer from '@/Renderer/Enemies/EnemySpikeRenderer';
+import EnemyFlipperTankerRenderer from '@/Renderer/Enemies/EnemyFlipperTankerRenderer';
 
 export default class EnemyRendererManager extends Group {
   /** @var {SurfaceObjectsManager} */
@@ -77,7 +78,7 @@ export default class EnemyRendererManager extends Group {
   }
 
   /**
-   * @param {Enemy|EnemyFlipper|EnemySpiker|EnemySpike} enemy
+   * @param {Enemy|EnemyFlipper|EnemySpiker|EnemySpike|EnemyFlipperTanker} enemy
    */
   enemyRendererFactory (enemy) {
     switch (enemy.type) {
@@ -87,6 +88,8 @@ export default class EnemyRendererManager extends Group {
         return new EnemySpikerRenderer(enemy, this.surface);
       case Enemy.TYPE_SPIKE:
         return new EnemySpikeRenderer(enemy, this.surface);
+      case Enemy.TYPE_FLIPPER_TANKER:
+        return new EnemyFlipperTankerRenderer(enemy, this.surface);
       default:
         throw new Error(`Can't find constructor for enemy of type ${enemy.type}`);
     }

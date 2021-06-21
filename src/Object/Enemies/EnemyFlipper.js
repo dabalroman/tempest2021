@@ -30,6 +30,8 @@ export default class EnemyFlipper extends Enemy {
   static FLAG_ROTATION_CCW = 0x10;
   @readonly
   static FLAG_ROTATION_DIR_CHOSEN = 0x20;
+  @readonly
+  static FLAG_IMMUNE_ROTATION = 0x40;
 
   /**
    * @param {Surface} surface
@@ -61,6 +63,11 @@ export default class EnemyFlipper extends Enemy {
 
     } else if (this.inState(EnemyFlipper.STATE_ROTATING_BEGIN)) {
       this.setState(EnemyFlipper.STATE_ROTATING_END);
+
+      if (this.isFlagSet(EnemyFlipper.FLAG_IMMUNE_ROTATION)) {
+        this.unsetFlag(EnemyFlipper.FLAG_IMMUNE_ROTATION);
+        this.hittable = true;
+      }
 
     } else if (this.inState(EnemyFlipper.STATE_ROTATING_END)) {
       if (this.isFlagSet(EnemyFlipper.FLAG_REACHED_TOP)) {
@@ -138,6 +145,11 @@ export default class EnemyFlipper extends Enemy {
     if (this.isFlagNotSet(EnemyFlipper.FLAG_REACHED_TOP) && !this.inState(EnemyFlipper.STATE_EXPLODING)) {
       this.zPosition += this.zSpeed;
     }
+  }
+
+  immuneDuringNextRotation () {
+    this.setFlag(EnemyFlipper.FLAG_IMMUNE_ROTATION);
+    this.hittable = false;
   }
 
   hitByProjectile () {

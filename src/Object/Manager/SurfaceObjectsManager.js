@@ -44,6 +44,15 @@ export default class SurfaceObjectsManager extends FIFOManager {
     this.enemies.push(enemy);
     this.rendererHelperNewObjectsIds.push(this.enemies[this.enemies.length - 1].objectId);
 
+    this.createSpikes(enemy);
+  }
+
+  addSpike (spike) {
+    this.spikes.push(spike);
+    this.rendererHelperNewObjectsIds.push(this.spikes[this.spikes.length - 1].objectId);
+  }
+
+  createSpikes (enemy) {
     if (enemy.type === Enemy.TYPE_SPIKER) {
       if (
         this.spikesMap[enemy.laneId].length === 0
@@ -52,11 +61,6 @@ export default class SurfaceObjectsManager extends FIFOManager {
         this.addSpike(new EnemySpike(enemy.surface, enemy.projectileManager, enemy.laneId));
       }
     }
-  }
-
-  addSpike (spike) {
-    this.spikes.push(spike);
-    this.rendererHelperNewObjectsIds.push(this.spikes[this.spikes.length - 1].objectId);
   }
 
   update () {
