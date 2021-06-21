@@ -45,7 +45,10 @@ export default class SurfaceObjectsManager extends FIFOManager {
     this.rendererHelperNewObjectsIds.push(this.enemies[this.enemies.length - 1].objectId);
 
     if (enemy.type === Enemy.TYPE_SPIKER) {
-      if (this.spikesMap[enemy.laneId].length === 0) {
+      if (
+        this.spikesMap[enemy.laneId].length === 0
+        || this.spikesMap[enemy.laneId].length === this.spikesMap[enemy.laneId].filter(spike => !spike.alive).length
+      ) {
         this.addSpike(new EnemySpike(enemy.surface, enemy.projectileManager, enemy.laneId));
       }
     }

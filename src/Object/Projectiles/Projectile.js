@@ -66,8 +66,7 @@ export default class Projectile extends SurfaceObject {
     );
 
     if (collision >= 0) {
-      console.log(`Hit ${laneObjects[collision].type}.`);
-      console.log(laneObjects[collision]);
+      // console.log(`Hit ${laneObjects[collision].type}.`);
       laneObjects[collision].hitByProjectile();
       this.alive = false;
     }
@@ -76,7 +75,7 @@ export default class Projectile extends SurfaceObject {
   }
 
   hitByProjectile () {
-    console.log('Projectile collision detected');
+    // console.log('Projectile collision detected');
     this.alive = false;
   }
 }
