@@ -6,6 +6,7 @@ import keyboardInput from '@/utils/KeyboardInput';
 import EnemyFlipper from '@/Object/Enemies/EnemyFlipper';
 import randomRange from '@/utils/randomRange';
 import EnemySpiker from '@/Object/Enemies/EnemySpiker';
+import EnemyFuseball from '@/Object/Enemies/EnemyFuseball';
 import EnemyFlipperTanker from '@/Object/Enemies/EnemyFlipperTanker';
 
 export default class Level {
@@ -26,13 +27,11 @@ export default class Level {
     this.shooter = new Shooter(surface, this.projectileManager);
     this.surfaceObjectsManager.addShooter(this.shooter);
     this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 0));
-    this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 5));
-    this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 12));
-    this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 15));
     this.surfaceObjectsManager.addEnemy(new EnemySpiker(surface, this.projectileManager, 2));
     this.surfaceObjectsManager.addEnemy(
-      new EnemyFlipperTanker(surface, this.projectileManager, this.surfaceObjectsManager, 10)
+      new EnemyFlipperTanker(surface, this.projectileManager, this.surfaceObjectsManager, 4)
     );
+    this.surfaceObjectsManager.addEnemy(new EnemyFuseball(surface, this.projectileManager, 0));
 
     keyboardInput.register('KeyA', () => {this.shooter.moveLeft();});
     keyboardInput.register('KeyD', () => {this.shooter.moveRight();});

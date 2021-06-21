@@ -13,6 +13,8 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
 
   /** @var {Vector2} */
   positionBase = new Vector2();
+  /** @var {Vector2} */
+  positionOffset = new Vector2();
 
   /** @var {number} */
   zRotationBase = 0;
@@ -52,11 +54,25 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
   }
 
   move () {
-    this.position.set(this.positionBase.x, this.positionBase.y, this.object.zPosition * this.surface.depth);
+    this.position.set(
+      this.positionBase.x + this.positionOffset.x,
+      this.positionBase.y + this.positionOffset.y,
+      this.object.zPosition * this.surface.depth
+    );
   }
 
   rotate () {
     this.rotation.z = this.zRotationBase + this.zRotationOffset;
+  }
+
+  setLaneOffset (offset = 0.5) {
+    let laneCoords = this.surface.lanesCoords[this.object.laneId].clone();
+    let laneCenterCoords = this.surface.lanesMiddleCoords[this.object.laneId].clone();
+
+    let scalar = (offset - 0.5) * 2;
+    laneCenterCoords.sub(laneCoords).multiplyScalar(scalar);
+
+    this.positionOffset = laneCenterCoords;
   }
 
   loadModel () {

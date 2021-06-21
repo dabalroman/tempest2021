@@ -15,9 +15,9 @@ export default class EnemyFuseball extends Enemy {
   static MAX_AMOUNT_OF_LANE_CHANGES_UNTIL_TOP = 10;
 
   @readonly
-  static STATE_MOVING_ALONG_LINE = new State(2000, 1, 'moving_along_line');
+  static STATE_MOVING_ALONG_LINE = new State(1500, 1, 'moving_along_line');
   @readonly
-  static STATE_SWITCHING_LANE = new State(3000, 1, 'switching_lane');
+  static STATE_SWITCHING_LANE = new State(2000, 1, 'switching_lane');
   @readonly
   static STATE_EXPLODING = new State(500, 1, 'exploding');
   @readonly
@@ -32,11 +32,15 @@ export default class EnemyFuseball extends Enemy {
   @readonly
   static FLAG_SWITCHING_LANE_CCW = 0x8;
   @readonly
-  static FLAG_SWITCHING_DIR_CHOSEN = 0x10;
+  static FLAG_SET_LANE_CW = 0x10;
   @readonly
-  static FLAG_MOVING_TARGET_CHOSEN = 0x20;
+  static FLAG_SET_LANE_CCW = 0x20;
   @readonly
-  static FLAG_IMMUNE = 0x40;
+  static FLAG_SWITCHING_DIR_CHOSEN = 0x40;
+  @readonly
+  static FLAG_MOVING_TARGET_CHOSEN = 0x80;
+  @readonly
+  static FLAG_IMMUNE = 0x100;
 
   /** {number} */
   zBase = 0;
@@ -45,6 +49,8 @@ export default class EnemyFuseball extends Enemy {
 
   /** {number} */
   laneChanges = 0;
+  /** {number} */
+  lastLaneSwitchingProgress = 0;
 
   /**
    * @param {Surface} surface
@@ -71,6 +77,10 @@ export default class EnemyFuseball extends Enemy {
         this.setState(EnemyFuseball.STATE_SWITCHING_LANE);
       } else {
         this.setState(EnemyFuseball.STATE_MOVING_ALONG_LINE);
+      }
+
+      if (this.isFlagSet(EnemyFuseball.FLAG_SWITCHING_LANE_CW)) {
+        this.setFlag(EnemyFuseball.FLAG_SET_LANE_CW);
       }
 
       this.setFlag(EnemyFuseball.FLAG_IMMUNE);
@@ -100,10 +110,11 @@ export default class EnemyFuseball extends Enemy {
       if (this.isFlagSet(EnemyFuseball.FLAG_REACHED_TOP)) {
         let direction = this.surface.getShortestPathDirection(this.laneId, this.surface.activeLane);
 
-        if (direction === 1) {
+        if (direction === -1) {
           this.setFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CCW);
+          this.setFlag(EnemyFuseball.FLAG_SET_LANE_CCW);
           this.unsetFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CW);
-        } else if (direction === -1) {
+        } else if (direction === 1) {
           this.setFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CW);
           this.unsetFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CCW);
         }
@@ -116,15 +127,17 @@ export default class EnemyFuseball extends Enemy {
           let canSwitchCW = this.surface.getActualLaneIdFromProjectedMovement(this.laneId - 1) !== this.laneId;
 
           if (canSwitchCCW && canSwitchCW) {
-            this.setFlag(
-              Math.random() > 0.5
-                ? EnemyFuseball.FLAG_SWITCHING_LANE_CW
-                : EnemyFuseball.FLAG_SWITCHING_LANE_CCW
-            );
+            if (Math.random() > 0.5) {
+              this.setFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CW);
+            } else {
+              this.setFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CCW);
+              this.setFlag(EnemyFuseball.FLAG_SET_LANE_CCW);
+            }
           } else if (canSwitchCW) {
             this.setFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CW);
           } else {
             this.setFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CCW);
+            this.setFlag(EnemyFuseball.FLAG_SET_LANE_CCW);
           }
         }
       }
@@ -133,14 +146,16 @@ export default class EnemyFuseball extends Enemy {
     if (this.inState(EnemyFuseball.STATE_SWITCHING_LANE) && this.isFlagNotSet(EnemyFuseball.FLAG_LANE_CHANGED)) {
       this.setFlag(EnemyFuseball.FLAG_LANE_CHANGED);
       this.laneChanges++;
+    }
 
-      if (
-        this.isFlagSet(EnemyFuseball.FLAG_SWITCHING_LANE_CW)
-        || this.isFlagSet(EnemyFuseball.FLAG_SWITCHING_LANE_CCW)
-      ) {
-        let direction = this.isFlagSet(EnemyFuseball.FLAG_SWITCHING_LANE_CCW) ? 1 : -1;
-        this.setLane(this.laneId + direction);
-      }
+    if (this.isFlagSet(EnemyFuseball.FLAG_SET_LANE_CW) || this.isFlagSet(EnemyFuseball.FLAG_SET_LANE_CCW)) {
+      let direction = this.isFlagSet(EnemyFuseball.FLAG_SET_LANE_CW) ? 1 : -1;
+
+      console.log(this.state.name, this.laneId, this.laneId + direction);
+      this.setLane(this.laneId + direction);
+
+      this.unsetFlag(EnemyFuseball.FLAG_SET_LANE_CW);
+      this.unsetFlag(EnemyFuseball.FLAG_SET_LANE_CCW);
     }
 
     if (
@@ -164,6 +179,7 @@ export default class EnemyFuseball extends Enemy {
 
     if (this.inState(EnemyFuseball.STATE_SWITCHING_LANE)) {
       this.zPosition = this.zTarget;
+      this.lastLaneSwitchingProgress = this.stateProgressInTime();
 
       if (this.zPosition === 0) {
         this.setFlag(EnemyFuseball.FLAG_REACHED_TOP);
