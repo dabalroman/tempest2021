@@ -2,6 +2,7 @@ import { Group } from 'three';
 import Enemy from '@/Object/Enemies/Enemy';
 import EnemyFlipperRenderer from '@/Renderer/Enemies/EnemyFlipperRenderer';
 import EnemySpikerRenderer from '@/Renderer/Enemies/EnemySpikerRenderer';
+import EnemySpikeRenderer from '@/Renderer/Enemies/EnemySpikeRenderer';
 
 export default class EnemyRendererManager extends Group {
   /** @var {SurfaceObjectsManager} */
@@ -31,6 +32,12 @@ export default class EnemyRendererManager extends Group {
         .filter(enemy => this.surfaceObjectsManager.rendererHelperNewObjectsIds.includes(enemy.objectId))
         .forEach(enemy => {
           this.pushEnemy(enemy);
+        });
+
+      this.surfaceObjectsManager.spikes
+        .filter(spike => this.surfaceObjectsManager.rendererHelperNewObjectsIds.includes(spike.objectId))
+        .forEach(spike => {
+          this.pushEnemy(spike);
         });
 
       this.surfaceObjectsManager.rendererHelperNewObjectsIds.length = 0;
@@ -63,14 +70,14 @@ export default class EnemyRendererManager extends Group {
       // console.log(`Reusing enemy renderer #${this.enemyRenderersAvailabilityMap[enemy.type].slice(0, 1)}`);
       this.enemyRenderers[this.enemyRenderersAvailabilityMap[enemy.type].shift()].setObjectRef(enemy);
     } else {
-      // console.log(`Creating new enemy renderer #${this.enemyRenderers.length}`);
+      // console.log(`Creating new enemy renderer #${this.enemyRenderers.length} for ${enemy.type}`);
       this.enemyRenderers.push(this.enemyRendererFactory(enemy));
       this.add(this.enemyRenderers[this.enemyRenderers.length - 1]);
     }
   }
 
   /**
-   * @param {Enemy|EnemyFlipper|EnemySpiker} enemy
+   * @param {Enemy|EnemyFlipper|EnemySpiker|EnemySpike} enemy
    */
   enemyRendererFactory (enemy) {
     switch (enemy.type) {
@@ -78,6 +85,8 @@ export default class EnemyRendererManager extends Group {
         return new EnemyFlipperRenderer(enemy, this.surface);
       case Enemy.TYPE_SPIKER:
         return new EnemySpikerRenderer(enemy, this.surface);
+      case Enemy.TYPE_SPIKE:
+        return new EnemySpikeRenderer(enemy, this.surface);
       default:
         throw new Error(`Can't find constructor for enemy of type ${enemy.type}`);
     }

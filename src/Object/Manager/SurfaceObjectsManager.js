@@ -1,18 +1,24 @@
 import FIFOManager from '@/Object/Manager/FIFOManager';
+import Enemy from '@/Object/Enemies/Enemy';
+import EnemySpike from '@/Object/Enemies/EnemySpike';
 
 export default class SurfaceObjectsManager extends FIFOManager {
   /** {Surface} */
   surface;
 
-  /** {Shooters[]} */
+  /** {Shooter[]} */
   shooters = [];
   /** {Enemy[]} */
   enemies = [];
+  /** {Spike[]} */
+  spikes = [];
 
   /** {array} */
   shootersMap;
   /** {array} */
   enemiesMap;
+  /** {array} */
+  spikesMap;
 
   /** @var {number[]} */
   rendererHelperNewObjectsIds = [];
@@ -26,6 +32,7 @@ export default class SurfaceObjectsManager extends FIFOManager {
     this.surface = surface;
     this.shootersMap = new Array(this.surface.lanesAmount).fill(0).map(() => []);
     this.enemiesMap = new Array(this.surface.lanesAmount).fill(0).map(() => []);
+    this.spikesMap = new Array(this.surface.lanesAmount).fill(0).map(() => []);
   }
 
   addShooter (shooter) {
@@ -36,11 +43,27 @@ export default class SurfaceObjectsManager extends FIFOManager {
   addEnemy (enemy) {
     this.enemies.push(enemy);
     this.rendererHelperNewObjectsIds.push(this.enemies[this.enemies.length - 1].objectId);
+
+    if (enemy.type === Enemy.TYPE_SPIKER) {
+      if (this.spikesMap[enemy.laneId].length === 0) {
+        this.addSpike(new EnemySpike(enemy.surface, enemy.projectileManager, enemy.laneId));
+      }
+    }
+  }
+
+  addSpike (spike) {
+    this.spikes.push(spike);
+    this.rendererHelperNewObjectsIds.push(this.spikes[this.spikes.length - 1].objectId);
   }
 
   update () {
     this.shooters.forEach(shooter => shooter.update());
     this.enemies.forEach(enemy => enemy.update());
+
+    this.spikes.forEach(spike => {
+      spike.extendToLowestSpiker(this.enemiesMap[spike.laneId].filter(enemy => enemy.type === Enemy.TYPE_SPIKER));
+      spike.update();
+    });
 
     this.runGarbageCollector();
     this.updateObjectsMap();
@@ -49,18 +72,25 @@ export default class SurfaceObjectsManager extends FIFOManager {
   runGarbageCollector () {
     if (this.shouldTriggerGarbageCollector()) {
       const collectedEnemies = FIFOManager.garbageCollector(this.enemies);
-
       if (collectedEnemies) {
         this.forceMapsUpdate = true;
       }
 
       if (collectedEnemies) console.log(`Collected ${collectedEnemies} enemies`);
+
+      const collectedSpikes = FIFOManager.garbageCollector(this.spikes);
+      if (collectedSpikes) {
+        this.forceMapsUpdate = true;
+      }
+
+      if (collectedSpikes) console.log(`Collected ${collectedSpikes} spikes`);
     }
   }
 
   updateObjectsMap () {
     FIFOManager.updateMap(this.shooters, this.shootersMap, this.forceMapsUpdate);
     FIFOManager.updateMap(this.enemies, this.enemiesMap, this.forceMapsUpdate);
+    FIFOManager.updateMap(this.spikes, this.spikesMap, this.forceMapsUpdate);
 
     this.forceMapsUpdate = false;
   }

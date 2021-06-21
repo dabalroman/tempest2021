@@ -63,6 +63,7 @@ export default class ProjectileManager extends FIFOManager {
     this.shooterProjectiles.forEach(projectile => {
       projectile.update();
       projectile.detectCollision(this.surfaceObjectsManager.enemiesMap[projectile.laneId]);
+      projectile.detectCollision(this.surfaceObjectsManager.spikesMap[projectile.laneId]);
       projectile.detectCollision(this.enemyProjectilesMap[projectile.laneId]);
     });
 

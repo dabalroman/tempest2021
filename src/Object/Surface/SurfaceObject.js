@@ -10,6 +10,8 @@ export default class SurfaceObject {
   @readonly
   static TYPE_SPIKER = 'spiker';
   @readonly
+  static TYPE_SPIKE = 'spike';
+  @readonly
   static TYPE_TANKER = 'tanker';
   @readonly
   static TYPE_FLIPPER = 'flipper';
