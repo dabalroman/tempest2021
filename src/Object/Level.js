@@ -61,6 +61,16 @@ export default class Level {
         )
       );
     });
+
+    keyboardInput.register('KeyB', () => {
+      this.surfaceObjectsManager.addEnemy(
+        new EnemyFuseball(
+          surface,
+          this.projectileManager,
+          randomRange(0, 15)
+        )
+      );
+    });
   }
 
   update () {
