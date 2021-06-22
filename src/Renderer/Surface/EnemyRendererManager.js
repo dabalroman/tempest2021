@@ -7,6 +7,7 @@ import EnemyFlipperTankerRenderer from '@/Renderer/Enemies/EnemyFlipperTankerRen
 import EnemyFuseballRenderer from '@/Renderer/Enemies/EnemyFuseballRenderer';
 import EnemyFuseballTankerRenderer from '@/Renderer/Enemies/EnemyFuseballTankerRenderer';
 import EnemyPulsarRenderer from '@/Renderer/Enemies/EnemyPulsarRenderer';
+import EnemyPulsarTankerRenderer from '@/Renderer/Enemies/EnemyPulsarTankerRenderer';
 
 export default class EnemyRendererManager extends Group {
   /** @var {SurfaceObjectsManager} */
@@ -99,6 +100,8 @@ export default class EnemyRendererManager extends Group {
         return new EnemyFuseballTankerRenderer(enemy, this.surface);
       case Enemy.TYPE_PULSAR:
         return new EnemyPulsarRenderer(enemy, this.surface);
+      case Enemy.TYPE_PULSAR_TANKER:
+        return new EnemyPulsarTankerRenderer(enemy, this.surface);
       default:
         throw new Error(`Can't find constructor for enemy of type ${enemy.type}`);
     }
