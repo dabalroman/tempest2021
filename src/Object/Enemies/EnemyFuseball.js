@@ -185,11 +185,7 @@ export default class EnemyFuseball extends Enemy {
       }
     }
 
-    if (
-      this.isFlagNotSet(EnemyFuseball.FLAG_REACHED_TOP)
-      && !this.inState(EnemyFuseball.STATE_SWITCHING_LANE)
-      && !this.inState(EnemyFuseball.STATE_EXPLODING)
-    ) {
+    if (this.inState(EnemyFuseball.STATE_MOVING_ALONG_LINE)) {
       this.zPosition = this.zBase + (this.zTarget - this.zBase) * this.stateProgressInTime();
     }
   }
