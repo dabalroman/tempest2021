@@ -22,12 +22,33 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
   zRotationOffset = 0;
 
   /**
+   * @var {{
+   *  valid: boolean,
+   *  continuousRotationUpdate: boolean,
+   *  relativeHalfStep: number,
+   *  sourceLaneId: number,
+   *  targetLaneId: number,
+   *  rotationDirection: number
+   * }}
+   */
+  rotatingStateCache = {
+    valid: false,
+    continuousRotationUpdate: false,
+    relativeHalfStep: 0,
+    sourceLaneId: 0,
+    targetLaneId: 0,
+    rotationDirection: 0
+  };
+
+  /**
    * @param {Enemy} enemy
    * @param {Surface} surface
    * @param {string} enemyType
    */
   constructor (enemy, surface, enemyType) {
     super(enemy, surface, enemyType);
+
+    this.setLaneOffset();
   }
 
   setObjectRef (object) {
@@ -73,6 +94,40 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
     laneCenterCoords.sub(laneCoords).multiplyScalar(scalar);
 
     this.positionOffset = laneCenterCoords;
+  }
+
+  /**
+   * @param {number} rotationDirection 1 for CCW, -1 for CW
+   */
+  calculateRotationStateVariables (rotationDirection) {
+    this.rotatingStateCache.rotationDirection = rotationDirection;
+
+    this.rotatingStateCache.sourceLaneId = this.object.laneId;
+    this.rotatingStateCache.targetLaneId = this.surface.getActualLaneIdFromProjectedMovement(
+      this.object.laneId + this.rotatingStateCache.rotationDirection
+    );
+
+    let currentLaneRotation = this.surface.lanesCenterDirectionRadians[this.rotatingStateCache.sourceLaneId];
+    let targetLaneRotation = this.surface.lanesCenterDirectionRadians[this.rotatingStateCache.targetLaneId];
+    let targetRealRotation = (targetLaneRotation + Math.PI) % (Math.PI * 2);
+
+    let relativeStep;
+    if (this.rotatingStateCache.rotationDirection === 1) {
+      if (currentLaneRotation > targetRealRotation) {
+        relativeStep = currentLaneRotation - targetRealRotation;
+      } else {
+        relativeStep = currentLaneRotation + (Math.PI * 2 - targetRealRotation);
+      }
+    } else {
+      if (currentLaneRotation > targetRealRotation) {
+        relativeStep = (Math.PI * 2 - currentLaneRotation) + targetRealRotation;
+      } else {
+        relativeStep = targetRealRotation - currentLaneRotation;
+      }
+    }
+
+    this.rotatingStateCache.relativeHalfStep = relativeStep / 2;
+    this.rotatingStateCache.valid = true;
   }
 
   loadModel () {

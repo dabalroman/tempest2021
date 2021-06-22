@@ -7,15 +7,6 @@ export default class EnemyFlipperRenderer extends EnemyRenderer {
   /** @var {number} */
   xLanePosition = 0.5;
 
-  rotatingStateCache = {
-    valid: false,
-    continuousRotationUpdate: false,
-    relativeHalfStep: 0,
-    sourceLaneId: 0,
-    targetLaneId: 0,
-    rotationDirection: 0
-  };
-
   /**
    * @param {EnemyFlipper} enemyFlipper
    * @param {Surface} surface
@@ -42,7 +33,7 @@ export default class EnemyFlipperRenderer extends EnemyRenderer {
       }
 
       if (!this.rotatingStateCache.valid) {
-        this.calculateRotationStateVariables();
+        this.calculateRotationStateVariables(this.object.isFlagSet(EnemyFlipper.FLAG_ROTATION_CCW) ? 1 : -1);
       }
 
       let rotationAxisLaneId = this.object.isFlagSet(EnemyFlipper.FLAG_ROTATION_CW)
@@ -82,36 +73,5 @@ export default class EnemyFlipperRenderer extends EnemyRenderer {
 
       this.rotatingStateCache.valid = false;
     }
-  }
-
-  calculateRotationStateVariables () {
-    this.rotatingStateCache.rotationDirection = this.object.isFlagSet(EnemyFlipper.FLAG_ROTATION_CCW) ? 1 : -1;
-
-    this.rotatingStateCache.sourceLaneId = this.object.laneId;
-    this.rotatingStateCache.targetLaneId = this.surface.getActualLaneIdFromProjectedMovement(
-      this.object.laneId + this.rotatingStateCache.rotationDirection
-    );
-
-    let currentLaneRotation = this.surface.lanesCenterDirectionRadians[this.rotatingStateCache.sourceLaneId];
-    let targetLaneRotation = this.surface.lanesCenterDirectionRadians[this.rotatingStateCache.targetLaneId];
-    let targetRealRotation = (targetLaneRotation + Math.PI) % (Math.PI * 2);
-
-    let relativeStep;
-    if (this.object.isFlagSet(EnemyFlipper.FLAG_ROTATION_CW)) {
-      if (currentLaneRotation > targetRealRotation) {
-        relativeStep = (Math.PI * 2 - currentLaneRotation) + targetRealRotation;
-      } else {
-        relativeStep = targetRealRotation - currentLaneRotation;
-      }
-    } else {
-      if (currentLaneRotation > targetRealRotation) {
-        relativeStep = currentLaneRotation - targetRealRotation;
-      } else {
-        relativeStep = currentLaneRotation + (Math.PI * 2 - targetRealRotation);
-      }
-    }
-
-    this.rotatingStateCache.relativeHalfStep = relativeStep / 2;
-    this.rotatingStateCache.valid = true;
   }
 }
