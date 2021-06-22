@@ -99,7 +99,7 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
   /**
    * @param {number} rotationDirection 1 for CCW, -1 for CW
    */
-  calculateRotationStateVariables (rotationDirection) {
+  calculateRotationStateCacheVariables (rotationDirection) {
     this.rotatingStateCache.rotationDirection = rotationDirection;
 
     this.rotatingStateCache.sourceLaneId = this.object.laneId;
@@ -128,6 +128,14 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
 
     this.rotatingStateCache.relativeHalfStep = relativeStep / 2;
     this.rotatingStateCache.valid = true;
+  }
+
+  invalidateRotationStateCache () {
+    this.rotatingStateCache.valid = false;
+  }
+
+  isRotationStateCacheValid () {
+    return this.rotatingStateCache.valid;
   }
 
   loadModel () {

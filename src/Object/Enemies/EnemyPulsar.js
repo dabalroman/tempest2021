@@ -11,15 +11,15 @@ export default class EnemyPulsar extends Enemy {
   static MAX_Z_POSITION = 0.9;
 
   @readonly
-  static STATE_MOVING_ALONG_LINE = new State(1500, 1, 'moving_along_line');
+  static STATE_MOVING_ALONG_LINE = new State(1500, 0.8, 'moving_along_line');
   @readonly
-  static STATE_ROTATING_BEGIN = new State(200, 0.4, 'rotate_begin');
+  static STATE_ROTATING_BEGIN = new State(200, 1, 'rotate_begin');
   @readonly
   static STATE_ROTATING_END = new State(200, 1, 'rotate_end');
   @readonly
-  static STATE_WARNING = new State(1000, 0.4, 'warning');
+  static STATE_WARNING = new State(1000, 1, 'warning');
   @readonly
-  static STATE_PULSATING = new State(1000, 0.4, 'pulsating');
+  static STATE_PULSATING = new State(2000, 1, 'pulsating');
   @readonly
   static STATE_EXPLODING = new State(500, 1, 'exploding');
   @readonly
@@ -45,6 +45,9 @@ export default class EnemyPulsar extends Enemy {
   /** {number} */
   zTarget = 0;
 
+  /** {number} */
+  rendererHelperLaneChangesAmount = 0;
+
   /**
    * @param {Surface} surface
    * @param {ProjectileManager} projectileManager
@@ -66,6 +69,8 @@ export default class EnemyPulsar extends Enemy {
           this.isFlagSet(EnemyPulsar.FLAG_NO_WARNING) ? EnemyPulsar.STATE_PULSATING : EnemyPulsar.STATE_WARNING,
         )
       );
+
+      this.unsetFlag(EnemyPulsar.FLAG_MOVING_TARGET_CHOSEN);
 
     } else if (this.inState(EnemyPulsar.STATE_WARNING)) {
       this.setState(EnemyPulsar.STATE_PULSATING);
@@ -94,6 +99,8 @@ export default class EnemyPulsar extends Enemy {
       this.unsetFlag(EnemyPulsar.FLAG_ROTATION_CW);
       this.unsetFlag(EnemyPulsar.FLAG_ROTATION_CCW);
       this.unsetFlag(EnemyPulsar.FLAG_ROTATION_DIR_CHOSEN);
+
+      this.rendererHelperLaneChangesAmount++;
 
     } else if (this.inState(EnemyPulsar.STATE_EXPLODING)) {
       this.setState(EnemyPulsar.STATE_DEAD);
@@ -152,12 +159,10 @@ export default class EnemyPulsar extends Enemy {
       this.zTarget = randomRange(EnemyPulsar.MIN_Z_POSITION * 10, EnemyPulsar.MAX_Z_POSITION * 10) / 10;
     }
 
-    if (this.inState(EnemyPulsar.STATE_SWITCHING_LANE)) {
-      this.zPosition = this.zTarget;
-    }
-
     if (this.inState(EnemyPulsar.STATE_MOVING_ALONG_LINE)) {
       this.zPosition = this.zBase + (this.zTarget - this.zBase) * this.stateProgressInTime();
+    } else {
+      this.zPosition = this.zTarget;
     }
   }
 

@@ -4,9 +4,6 @@ import { Vector2 } from 'three';
 import Enemy from '@/Object/Enemies/Enemy';
 
 export default class EnemyFlipperRenderer extends EnemyRenderer {
-  /** @var {number} */
-  xLanePosition = 0.5;
-
   /**
    * @param {EnemyFlipper} enemyFlipper
    * @param {Surface} surface
@@ -32,8 +29,8 @@ export default class EnemyFlipperRenderer extends EnemyRenderer {
         this.rotatingStateCache.continuousRotationUpdate = false;
       }
 
-      if (!this.rotatingStateCache.valid) {
-        this.calculateRotationStateVariables(this.object.isFlagSet(EnemyFlipper.FLAG_ROTATION_CCW) ? 1 : -1);
+      if (!this.isRotationStateCacheValid()) {
+        this.calculateRotationStateCacheVariables(this.object.isFlagSet(EnemyFlipper.FLAG_ROTATION_CCW) ? 1 : -1);
       }
 
       let rotationAxisLaneId = this.object.isFlagSet(EnemyFlipper.FLAG_ROTATION_CW)
@@ -63,15 +60,17 @@ export default class EnemyFlipperRenderer extends EnemyRenderer {
       ).rotateAround(new Vector2(0, 0), this.zRotationOffset);
 
       this.positionBase = this.surface.lanesCoords[rotationAxisLaneId].clone().sub(positionRotationXYOffset);
+
     } else if (this.object.inState(EnemyFlipper.STATE_EXPLODING)) {
       //Temporary
       this.zRotationOffset++;
+
     } else {
       this.zRotationBase = this.surface.lanesCenterDirectionRadians[this.object.laneId];
       this.positionBase = this.surface.lanesMiddleCoords[this.object.laneId].clone();
       this.zRotationOffset = 0;
 
-      this.rotatingStateCache.valid = false;
+      this.invalidateRotationStateCache();
     }
   }
 }

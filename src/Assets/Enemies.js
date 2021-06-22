@@ -139,7 +139,7 @@ const enemies = ([
       0xff00cc,
       0xff00cc,
       0xff00cc,
-      0x6666ff,
+      0x00ffff,
     ],
     scale: { x: 1, y: 1, z: 1 },
     coords: [
@@ -173,14 +173,14 @@ const enemies = ([
   },
   {
     name: 'pulsar',
-    color: 0xffffff,
-    scale: {x: 1, y: 1, z: 1},
+    color: 0x00ffff,
+    scale: { x: 1, y: 1, z: 1 },
     coords: [
       [
-        {x: 0, y: 0.5}, {x: 0.2, y: 0.2},
-        {x: 0.3615, y: 0.7383}, {x: 0.5, y: 0.2},
-        {x: 0.6335, y: 0.7501}, {x: 0.8, y: 0.2},
-        {x: 1, y: 0.5},
+        { x: 0, y: 0.5 }, { x: 0.2, y: 0.2 },
+        { x: 0.3615, y: 0.7383 }, { x: 0.5, y: 0.2 },
+        { x: 0.6335, y: 0.7501 }, { x: 0.8, y: 0.2 },
+        { x: 1, y: 0.5 },
       ]
     ]
   },
