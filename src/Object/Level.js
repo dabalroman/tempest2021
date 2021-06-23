@@ -27,7 +27,7 @@ export default class Level {
     this.surfaceObjectsManager = new SurfaceObjectsManager(surface);
     this.projectileManager = new ProjectileManager(this.surfaceObjectsManager);
 
-    this.shooter = new Shooter(surface, this.projectileManager);
+    this.shooter = new Shooter(surface, this.projectileManager, this.surfaceObjectsManager, 0);
     this.surfaceObjectsManager.addShooter(this.shooter);
     this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 0));
     this.surfaceObjectsManager.addEnemy(new EnemySpiker(surface, this.projectileManager, 2));

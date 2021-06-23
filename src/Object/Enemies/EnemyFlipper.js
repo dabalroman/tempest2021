@@ -32,6 +32,8 @@ export default class EnemyFlipper extends Enemy {
   static FLAG_ROTATION_DIR_CHOSEN = 0x20;
   @readonly
   static FLAG_IMMUNE_ROTATION = 0x40;
+  @readonly
+  static FLAG_REACHED_SHOOTER = 0x80;
 
   /**
    * @param {Surface} surface
@@ -108,9 +110,13 @@ export default class EnemyFlipper extends Enemy {
         if (direction === 1) {
           this.setFlag(EnemyFlipper.FLAG_ROTATION_CCW);
           this.unsetFlag(EnemyFlipper.FLAG_ROTATION_CW);
+          this.unsetFlag(EnemyFlipper.FLAG_REACHED_SHOOTER);
         } else if (direction === -1) {
           this.setFlag(EnemyFlipper.FLAG_ROTATION_CW);
           this.unsetFlag(EnemyFlipper.FLAG_ROTATION_CCW);
+          this.unsetFlag(EnemyFlipper.FLAG_REACHED_SHOOTER);
+        } else {
+          this.setFlag(EnemyFlipper.FLAG_REACHED_SHOOTER);
         }
       } else {
         if (this.isFlagNotSet(EnemyFlipper.FLAG_ROTATION_CW) && this.isFlagNotSet(EnemyFlipper.FLAG_ROTATION_CCW)) {

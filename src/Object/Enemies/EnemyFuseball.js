@@ -41,6 +41,8 @@ export default class EnemyFuseball extends Enemy {
   static FLAG_MOVING_TARGET_CHOSEN = 0x80;
   @readonly
   static FLAG_IMMUNE = 0x100;
+  @readonly
+  static FLAG_REACHED_SHOOTER = 0x200;
 
   /** {number} */
   zBase = 0;
@@ -116,9 +118,14 @@ export default class EnemyFuseball extends Enemy {
           this.setFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CCW);
           this.setFlag(EnemyFuseball.FLAG_SET_LANE_CCW);
           this.unsetFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CW);
+          this.unsetFlag(EnemyFuseball.FLAG_REACHED_SHOOTER);
         } else if (direction === 1) {
           this.setFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CW);
+          this.setFlag(EnemyFuseball.FLAG_SET_LANE_CW);
           this.unsetFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CCW);
+          this.unsetFlag(EnemyFuseball.FLAG_REACHED_SHOOTER);
+        } else {
+          this.setFlag(EnemyFuseball.FLAG_REACHED_SHOOTER);
         }
       } else {
         if (

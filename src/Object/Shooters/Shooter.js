@@ -2,6 +2,9 @@ import readonly from '@/utils/readonly';
 import SurfaceObject from '@/Object/Surface/SurfaceObject';
 import ShootingSurfaceObject from '@/Object/Surface/ShootingSurfaceObject';
 import State from '@/Object/Enemies/State';
+import EnemyFlipper from '@/Object/Enemies/EnemyFlipper';
+import Enemy from '@/Object/Enemies/Enemy';
+import EnemyFuseball from '@/Object/Enemies/EnemyFuseball';
 
 export default class Shooter extends ShootingSurfaceObject {
   @readonly
@@ -24,13 +27,19 @@ export default class Shooter extends ShootingSurfaceObject {
   /** @var {number} */
   laneChangeTimeoutMs;
 
+  /** {SurfaceObjectsManager} */
+  surfaceObjectsManager;
+
   /**
    * @param {Surface} surface
    * @param {ProjectileManager} projectileManager
+   * @param {SurfaceObjectsManager} surfaceObjectsManager
    * @param {number} laneId
    */
-  constructor (surface, projectileManager, laneId = 0) {
+  constructor (surface, projectileManager, surfaceObjectsManager, laneId = 0) {
     super(surface, projectileManager, laneId, SurfaceObject.TYPE_SHOOTER);
+
+    this.surfaceObjectsManager = surfaceObjectsManager;
 
     this.shootTimeoutMs = Shooter.SHOOT_TIMEOUT_MS;
     this.laneChangeTimeoutMs = Shooter.LANE_CHANGE_TIMEOUT_MS;
@@ -46,12 +55,29 @@ export default class Shooter extends ShootingSurfaceObject {
 
     if (this.isFlagNotSet(Shooter.FLAG_ITS_ALREADY_TOO_LATE)) {
       this.handleShortedLanes();
+      this.handleCaptureByEnemy();
     }
   }
 
   handleShortedLanes () {
     if (this.surface.isLaneShorted(this.laneId)) {
       this.shockedByPulsar();
+    }
+  }
+
+  handleCaptureByEnemy () {
+    let enemiesMapRef = this.surfaceObjectsManager.enemiesMap[this.laneId];
+
+    if (enemiesMapRef.length > 0) {
+      enemiesMapRef.forEach(enemy => {
+        if (enemy.type === Enemy.TYPE_FLIPPER && enemy.isFlagSet(EnemyFlipper.FLAG_REACHED_SHOOTER)) {
+          this.capturedByFlipper();
+        }
+
+        if (enemy.type === Enemy.TYPE_FUSEBALL && enemy.isFlagSet(EnemyFuseball.FLAG_REACHED_SHOOTER)) {
+          this.capturedByFuseball();
+        }
+      });
     }
   }
 
@@ -82,8 +108,7 @@ export default class Shooter extends ShootingSurfaceObject {
   hitByProjectile () {
     console.log('BOOM! (projectile)');
 
-    this.setState(Shooter.STATE_EXPLODING);
-    this.hittable = false;
+    this.die();
   }
 
   capturedByFlipper () {
