@@ -75,6 +75,8 @@ export default class EnemyPulsar extends Enemy {
     } else if (this.inState(EnemyPulsar.STATE_WARNING)) {
       this.setState(EnemyPulsar.STATE_PULSATING);
 
+      this.surface.shortLane(this.laneId);
+
     } else if (this.inState(EnemyPulsar.STATE_PULSATING)) {
       this.setState(
         State.drawNextState(
@@ -83,6 +85,8 @@ export default class EnemyPulsar extends Enemy {
           this.isFlagSet(EnemyPulsar.FLAG_NO_WARNING) ? EnemyPulsar.STATE_PULSATING : EnemyPulsar.STATE_WARNING,
         )
       );
+
+      this.surface.unshortLane(this.laneId, false);
 
     } else if (this.inState(EnemyPulsar.STATE_ROTATING_BEGIN)) {
       this.setState(EnemyPulsar.STATE_ROTATING_END);
@@ -116,7 +120,7 @@ export default class EnemyPulsar extends Enemy {
       this.setFlag(EnemyPulsar.FLAG_ROTATION_DIR_CHOSEN);
 
       if (this.isFlagSet(EnemyPulsar.FLAG_REACHED_TOP)) {
-        let direction = this.surface.getShortestPathDirection(this.laneId, this.surface.activeLane);
+        let direction = this.surface.getShortestPathDirection(this.laneId, this.surface.activeLaneId);
 
         if (direction === 1) {
           this.setFlag(EnemyPulsar.FLAG_ROTATION_CCW);

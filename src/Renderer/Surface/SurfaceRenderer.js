@@ -10,6 +10,8 @@ export default class SurfaceRenderer extends Group {
   static ACTIVE_LANE_COLOR = 0xffff00;
   @readonly
   static DEFAULT_LANE_COLOR = 0x0000ff;
+  @readonly
+  static SHORTED_LANE_COLOR = 0xffffff;
 
   /** @var {string} **/
   type = 'Group';
@@ -26,13 +28,13 @@ export default class SurfaceRenderer extends Group {
   lanesLines = [];
   /** @var {Line[]} **/
   lanesConnectors = [];
-  /** @var {?number} lastActiveLane */
-  lastActiveLane = null;
 
-  /** @var {LineBasicMaterial} **/
+  /** @var {LineBasicMaterial} */
   laneActiveMaterial;
-  /** @var {LineBasicMaterial} **/
+  /** @var {LineBasicMaterial} */
   laneDefaultMaterial;
+  /** @var {LineBasicMaterial} */
+  laneShortedMaterial;
 
   /**
    * @constructor
@@ -57,16 +59,34 @@ export default class SurfaceRenderer extends Group {
   }
 
   update () {
-    if (this.lastActiveLane === this.surface.activeLane) {
-      return;
+    let activeLaneId = this.surface.activeLaneId;
+
+    //Normal lanes
+    for (let i = 0; i < this.surface.lanesAmount; i++) {
+      this.setLinesAppearance(i, this.laneDefaultMaterial);
+      this.setConnectorsAppearance(i, this.laneDefaultMaterial);
     }
 
-    if (this.lastActiveLane !== null) {
-      this.setLaneMaterial(this.lastActiveLane, this.laneDefaultMaterial);
-    }
-    this.setLaneMaterial(this.surface.activeLane, this.laneActiveMaterial, false);
+    //Active lane
+    this.setConnectorsAppearance(activeLaneId, this.laneActiveMaterial);
+    this.setLinesAppearance(activeLaneId, this.laneActiveMaterial);
+    this.setLinesAppearance(activeLaneId + 1, this.laneActiveMaterial);
 
-    this.lastActiveLane = this.surface.activeLane;
+    //Shorted lanes
+    let shortedLanesIds = this.surface.shortedLanes
+      .map((shortedStrength, laneId) => (shortedStrength > 0 ? laneId : -1))
+      .filter(laneId => laneId !== -1);
+
+    for (let i = 0; i < shortedLanesIds.length; i++) {
+      let thisLaneId = shortedLanesIds[i];
+      let prevShortedLaneId = (i - 1 >= 0) ? shortedLanesIds[i - 1] : shortedLanesIds[shortedLanesIds.length - 1];
+
+      this.setConnectorsAppearance(thisLaneId, this.laneShortedMaterial, false);
+
+      let hole = prevShortedLaneId + 1 === thisLaneId;
+      this.setLinesAppearance(shortedLanesIds[i], this.laneShortedMaterial, !hole);
+      this.setLinesAppearance(shortedLanesIds[i] + 1, this.laneShortedMaterial, true);
+    }
   }
 
   createLanes () {
@@ -80,6 +100,7 @@ export default class SurfaceRenderer extends Group {
 
     this.laneDefaultMaterial = new LineBasicMaterial({ color: SurfaceRenderer.DEFAULT_LANE_COLOR });
     this.laneActiveMaterial = new LineBasicMaterial({ color: SurfaceRenderer.ACTIVE_LANE_COLOR });
+    this.laneShortedMaterial = new LineBasicMaterial({ color: SurfaceRenderer.SHORTED_LANE_COLOR });
 
     for (let i = 0; i < this.getAmountOfLanes(); i++) {
       let current = this.surface.lanesCoords[i];
@@ -143,17 +164,30 @@ export default class SurfaceRenderer extends Group {
   }
 
   /**
-   * @param {number} laneId
+   * @param {number} connectorId
    * @param {LineBasicMaterial} material
-   * @param {boolean} frontConnectorVisible
+   * @param {boolean} visible
    */
-  setLaneMaterial (laneId, material, frontConnectorVisible = true) {
-    this.lanesLines[laneId].material = material;
-    this.lanesLines[(laneId + 1) % this.getAmountOfLanes()].material = material;
-    this.lanesConnectors[laneId * 2].material = material;
-    this.lanesConnectors[laneId * 2 + 1].material = material;
+  setConnectorsAppearance (connectorId, material, visible = true) {
+    connectorId %= this.surface.lanesAmount;
 
-    this.lanesConnectors[laneId * 2].visible = frontConnectorVisible;
+    this.lanesConnectors[connectorId * 2].material = material;
+    this.lanesConnectors[connectorId * 2 + 1].material = material;
+
+    this.lanesConnectors[connectorId * 2].visible = visible;
+    this.lanesConnectors[connectorId * 2 + 1].visible = visible;
+  }
+
+  /**
+   * @param {number} lineId
+   * @param {LineBasicMaterial} material
+   * @param {boolean} visible
+   */
+  setLinesAppearance (lineId, material, visible = true) {
+    lineId %= this.surface.lanesAmount;
+
+    this.lanesLines[lineId].material = material;
+    this.lanesLines[lineId].visible = visible;
   }
 
   /**

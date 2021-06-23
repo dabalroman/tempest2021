@@ -103,7 +103,7 @@ export default class EnemyFlipper extends Enemy {
       this.setFlag(EnemyFlipper.FLAG_ROTATION_DIR_CHOSEN);
 
       if (this.isFlagSet(EnemyFlipper.FLAG_REACHED_TOP)) {
-        let direction = this.surface.getShortestPathDirection(this.laneId, this.surface.activeLane);
+        let direction = this.surface.getShortestPathDirection(this.laneId, this.surface.activeLaneId);
 
         if (direction === 1) {
           this.setFlag(EnemyFlipper.FLAG_ROTATION_CCW);

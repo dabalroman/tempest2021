@@ -108,7 +108,7 @@ export default class EnemyFuseball extends Enemy {
       this.setFlag(EnemyFuseball.FLAG_SWITCHING_DIR_CHOSEN);
 
       if (this.isFlagSet(EnemyFuseball.FLAG_REACHED_TOP)) {
-        let direction = this.surface.getShortestPathDirection(this.laneId, this.surface.activeLane);
+        let direction = this.surface.getShortestPathDirection(this.laneId, this.surface.activeLaneId);
 
         if (direction === -1) {
           this.setFlag(EnemyFuseball.FLAG_SWITCHING_LANE_CCW);

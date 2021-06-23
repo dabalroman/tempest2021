@@ -12,6 +12,11 @@ export default class Surface {
   isOpen;
   /** @var {number} lanesAmount */
   lanesAmount;
+  /** @var {number} activeLaneId */
+  activeLaneId;
+  /** @var {number} depth */
+  depth;
+
   /** @var {Vector2[]} rawLanesCoords */
   rawLanesCoords;
   /** @var {Vector2[]} rawLanesCoords */
@@ -20,10 +25,9 @@ export default class Surface {
   lanesMiddleCoords;
   /** @var {number[]} lanesCenterDirectionRadians */
   lanesCenterDirectionRadians;
-  /** @var {number} activeLane */
-  activeLane;
-  /** @var {number} depth */
-  depth;
+
+  /** @var {number[]} shortedLanes */
+  shortedLanes;
 
   /**
    * @param {string} name
@@ -35,8 +39,10 @@ export default class Surface {
     this.isOpen = isOpen;
     this.rawLanesCoords = lanesCoords;
     this.lanesAmount = lanesCoords.length - (isOpen ? 1 : 0);
-    this.activeLane = 0;
+    this.activeLaneId = 0;
     this.depth = 20;
+
+    this.shortedLanes = new Array(this.lanesAmount).fill(0);
 
     this.calculateCenteredLanesCoords();
     this.calculateLanesCenterCoords();
@@ -129,7 +135,23 @@ export default class Surface {
    * @param {number} desiredActiveLane
    */
   setActiveLane (desiredActiveLane) {
-    this.activeLane = this.getActualLaneIdFromProjectedMovement(desiredActiveLane);
+    this.activeLaneId = this.getActualLaneIdFromProjectedMovement(desiredActiveLane);
+  }
+
+  shortLane (laneId) {
+    this.shortedLanes[laneId]++;
+  }
+
+  unshortLane (laneId) {
+    this.shortedLanes[laneId]--;
+  }
+
+  /**
+   * @param {number} laneId
+   * @return {boolean}
+   */
+  isLaneShorted (laneId) {
+    return this.shortedLanes[laneId] >= 0;
   }
 
   /**
