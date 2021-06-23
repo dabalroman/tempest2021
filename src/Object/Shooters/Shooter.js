@@ -153,7 +153,7 @@ export default class Shooter extends ShootingSurfaceObject {
   }
 
   fireSuperzapper () {
-    if (this.isFlagNotSet(Shooter.FLAG_SUPERZAPPER_USED)) {
+    if (this.inState(Shooter.STATE_ALIVE) && this.isFlagNotSet(Shooter.FLAG_SUPERZAPPER_USED)) {
       this.setFlag(Shooter.FLAG_SUPERZAPPER_USED);
 
       this.surfaceObjectsManager.handleSuperzapper();
