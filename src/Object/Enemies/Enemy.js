@@ -2,15 +2,13 @@ import readonly from '@/utils/readonly';
 import ShootingSurfaceObject from '@/Object/Surface/ShootingSurfaceObject';
 
 export default class Enemy extends ShootingSurfaceObject {
-  // @readonly
-  // static LANE_CHANGE_TIMEOUT_MS = 50;
   @readonly
   static SHOOT_TIMEOUT_MS = 100;
 
   /** @var {number} */
   firstLevel;
   /** @var {boolean} */
-  canShoot = false;
+  canShoot = true;
 
   /**
    * @param {Surface} surface
@@ -21,9 +19,9 @@ export default class Enemy extends ShootingSurfaceObject {
   constructor (surface, projectileManager, laneId, type) {
     super(surface, projectileManager, laneId, type);
 
-    this.shootTimeoutMs = Enemy.SHOOT_TIMEOUT_MS;
-    // this.laneChangeTimeoutMs = Enemy.LANE_CHANGE_TIMEOUT_MS;
     this.zPosition = 1;
+
+    this.shootTimeoutMs = Enemy.SHOOT_TIMEOUT_MS;
 
     if (this.constructor === Enemy) {
       throw new Error('Abstract classes can\'t be instantiated.');

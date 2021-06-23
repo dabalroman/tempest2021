@@ -32,6 +32,7 @@ export default class EnemyTanker extends Enemy {
     this.surfaceObjectsManager = surfaceObjectsManager;
 
     this.firstLevel = 1;
+
     this.zSpeed = -randomRange(3, 6) * 0.001;
     this.setState(EnemyTanker.STATE_IDLE);
   }
@@ -82,6 +83,7 @@ export default class EnemyTanker extends Enemy {
   die () {
     this.setState(EnemyTanker.STATE_EXPLODING);
     this.hittable = false;
+    this.canShoot = false;
     this.clearFlags();
   }
 

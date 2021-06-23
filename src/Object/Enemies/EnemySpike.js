@@ -17,9 +17,6 @@ export default class EnemySpike extends Enemy {
   @readonly
   static STATE_DEAD = new State(0, 1, 'dead');
 
-  /** @bar {boolean} */
-  canExplode = false;
-
   /** {number} */
   rendererHelperZPositionChanged = false;
 
@@ -30,6 +27,9 @@ export default class EnemySpike extends Enemy {
    */
   constructor (surface, projectileManager, laneId = 0) {
     super(surface, projectileManager, laneId, SurfaceObject.TYPE_SPIKE);
+
+    this.canShoot = false;
+    this.canExplode = false;
   }
 
   updateState () {

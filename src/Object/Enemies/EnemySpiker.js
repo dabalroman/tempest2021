@@ -84,6 +84,7 @@ export default class EnemySpiker extends Enemy {
   die () {
     this.setState(EnemySpiker.STATE_EXPLODING);
     this.hittable = false;
+    this.canShoot = false;
     this.clearFlags();
   }
 }

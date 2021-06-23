@@ -43,9 +43,13 @@ export default class Shooter extends ShootingSurfaceObject {
 
     this.surfaceObjectsManager = surfaceObjectsManager;
 
+    this.zPosition = 0;
+
     this.shootTimeoutMs = Shooter.SHOOT_TIMEOUT_MS;
     this.laneChangeTimeoutMs = Shooter.LANE_CHANGE_TIMEOUT_MS;
-    this.zPosition = 0;
+
+    this.surface.setActiveLane(laneId);
+    this.setState(Shooter.STATE_ALIVE);
   }
 
   update () {
@@ -87,6 +91,10 @@ export default class Shooter extends ShootingSurfaceObject {
    * @param {number} desiredLane
    */
   moveToLane (desiredLane) {
+    if (!this.inState(Shooter.STATE_ALIVE)) {
+      return;
+    }
+
     let now = Date.now();
 
     if (now - this.lastLaneChangeTimestamp < Shooter.LANE_CHANGE_TIMEOUT_MS) {
@@ -141,6 +149,7 @@ export default class Shooter extends ShootingSurfaceObject {
     this.setState(Shooter.STATE_EXPLODING);
     this.setFlag(Shooter.FLAG_ITS_ALREADY_TOO_LATE);
     this.hittable = false;
+    this.canShoot = false;
   }
 
   fireSuperzapper () {

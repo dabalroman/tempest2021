@@ -57,6 +57,7 @@ export default class EnemyPulsar extends Enemy {
     super(surface, projectileManager, laneId, SurfaceObject.TYPE_PULSAR);
 
     this.firstLevel = 1;
+
     this.setState(EnemyPulsar.STATE_MOVING_ALONG_LINE);
   }
 
@@ -188,6 +189,7 @@ export default class EnemyPulsar extends Enemy {
 
     this.setState(EnemyPulsar.STATE_EXPLODING);
     this.hittable = false;
+    this.canShoot = false;
     this.clearFlags();
   }
 }

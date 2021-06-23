@@ -44,6 +44,7 @@ export default class EnemyFlipper extends Enemy {
     super(surface, projectileManager, laneId, SurfaceObject.TYPE_FLIPPER);
 
     this.firstLevel = 1;
+
     this.zSpeed = -randomRange(3, 6) * 0.001;
     this.setState(EnemyFlipper.STATE_IDLE);
   }
@@ -161,6 +162,7 @@ export default class EnemyFlipper extends Enemy {
   die () {
     this.setState(EnemyFlipper.STATE_EXPLODING);
     this.hittable = false;
+    this.canShoot = false;
     this.clearFlags();
   }
 }

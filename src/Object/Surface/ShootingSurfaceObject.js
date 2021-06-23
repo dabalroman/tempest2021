@@ -13,6 +13,9 @@ export default class ShootingSurfaceObject extends SurfaceObject {
   /** @var {number} */
   shootTimeoutMs;
 
+  /** @var {boolean} */
+  canShoot = true;
+
   /**
    * @param {Surface} surface
    * @param {ProjectileManager} projectileManager
@@ -27,6 +30,10 @@ export default class ShootingSurfaceObject extends SurfaceObject {
   }
 
   fire () {
+    if (!this.canShoot) {
+      return;
+    }
+
     let now = Date.now();
 
     if (now - this.lastShootTimestamp < this.shootTimeoutMs) {
