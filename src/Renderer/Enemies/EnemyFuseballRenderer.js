@@ -17,7 +17,7 @@ export default class EnemyFuseballRenderer extends EnemyRenderer {
     super(enemySpiker, surface, Enemy.TYPE_FUSEBALL);
   }
 
-  updatePosition () {
+  updateState () {
     // noinspection JSValidateTypes
     /** @var {EnemyFuseball} */
     let fuseball = this.object;

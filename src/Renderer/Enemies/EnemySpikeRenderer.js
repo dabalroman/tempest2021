@@ -15,7 +15,7 @@ export default class EnemySpikeRenderer extends EnemyRenderer {
     super(enemySpike, surface, Enemy.TYPE_SPIKE);
   }
 
-  updatePosition () {
+  updateState () {
     // noinspection JSUnresolvedFunction
     if (this.object.shouldRerenderSpikeDueToSpikeLengthChange()) {
       this.updateModel();

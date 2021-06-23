@@ -12,7 +12,7 @@ export default class EnemyFlipperRenderer extends EnemyRenderer {
     super(enemyFlipper, surface, Enemy.TYPE_FLIPPER);
   }
 
-  updatePosition () {
+  updateState () {
     if (
       (this.object.inState(EnemyFlipper.STATE_ROTATING_BEGIN) || this.object.inState(EnemyFlipper.STATE_ROTATING_END))
       && (this.object.isFlagSet(EnemyFlipper.FLAG_ROTATION_CW) || this.object.isFlagSet(EnemyFlipper.FLAG_ROTATION_CCW))

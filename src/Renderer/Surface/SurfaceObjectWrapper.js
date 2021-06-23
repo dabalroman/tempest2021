@@ -52,6 +52,7 @@ export default class SurfaceObjectWrapper extends Group {
     }
 
     this.manageVisibility();
+    this.updateState();
     this.move();
     this.rotate();
   }
@@ -95,6 +96,10 @@ export default class SurfaceObjectWrapper extends Group {
 
   setVisualsToExplode () {
     throw new Error('Method \'setVisualsToExplode()\' must be implemented.');
+  }
+
+  updateState () {
+    throw new Error('Method \'updateState()\' must be implemented.');
   }
 
   move () {

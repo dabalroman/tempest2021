@@ -31,6 +31,8 @@ export default class ProjectileRenderer extends SurfaceObjectWrapper {
     }
   }
 
+  updateState () {}
+
   move () {
     this.position.z = this.object.zPosition * this.surface.depth;
   }

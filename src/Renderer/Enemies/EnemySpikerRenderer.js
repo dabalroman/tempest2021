@@ -15,7 +15,7 @@ export default class EnemySpikerRenderer extends EnemyRenderer {
     super(enemySpiker, surface, Enemy.TYPE_SPIKER);
   }
 
-  updatePosition () {
+  updateState () {
     this.positionBase = this.surface.lanesMiddleCoords[this.object.laneId].clone();
     this.zRotationBase = this.surface.lanesCenterDirectionRadians[this.object.laneId];
 

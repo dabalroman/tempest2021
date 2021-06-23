@@ -26,7 +26,7 @@ export default class EnemyPulsarRenderer extends EnemyRenderer {
     super(enemyPulsar, surface, Enemy.TYPE_PULSAR);
   }
 
-  updatePosition () {
+  updateState () {
     if (
       (this.object.inState(EnemyPulsar.STATE_ROTATING_BEGIN) || this.object.inState(EnemyPulsar.STATE_ROTATING_END))
       && (this.object.isFlagSet(EnemyPulsar.FLAG_ROTATION_CW) || this.object.isFlagSet(EnemyPulsar.FLAG_ROTATION_CCW))

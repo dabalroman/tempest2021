@@ -61,21 +61,6 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
     super.setObjectRef(object);
   }
 
-  update () {
-    if (this.object === null) {
-      return;
-    }
-
-    this.manageVisibility();
-    this.updatePosition();
-    this.move();
-    this.rotate();
-  }
-
-  updatePosition () {
-    throw new Error('Method \'updatePosition()\' must be implemented.');
-  }
-
   setVisualsToNormal () {
     this.modelGroup.visible = true;
     this.modelGroup.scale.set(1, 1, 1);

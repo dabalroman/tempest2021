@@ -11,7 +11,7 @@ export default class EnemyPulsarTankerRenderer extends EnemyRenderer {
     super(enemyFlipperTanker, surface, Enemy.TYPE_PULSAR_TANKER);
   }
 
-  updatePosition () {
+  updateState () {
     this.positionBase = this.surface.lanesMiddleCoords[this.object.laneId].clone();
     this.zRotationBase = this.surface.lanesCenterDirectionRadians[this.object.laneId];
 

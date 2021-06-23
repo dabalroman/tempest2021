@@ -17,6 +17,8 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
   static MODEL_Z_OFFSET = -0.3;
   @readonly
   static SHOOTER_WIREFRAME_COLOR = 0xffff00;
+  @readonly
+  static EXPLOSION_ROTATION_SPEED = 0.03;
 
   /** @var {number} */
   positionChangeSpeed = 0.3;
@@ -33,6 +35,30 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
 
   setVisualsToExplode () {
     this.explosionGroup.visible = true;
+  }
+
+  updateState () {
+    if (this.object.inState(Shooter.STATE_EXPLODING)) {
+      this.explodeAnimation();
+    } else {
+      this.setVisualsToNormal();
+    }
+  }
+
+  explodeAnimation () {
+    this.setVisualsToExplode();
+    this.zRotationOffset += ShooterRenderer.EXPLOSION_ROTATION_SPEED;
+
+    let scale = Math.pow(this.object.stateProgressInTime() * 2 - 1, 4);
+    let explosionScale = 1 - scale;
+    this.explosionGroup.scale.set(explosionScale, explosionScale, explosionScale);
+
+    if (this.object.stateProgressInTime() <= 0.5) {
+      let modelScale = scale;
+      this.modelGroup.scale.set(modelScale, modelScale, modelScale);
+    } else {
+      this.modelGroup.visible = false;
+    }
   }
 
   move () {
