@@ -86,7 +86,9 @@ export default class EnemyPulsar extends Enemy {
         )
       );
 
-      this.surface.unshortLane(this.laneId, false);
+      if (!this.inState(EnemyPulsar.STATE_PULSATING)) {
+        this.surface.unshortLane(this.laneId, false);
+      }
 
     } else if (this.inState(EnemyPulsar.STATE_ROTATING_BEGIN)) {
       this.setState(EnemyPulsar.STATE_ROTATING_END);
@@ -176,6 +178,10 @@ export default class EnemyPulsar extends Enemy {
   }
 
   hitByProjectile () {
+    if (this.inState(EnemyPulsar.STATE_PULSATING)) {
+      this.surface.unshortLane(this.laneId, false);
+    }
+
     this.setState(EnemyPulsar.STATE_EXPLODING);
     this.hittable = false;
     this.clearFlags();

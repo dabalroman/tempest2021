@@ -99,7 +99,7 @@ export default class EnemyPulsarRenderer extends EnemyRenderer {
     }
 
     if (this.object.inState(EnemyPulsar.STATE_PULSATING)) {
-      scale += (1 + Math.sin(this.object.stateProgressInTime() * Math.PI * 7.5)) * EnemyPulsarRenderer.PULSE_Y_SCALE;
+      scale += (1 + Math.sin(this.object.stateProgressInTime() * Math.PI * 11.6)) * EnemyPulsarRenderer.PULSE_Y_SCALE;
     }
 
     if (this.object.isFlagSet(EnemyPulsar.FLAG_ROTATION_CCW)) {
