@@ -58,7 +58,7 @@ export default class SurfaceObjectsManager extends FIFOManager {
         this.spikesMap[enemy.laneId].length === 0
         || this.spikesMap[enemy.laneId].length === this.spikesMap[enemy.laneId].filter(spike => !spike.alive).length
       ) {
-        this.addSpike(new EnemySpike(enemy.surface, enemy.projectileManager, enemy.laneId));
+        this.addSpike(new EnemySpike(enemy.surface, enemy.projectileManager, enemy.rewardCallback, enemy.laneId));
       }
     }
   }
@@ -104,5 +104,23 @@ export default class SurfaceObjectsManager extends FIFOManager {
 
   handleSuperzapper () {
     this.enemies.forEach(enemy => {enemy.die();});
+  }
+
+  removeEnemies () {
+    this.enemies.forEach(enemy => {enemy.disappear();});
+  }
+
+  removeSpikes () {
+    this.spikes.forEach(enemy => {enemy.disappear();});
+  }
+
+  removeShooters () {
+    this.shooters.forEach(shooter => {shooter.disappear();});
+  }
+
+  purgePlayField () {
+    this.removeEnemies();
+    this.removeSpikes();
+    this.removeShooters();
   }
 }

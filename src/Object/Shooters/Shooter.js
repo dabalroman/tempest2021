@@ -53,6 +53,11 @@ export default class Shooter extends ShootingSurfaceObject {
   }
 
   update () {
+    if (this.alive === false) {
+      this.setState(Shooter.STATE_DEAD);
+      return;
+    }
+
     if (this.canChangeState()) {
       if (this.inState(Shooter.STATE_EXPLODING)) {
         this.setState(Shooter.STATE_DEAD);
@@ -117,39 +122,43 @@ export default class Shooter extends ShootingSurfaceObject {
 
   hitByProjectile () {
     console.log('BOOM! (projectile)');
-
+    this.setState(Shooter.STATE_EXPLODING);
     this.die();
   }
 
   capturedByFlipper () {
     console.log('BAM! (flipper)');
-
+    this.setState(Shooter.STATE_EXPLODING);
     this.die();
   }
 
   capturedByFuseball () {
     console.log('POW! (fuseball)');
-
+    this.setState(Shooter.STATE_EXPLODING);
     this.die();
   }
 
   impaledOnSpike () {
     console.log('SPUT! (spike)');
-
+    this.setState(Shooter.STATE_EXPLODING);
     this.die();
   }
 
   shockedByPulsar () {
     console.log('BZZZT! (pulsar)');
-
+    this.setState(Shooter.STATE_EXPLODING);
     this.die();
   }
 
   die () {
-    this.setState(Shooter.STATE_EXPLODING);
     this.setFlag(Shooter.FLAG_ITS_ALREADY_TOO_LATE);
     this.hittable = false;
     this.canShoot = false;
+  }
+
+  disappear () {
+    this.alive = false;
+    this.die();
   }
 
   fireSuperzapper () {

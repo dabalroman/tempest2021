@@ -34,6 +34,8 @@ export default class EnemySpike extends Enemy {
 
     this.canShoot = false;
     this.canExplode = false;
+
+    this.setState(EnemySpike.STATE_ALIVE);
   }
 
   updateState () {
@@ -79,6 +81,8 @@ export default class EnemySpike extends Enemy {
 
     if (this.zPosition + EnemySpike.HIT_DESTROYED_LENGTH >= 1) {
       this.die();
+    } else {
+      this.rewardCallback(this.valueInPoints);
     }
   }
 

@@ -85,6 +85,10 @@ export default class SurfaceObject {
     this.die();
   }
 
+  disappear () {
+    this.alive = false;
+  }
+
   /**
    * @param {number} laneId
    */
