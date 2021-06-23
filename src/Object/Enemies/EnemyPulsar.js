@@ -171,7 +171,7 @@ export default class EnemyPulsar extends Enemy {
 
     if (this.inState(EnemyPulsar.STATE_MOVING_ALONG_LINE)) {
       this.zPosition = this.zBase + (this.zTarget - this.zBase) * this.stateProgressInTime();
-    } else {
+    } else if (!this.inState(EnemyPulsar.STATE_EXPLODING)) {
       this.zPosition = this.zTarget;
     }
   }
