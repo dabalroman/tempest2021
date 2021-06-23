@@ -43,6 +43,8 @@ export default class SurfaceObject {
   alive = true;
   /** @var {boolean} */
   hittable = true;
+  /** @bar {boolean} */
+  canExplode = true;
 
   /** @var {number} */
   zPosition = 0;

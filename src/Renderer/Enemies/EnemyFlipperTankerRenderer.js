@@ -16,8 +16,7 @@ export default class EnemyFlipperTankerRenderer extends EnemyRenderer {
     this.zRotationBase = this.surface.lanesCenterDirectionRadians[this.object.laneId];
 
     if (this.object.inState(EnemyTanker.STATE_EXPLODING)) {
-      //Temporary
-      this.zRotationOffset--;
+      this.explodeAnimation();
     }
   }
 }

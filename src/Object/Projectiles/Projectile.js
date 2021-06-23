@@ -12,6 +12,9 @@ export default class Projectile extends SurfaceObject {
   @readonly
   static SOURCE_ENEMY = -1;
 
+  /** @bar {boolean} */
+  canExplode = false;
+
   /** @var {number} */
   source;
 

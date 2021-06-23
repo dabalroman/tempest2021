@@ -36,8 +36,7 @@ export default class EnemyFuseballRenderer extends EnemyRenderer {
     }
 
     if (fuseball.inState(EnemyFuseball.STATE_EXPLODING)) {
-      //Temporary
-      this.zRotationOffset--;
+      this.explodeAnimation();
     } else {
       this.zRotationOffset += EnemyFuseballRenderer.ROTATION_SPEED;
     }

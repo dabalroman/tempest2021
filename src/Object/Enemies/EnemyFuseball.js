@@ -19,7 +19,7 @@ export default class EnemyFuseball extends Enemy {
   @readonly
   static STATE_SWITCHING_LANE = new State(2000, 1, 'switching_lane');
   @readonly
-  static STATE_EXPLODING = new State(500, 1, 'exploding');
+  static STATE_EXPLODING = new State(1000, 1, 'exploding');
   @readonly
   static STATE_DEAD = new State(0, 1, 'dead');
 
@@ -99,7 +99,9 @@ export default class EnemyFuseball extends Enemy {
       this.alive = false;
     }
 
-    this.hittable = !this.isFlagSet(EnemyFuseball.FLAG_IMMUNE);
+    if (!this.inState(EnemyFuseball.STATE_EXPLODING)) {
+      this.hittable = !this.isFlagSet(EnemyFuseball.FLAG_IMMUNE);
+    }
 
     if (
       this.inState(EnemyFuseball.STATE_SWITCHING_LANE)
@@ -197,7 +199,7 @@ export default class EnemyFuseball extends Enemy {
 
   hitByProjectile () {
     this.setState(EnemyFuseball.STATE_EXPLODING);
-    this.setFlag(EnemyFuseball.FLAG_IMMUNE);
+
     this.hittable = false;
     this.clearFlags();
   }

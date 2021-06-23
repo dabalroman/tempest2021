@@ -21,7 +21,7 @@ export default class EnemyPulsar extends Enemy {
   @readonly
   static STATE_PULSATING = new State(2000, 1, 'pulsating');
   @readonly
-  static STATE_EXPLODING = new State(500, 1, 'exploding');
+  static STATE_EXPLODING = new State(1000, 1, 'exploding');
   @readonly
   static STATE_DEAD = new State(0, 1, 'dead');
 
@@ -183,7 +183,7 @@ export default class EnemyPulsar extends Enemy {
 
   hitByProjectile () {
     if (this.inState(EnemyPulsar.STATE_PULSATING)) {
-      this.surface.unshortLane(this.laneId, false);
+      this.surface.unshortLane(this.laneId);
     }
 
     this.setState(EnemyPulsar.STATE_EXPLODING);

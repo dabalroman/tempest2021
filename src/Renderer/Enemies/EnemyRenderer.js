@@ -1,15 +1,17 @@
-import { BufferGeometry, Line, MeshBasicMaterial, Vector2, Vector3 } from 'three';
+import { BufferGeometry, Group, Line, MeshBasicMaterial, Vector2, Vector3 } from 'three';
 import SurfaceObjectWrapper from '@/Renderer/Surface/SurfaceObjectWrapper';
 import enemies from '@/Assets/Enemies';
 import BoundingBox2 from '@/Helpers/BoundingBox2';
+import readonly from '@/utils/readonly';
 
 export default class EnemyRenderer extends SurfaceObjectWrapper {
+  @readonly
+  static EXPLOSION_ROTATION_SPEED = 0.03;
+
   /** @var {BufferGeometry[]} */
   geometry;
   /** @var {MeshBasicMaterial[]} */
   materials;
-  /** @var {BoundingBox2} */
-  boundingBox2;
 
   /** @var {Vector2} */
   positionBase = new Vector2();
@@ -72,6 +74,31 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
 
   updatePosition () {
     throw new Error('Method \'updatePosition()\' must be implemented.');
+  }
+
+  setVisualsToNormal () {
+    this.modelGroup.visible = true;
+    this.explosionGroup.visible = false;
+  }
+
+  setVisualsToExplode () {
+    this.explosionGroup.visible = true;
+  }
+
+  explodeAnimation () {
+    this.setVisualsToExplode();
+    this.zRotationOffset += EnemyRenderer.EXPLOSION_ROTATION_SPEED;
+
+    let scale = Math.pow(this.object.stateProgressInTime() * 2 - 1, 4);
+    let explosionScale = 1 - scale;
+    this.explosionGroup.scale.set(explosionScale, explosionScale, explosionScale);
+
+    if (this.object.stateProgressInTime() <= 0.5) {
+      let modelScale = scale;
+      this.modelGroup.scale.set(modelScale, modelScale, modelScale);
+    } else {
+      this.modelGroup.visible = false;
+    }
   }
 
   move () {
@@ -139,39 +166,35 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
   }
 
   loadModel () {
-    this.clear();
-    this.geometry = [];
-    this.materials = [];
+    this.modelGroup = new Group();
 
     let enemyDataset = enemies.find(enemy => enemy.name === this.object.type);
     if (enemyDataset === undefined) {
       throw new Error('Unknown object: ' + this.object.type);
     }
 
-    this.boundingBox2 = BoundingBox2.create([].concat(...enemyDataset.coords));
+    let boundingBox2 = BoundingBox2.create([].concat(...enemyDataset.coords));
 
     enemyDataset.coords.forEach((xyArray, i) => {
-      this.materials.push(
-        new MeshBasicMaterial({
+      let material = new MeshBasicMaterial({
           color: Array.isArray(enemyDataset.color) ? enemyDataset.color[i] : enemyDataset.color,
-        })
+        }
       );
 
-      this.geometry.push(
-        new BufferGeometry().setFromPoints(
-          xyArray
-            .map(xyArray => new Vector2(xyArray.x, xyArray.y))
-            .map(vector2 => vector2.sub(this.boundingBox2.getCenter()))
-            .map(vector2 => new Vector3(vector2.x, vector2.y, 0))
-        )
+      let geometry = new BufferGeometry().setFromPoints(
+        xyArray
+          .map(xyArray => new Vector2(xyArray.x, xyArray.y))
+          .map(vector2 => vector2.sub(boundingBox2.getCenter()))
+          .map(vector2 => new Vector3(vector2.x, vector2.y, 0))
       );
 
-      this.add(new Line(this.geometry[i], this.materials[i]));
+      this.modelGroup.add(new Line(geometry, material));
     });
 
     if (enemyDataset.scale) {
-      this.scale.set(enemyDataset.scale.x, enemyDataset.scale.y, enemyDataset.scale.z);
+      this.modelGroup.scale.set(enemyDataset.scale.x, enemyDataset.scale.y, enemyDataset.scale.z);
     }
+
+    this.add(this.modelGroup);
   }
 }
-

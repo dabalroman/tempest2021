@@ -62,8 +62,7 @@ export default class EnemyFlipperRenderer extends EnemyRenderer {
       this.positionBase = this.surface.lanesCoords[rotationAxisLaneId].clone().sub(positionRotationXYOffset);
 
     } else if (this.object.inState(EnemyFlipper.STATE_EXPLODING)) {
-      //Temporary
-      this.zRotationOffset++;
+      this.explodeAnimation();
 
     } else {
       this.zRotationBase = this.surface.lanesCenterDirectionRadians[this.object.laneId];

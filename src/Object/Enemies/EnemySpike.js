@@ -17,6 +17,9 @@ export default class EnemySpike extends Enemy {
   @readonly
   static STATE_DEAD = new State(0, 1, 'dead');
 
+  /** @bar {boolean} */
+  canExplode = false;
+
   /** {number} */
   rendererHelperZPositionChanged = false;
 

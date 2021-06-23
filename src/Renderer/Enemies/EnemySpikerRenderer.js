@@ -20,8 +20,7 @@ export default class EnemySpikerRenderer extends EnemyRenderer {
     this.zRotationBase = this.surface.lanesCenterDirectionRadians[this.object.laneId];
 
     if (this.object.inState(EnemySpiker.STATE_EXPLODING)) {
-      //Temporary
-      this.zRotationOffset--;
+      this.explodeAnimation();
     } else {
       this.zRotationOffset += EnemySpikerRenderer.ROTATION_SPEED;
     }

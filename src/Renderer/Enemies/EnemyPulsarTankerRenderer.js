@@ -16,8 +16,7 @@ export default class EnemyPulsarTankerRenderer extends EnemyRenderer {
     this.zRotationBase = this.surface.lanesCenterDirectionRadians[this.object.laneId];
 
     if (this.object.inState(EnemyTanker.STATE_EXPLODING)) {
-      //Temporary
-      this.zRotationOffset--;
+      this.explodeAnimation();
     }
   }
 }

@@ -13,7 +13,7 @@ export default class EnemySpiker extends Enemy {
   @readonly
   static STATE_SHOOTING = new State(100, 0.15, 'shooting');
   @readonly
-  static STATE_EXPLODING = new State(500, 1, 'exploding');
+  static STATE_EXPLODING = new State(1000, 1, 'exploding');
   @readonly
   static STATE_DEAD = new State(0, 1, 'dead');
 

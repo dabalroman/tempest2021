@@ -75,8 +75,7 @@ export default class EnemyPulsarRenderer extends EnemyRenderer {
       this.positionBase = this.surface.lanesCoords[rotationAxisLaneId].clone().sub(positionRotationXYOffset);
 
     } else if (this.object.inState(EnemyPulsar.STATE_EXPLODING)) {
-      //Temporary
-      this.zRotationOffset++;
+      this.explodeAnimation();
 
     } else {
       this.zRotationBase = this.surface.lanesCenterDirectionRadians[this.object.laneId];
@@ -111,7 +110,7 @@ export default class EnemyPulsarRenderer extends EnemyRenderer {
       scale *= -1;
     }
 
-    this.scale.setY(scale);
+    this.modelGroup.scale.setY(scale);
   }
 
   setMaterial () {
@@ -119,7 +118,7 @@ export default class EnemyPulsarRenderer extends EnemyRenderer {
       let neutral = !this.object.inState(EnemyPulsar.STATE_WARNING)
         && !this.object.inState(EnemyPulsar.STATE_PULSATING);
 
-      this.children[0].material = new MeshBasicMaterial({
+      this.modelGroup.children[0].material = new MeshBasicMaterial({
         color: neutral ? EnemyPulsarRenderer.NEUTRAL_COLOR : EnemyPulsarRenderer.PULSE_COLOR
       });
 

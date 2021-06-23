@@ -1,5 +1,5 @@
 import * as Three from 'three';
-import { MeshBasicMaterial } from 'three';
+import { Group, MeshBasicMaterial } from 'three';
 import objLoader from '@/utils/objLoader';
 import readonly from '@/utils/readonly';
 import compareVectors from '@/utils/compareVectors';
@@ -25,6 +25,14 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
 
   constructor (shooter, surface) {
     super(shooter, surface, Shooter.TYPE_SHOOTER);
+  }
+
+  setVisualsToNormal () {
+    this.explosionGroup.visible = false;
+  }
+
+  setVisualsToExplode () {
+    this.explosionGroup.visible = true;
   }
 
   move () {
@@ -86,6 +94,8 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
 
   loadModel () {
     let that = this;
+    this.modelGroup = new Group();
+
     objLoader.load(
       ShooterRenderer.MODEL_PATH,
       (object) => {
@@ -110,12 +120,14 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
             child.rotation.y = ShooterRenderer.MODEL_ROTATION;
             child.position.z = ShooterRenderer.MODEL_Z_OFFSET;
 
-            that.add(child);
+            that.modelGroup.add(child);
           }
         });
       },
       null,
       x => console.warn(x)
     );
+
+    this.add(this.modelGroup);
   }
 }
