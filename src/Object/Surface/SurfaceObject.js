@@ -77,8 +77,12 @@ export default class SurfaceObject {
     throw new Error('Method \'update()\' must be implemented.');
   }
 
+  die () {
+    throw new Error('Method \'die()\' must be implemented.');
+  }
+
   hitByProjectile () {
-    throw new Error('Method \'hitByProjectile()\' must be implemented.');
+    this.die();
   }
 
   /**

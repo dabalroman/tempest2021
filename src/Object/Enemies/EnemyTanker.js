@@ -75,11 +75,14 @@ export default class EnemyTanker extends Enemy {
   }
 
   hitByProjectile () {
+    this.die();
+    this.createEnemies();
+  }
+
+  die () {
     this.setState(EnemyTanker.STATE_EXPLODING);
     this.hittable = false;
     this.clearFlags();
-
-    this.createEnemies();
   }
 
   createEnemies () {

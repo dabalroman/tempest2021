@@ -181,7 +181,7 @@ export default class EnemyPulsar extends Enemy {
     this.hittable = false;
   }
 
-  hitByProjectile () {
+  die () {
     if (this.inState(EnemyPulsar.STATE_PULSATING)) {
       this.surface.unshortLane(this.laneId);
     }

@@ -204,9 +204,8 @@ export default class EnemyFuseball extends Enemy {
     this.hittable = false;
   }
 
-  hitByProjectile () {
+  die () {
     this.setState(EnemyFuseball.STATE_EXPLODING);
-
     this.hittable = false;
     this.clearFlags();
   }

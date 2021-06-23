@@ -21,6 +21,8 @@ export default class Shooter extends ShootingSurfaceObject {
 
   @readonly
   static FLAG_ITS_ALREADY_TOO_LATE = 0x1;
+  @readonly
+  static FLAG_SUPERZAPPER_USED = 0x2;
 
   /** @var {number} */
   lastLaneChangeTimestamp;
@@ -139,5 +141,13 @@ export default class Shooter extends ShootingSurfaceObject {
     this.setState(Shooter.STATE_EXPLODING);
     this.setFlag(Shooter.FLAG_ITS_ALREADY_TOO_LATE);
     this.hittable = false;
+  }
+
+  fireSuperzapper () {
+    if (this.isFlagNotSet(Shooter.FLAG_SUPERZAPPER_USED)) {
+      this.setFlag(Shooter.FLAG_SUPERZAPPER_USED);
+
+      this.surfaceObjectsManager.handleSuperzapper();
+    }
   }
 }

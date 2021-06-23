@@ -158,7 +158,7 @@ export default class EnemyFlipper extends Enemy {
     this.hittable = false;
   }
 
-  hitByProjectile () {
+  die () {
     this.setState(EnemyFlipper.STATE_EXPLODING);
     this.hittable = false;
     this.clearFlags();

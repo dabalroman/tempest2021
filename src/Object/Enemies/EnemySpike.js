@@ -74,9 +74,14 @@ export default class EnemySpike extends Enemy {
     this.rendererHelperZPositionChanged = true;
 
     if (this.zPosition + EnemySpike.HIT_DESTROYED_LENGTH >= 1) {
-      this.setState(EnemySpike.STATE_DEAD);
-      this.hittable = false;
+      this.die();
     }
+  }
+
+  die () {
+    this.setState(EnemySpike.STATE_DEAD);
+    this.hittable = false;
+    this.clearFlags();
   }
 
   /**

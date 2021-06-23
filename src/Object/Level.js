@@ -46,6 +46,7 @@ export default class Level {
     keyboardInput.register('KeyA', () => {this.shooter.moveLeft();});
     keyboardInput.register('KeyD', () => {this.shooter.moveRight();});
     keyboardInput.register('Space', () => {this.shooter.fire();});
+    keyboardInput.register('KeyQ', () => {this.shooter.fireSuperzapper();});
 
     //Spawners
     keyboardInput.register('KeyF', () => {
