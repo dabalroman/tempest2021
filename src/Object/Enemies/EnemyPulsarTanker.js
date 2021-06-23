@@ -7,10 +7,19 @@ export default class EnemyPulsarTanker extends EnemyTanker {
    * @param {Surface} surface
    * @param {ProjectileManager} projectileManager
    * @param {SurfaceObjectsManager} surfaceObjectsManager
+   * @param {function} rewardCallback
    * @param {number} laneId
    */
-  constructor (surface, projectileManager, surfaceObjectsManager, laneId = 0) {
-    super(surface, projectileManager, surfaceObjectsManager, Enemy.TYPE_PULSAR_TANKER, laneId);
+  constructor (
+    surface,
+    projectileManager,
+    surfaceObjectsManager,
+    rewardCallback,
+    laneId = 0
+  ) {
+    super(surface, projectileManager, surfaceObjectsManager, rewardCallback, Enemy.TYPE_PULSAR_TANKER, laneId);
+
+    this.firstLevel = 41;
   }
 
   createEnemies () {
@@ -19,8 +28,8 @@ export default class EnemyPulsarTanker extends EnemyTanker {
     let CWWLaneId = this.surface.getActualLaneIdFromProjectedMovement(this.laneId - 1);
     let canSpawnEnemyCCW = CWWLaneId !== this.laneId;
 
-    let enemyCW = new EnemyPulsar(this.surface, this.projectileManager, this.laneId);
-    let enemyCCW = new EnemyPulsar(this.surface, this.projectileManager, this.laneId);
+    let enemyCW = new EnemyPulsar(this.surface, this.projectileManager, this.rewardCallback, this.laneId);
+    let enemyCCW = new EnemyPulsar(this.surface, this.projectileManager, this.rewardCallback, this.laneId);
 
     enemyCW.zPosition = this.zPosition;
     enemyCCW.zPosition = this.zPosition;

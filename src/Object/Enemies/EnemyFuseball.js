@@ -57,12 +57,14 @@ export default class EnemyFuseball extends Enemy {
   /**
    * @param {Surface} surface
    * @param {ProjectileManager} projectileManager
+   * @param {function} rewardCallback
    * @param {number} laneId
    */
-  constructor (surface, projectileManager, laneId = 0) {
-    super(surface, projectileManager, laneId, SurfaceObject.TYPE_FUSEBALL);
+  constructor (surface, projectileManager, rewardCallback, laneId = 0) {
+    super(surface, projectileManager, rewardCallback, laneId, SurfaceObject.TYPE_FUSEBALL);
 
-    this.firstLevel = 1;
+    this.firstLevel = 11;
+    this.valueInPoints = 250;
 
     this.setState(EnemyFuseball.STATE_MOVING_ALONG_LINE);
     this.setFlag(EnemyFuseball.FLAG_IMMUNE);
@@ -207,8 +209,6 @@ export default class EnemyFuseball extends Enemy {
 
   die () {
     this.setState(EnemyFuseball.STATE_EXPLODING);
-    this.hittable = false;
-    this.canShoot = false;
-    this.clearFlags();
+    super.die();
   }
 }

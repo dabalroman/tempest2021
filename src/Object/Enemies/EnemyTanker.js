@@ -23,15 +23,24 @@ export default class EnemyTanker extends Enemy {
    * @param {Surface} surface
    * @param {ProjectileManager} projectileManager
    * @param {SurfaceObjectsManager} surfaceObjectsManager
+   * @param {function} rewardCallback
    * @param {string} type
    * @param {number} laneId
    */
-  constructor (surface, projectileManager, surfaceObjectsManager, type, laneId = 0) {
-    super(surface, projectileManager, laneId, type);
+  constructor (
+    surface,
+    projectileManager,
+    surfaceObjectsManager,
+    rewardCallback,
+    type,
+    laneId = 0
+  ) {
+    super(surface, projectileManager, rewardCallback, laneId, type);
 
     this.surfaceObjectsManager = surfaceObjectsManager;
 
-    this.firstLevel = 1;
+    this.firstLevel = 3;
+    this.valueInPoints = 100;
 
     this.zSpeed = -randomRange(3, 6) * 0.001;
     this.setState(EnemyTanker.STATE_IDLE);
@@ -82,9 +91,7 @@ export default class EnemyTanker extends Enemy {
 
   die () {
     this.setState(EnemyTanker.STATE_EXPLODING);
-    this.hittable = false;
-    this.canShoot = false;
-    this.clearFlags();
+    super.die();
   }
 
   createEnemies () {

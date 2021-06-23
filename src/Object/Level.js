@@ -27,20 +27,21 @@ export default class Level {
     this.surfaceObjectsManager = new SurfaceObjectsManager(surface);
     this.projectileManager = new ProjectileManager(this.surfaceObjectsManager);
 
-    this.shooter = new Shooter(surface, this.projectileManager, this.surfaceObjectsManager, 0);
+    this.shooter = new Shooter(surface, this.projectileManager, this.surfaceObjectsManager, 6);
     this.surfaceObjectsManager.addShooter(this.shooter);
-    this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, 0));
-    this.surfaceObjectsManager.addEnemy(new EnemySpiker(surface, this.projectileManager, 2));
+
+    this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, this.rewardCallback, 0));
+    this.surfaceObjectsManager.addEnemy(new EnemySpiker(surface, this.projectileManager, this.rewardCallback, 2));
     this.surfaceObjectsManager.addEnemy(
-      new EnemyFlipperTanker(surface, this.projectileManager, this.surfaceObjectsManager, 4)
+      new EnemyFlipperTanker(surface, this.projectileManager, this.surfaceObjectsManager, this.rewardCallback, 4)
     );
-    this.surfaceObjectsManager.addEnemy(new EnemyFuseball(surface, this.projectileManager, 8));
+    this.surfaceObjectsManager.addEnemy(new EnemyFuseball(surface, this.projectileManager, this.rewardCallback, 8));
     this.surfaceObjectsManager.addEnemy(
-      new EnemyFuseballTanker(surface, this.projectileManager, this.surfaceObjectsManager, 10)
+      new EnemyFuseballTanker(surface, this.projectileManager, this.surfaceObjectsManager, this.rewardCallback, 10)
     );
-    this.surfaceObjectsManager.addEnemy(new EnemyPulsar(surface, this.projectileManager, 12));
+    this.surfaceObjectsManager.addEnemy(new EnemyPulsar(surface, this.projectileManager, this.rewardCallback, 12));
     this.surfaceObjectsManager.addEnemy(
-      new EnemyPulsarTanker(surface, this.projectileManager, this.surfaceObjectsManager, 14)
+      new EnemyPulsarTanker(surface, this.projectileManager, this.surfaceObjectsManager, this.rewardCallback, 14)
     );
 
     keyboardInput.register('KeyA', () => {this.shooter.moveLeft();});
@@ -93,5 +94,9 @@ export default class Level {
   update () {
     this.projectileManager.update();
     this.surfaceObjectsManager.update();
+  }
+
+  rewardCallback (points) {
+    console.log(points);
   }
 }

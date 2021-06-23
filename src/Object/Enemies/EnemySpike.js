@@ -23,10 +23,14 @@ export default class EnemySpike extends Enemy {
   /**
    * @param {Surface} surface
    * @param {ProjectileManager} projectileManager
+   * @param {function} rewardCallback
    * @param {number} laneId
    */
-  constructor (surface, projectileManager, laneId = 0) {
-    super(surface, projectileManager, laneId, SurfaceObject.TYPE_SPIKE);
+  constructor (surface, projectileManager, rewardCallback, laneId = 0) {
+    super(surface, projectileManager, rewardCallback, laneId, SurfaceObject.TYPE_SPIKE);
+
+    this.firstLevel = 1;
+    this.valueInPoints = 1;
 
     this.canShoot = false;
     this.canExplode = false;
@@ -80,8 +84,7 @@ export default class EnemySpike extends Enemy {
 
   die () {
     this.setState(EnemySpike.STATE_DEAD);
-    this.hittable = false;
-    this.clearFlags();
+    super.die();
   }
 
   /**

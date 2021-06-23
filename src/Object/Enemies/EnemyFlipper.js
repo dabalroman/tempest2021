@@ -34,16 +34,20 @@ export default class EnemyFlipper extends Enemy {
   static FLAG_IMMUNE_ROTATION = 0x40;
   @readonly
   static FLAG_REACHED_SHOOTER = 0x80;
+  @readonly
+  static FLAG_CANNOT_FLIP = 0x100;
 
   /**
    * @param {Surface} surface
    * @param {ProjectileManager} projectileManager
+   * @param {function} rewardCallback
    * @param {number} laneId
    */
-  constructor (surface, projectileManager, laneId = 0) {
-    super(surface, projectileManager, laneId, SurfaceObject.TYPE_FLIPPER);
+  constructor (surface, projectileManager, rewardCallback, laneId = 0) {
+    super(surface, projectileManager, rewardCallback, laneId, SurfaceObject.TYPE_FLIPPER);
 
     this.firstLevel = 1;
+    this.valueInPoints = 150;
 
     this.zSpeed = -randomRange(3, 6) * 0.001;
     this.setState(EnemyFlipper.STATE_IDLE);
@@ -59,7 +63,9 @@ export default class EnemyFlipper extends Enemy {
           State.drawNextState(
             EnemyFlipper.STATE_IDLE,
             EnemyFlipper.STATE_SHOOTING,
-            EnemyFlipper.STATE_ROTATING_BEGIN
+            this.isFlagNotSet(EnemyFlipper.FLAG_CANNOT_FLIP)
+              ? EnemyFlipper.STATE_ROTATING_BEGIN
+              : EnemyFlipper.STATE_IDLE
           )
         );
       }
@@ -154,6 +160,10 @@ export default class EnemyFlipper extends Enemy {
     }
   }
 
+  dontFlip () {
+    this.setFlag(EnemyFlipper.FLAG_CANNOT_FLIP);
+  }
+
   immuneDuringNextRotation () {
     this.setFlag(EnemyFlipper.FLAG_IMMUNE_ROTATION);
     this.hittable = false;
@@ -161,8 +171,6 @@ export default class EnemyFlipper extends Enemy {
 
   die () {
     this.setState(EnemyFlipper.STATE_EXPLODING);
-    this.hittable = false;
-    this.canShoot = false;
-    this.clearFlags();
+    super.die();
   }
 }

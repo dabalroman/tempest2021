@@ -7,20 +7,26 @@ export default class Enemy extends ShootingSurfaceObject {
 
   /** @var {number} */
   firstLevel;
-  /** @var {boolean} */
-  canShoot = true;
+
+  /** @var {number} */
+  valueInPoints;
+
+  /** @var {function} */
+  rewardCallback;
 
   /**
    * @param {Surface} surface
    * @param {ProjectileManager} projectileManager
+   * @param {function} rewardCallback
    * @param {number} laneId
    * @param {string} type
    */
-  constructor (surface, projectileManager, laneId, type) {
+  constructor (surface, projectileManager, rewardCallback, laneId, type) {
     super(surface, projectileManager, laneId, type);
 
     this.zPosition = 1;
 
+    this.rewardCallback = rewardCallback;
     this.shootTimeoutMs = Enemy.SHOOT_TIMEOUT_MS;
 
     if (this.constructor === Enemy) {
@@ -34,6 +40,14 @@ export default class Enemy extends ShootingSurfaceObject {
 
   updateEntity () {
     throw new Error('Method \'updateEntity()\' must be implemented.');
+  }
+
+  die () {
+    this.hittable = false;
+    this.canShoot = false;
+    this.clearFlags();
+
+    this.rewardCallback(this.valueInPoints);
   }
 
   update () {

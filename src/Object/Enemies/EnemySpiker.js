@@ -25,12 +25,15 @@ export default class EnemySpiker extends Enemy {
   /**
    * @param {Surface} surface
    * @param {ProjectileManager} projectileManager
+   * @param {function} rewardCallback
    * @param {number} laneId
    */
-  constructor (surface, projectileManager, laneId = 0) {
-    super(surface, projectileManager, laneId, SurfaceObject.TYPE_SPIKER);
+  constructor (surface, projectileManager, rewardCallback, laneId = 0) {
+    super(surface, projectileManager, rewardCallback, laneId, SurfaceObject.TYPE_SPIKER);
 
-    this.firstLevel = 1;
+    this.firstLevel = 4;
+    this.valueInPoints = 150;
+
     this.zSpeed = -randomRange(3, 6) * 0.001;
     this.setState(EnemySpiker.STATE_IDLE);
   }
@@ -83,8 +86,6 @@ export default class EnemySpiker extends Enemy {
 
   die () {
     this.setState(EnemySpiker.STATE_EXPLODING);
-    this.hittable = false;
-    this.canShoot = false;
-    this.clearFlags();
+    super.die();
   }
 }
