@@ -70,6 +70,10 @@ export default class EnemyPulsar extends Enemy {
         )
       );
 
+      if (this.inState(EnemyPulsar.STATE_PULSATING)) {
+        this.surface.shortLane(this.laneId);
+      }
+
       this.unsetFlag(EnemyPulsar.FLAG_MOVING_TARGET_CHOSEN);
 
     } else if (this.inState(EnemyPulsar.STATE_WARNING)) {
@@ -87,7 +91,7 @@ export default class EnemyPulsar extends Enemy {
       );
 
       if (!this.inState(EnemyPulsar.STATE_PULSATING)) {
-        this.surface.unshortLane(this.laneId, false);
+        this.surface.unshortLane(this.laneId);
       }
 
     } else if (this.inState(EnemyPulsar.STATE_ROTATING_BEGIN)) {
