@@ -151,7 +151,7 @@ export default class Surface {
    * @return {boolean}
    */
   isLaneShorted (laneId) {
-    return this.shortedLanes[laneId] >= 0;
+    return this.shortedLanes[laneId] > 0;
   }
 
   /**

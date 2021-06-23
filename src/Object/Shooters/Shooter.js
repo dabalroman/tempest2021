@@ -16,6 +16,9 @@ export default class Shooter extends ShootingSurfaceObject {
   @readonly
   static STATE_DEAD = new State(0, 1, 'dead');
 
+  @readonly
+  static FLAG_ITS_ALREADY_TOO_LATE = 0x1;
+
   /** @var {number} */
   lastLaneChangeTimestamp;
   /** @var {number} */
@@ -39,6 +42,16 @@ export default class Shooter extends ShootingSurfaceObject {
       if (this.inState(Shooter.STATE_EXPLODING)) {
         this.setState(Shooter.STATE_DEAD);
       }
+    }
+
+    if (this.isFlagNotSet(Shooter.FLAG_ITS_ALREADY_TOO_LATE)) {
+      this.handleShortedLanes();
+    }
+  }
+
+  handleShortedLanes () {
+    if (this.surface.isLaneShorted(this.laneId)) {
+      this.shockedByPulsar();
     }
   }
 
@@ -68,31 +81,38 @@ export default class Shooter extends ShootingSurfaceObject {
 
   hitByProjectile () {
     console.log('BOOM! (projectile)');
+
     this.setState(Shooter.STATE_EXPLODING);
     this.hittable = false;
   }
 
   capturedByFlipper () {
     console.log('BAM! (flipper)');
-    this.setState(Shooter.STATE_EXPLODING);
-    this.hittable = false;
+
+    this.die();
   }
 
   capturedByFuseball () {
     console.log('POW! (fuseball)');
-    this.setState(Shooter.STATE_EXPLODING);
-    this.hittable = false;
+
+    this.die();
   }
 
   impaledOnSpike () {
     console.log('SPUT! (spike)');
-    this.setState(Shooter.STATE_EXPLODING);
-    this.hittable = false;
+
+    this.die();
   }
 
   shockedByPulsar () {
     console.log('BZZZT! (pulsar)');
+
+    this.die();
+  }
+
+  die () {
     this.setState(Shooter.STATE_EXPLODING);
+    this.setFlag(Shooter.FLAG_ITS_ALREADY_TOO_LATE);
     this.hittable = false;
   }
 }
