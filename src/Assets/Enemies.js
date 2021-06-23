@@ -2,7 +2,6 @@ const enemies = ([
   {
     name: 'flipper',
     color: 0xcc0033,
-    scale: {x: 1, y: 1, z: 1},
     coords: [
       [
         {x: 0.0735, y: 0.7184}, {x: 0.2424, y: 0.5},
@@ -23,7 +22,6 @@ const enemies = ([
         0xffffff,
         0xde18ce,
       ],
-    scale: {x: 1, y: 1, z: 1},
     coords: [
       [
         {x: 0.5, y: 0.5}, {x: 0.2008, y: 0.555},
@@ -55,7 +53,6 @@ const enemies = ([
   {
     name: 'flipperTanker',
     color: 0xff00cc,
-    scale: { x: 1, y: 1, z: 1 },
     coords: [
       [
         { x: 0.5, y: 0.1 }, { x: 0.5, y: 0.4 },
@@ -93,7 +90,6 @@ const enemies = ([
       0xeeff41,
       0xffffff,
     ],
-    scale: {x: 1, y: 1, z: 1},
     coords: [
       [
         {x: 0.5, y: 0.1}, {x: 0.5, y: 0.4},
@@ -141,7 +137,6 @@ const enemies = ([
       0xff00cc,
       0x00ffff,
     ],
-    scale: { x: 1, y: 1, z: 1 },
     coords: [
       [
         {x: 0.5, y: 0.1}, {x: 0.5, y: 0.4},
@@ -174,7 +169,6 @@ const enemies = ([
   {
     name: 'pulsar',
     color: 0x00ffff,
-    scale: { x: 1, y: 1, z: 1 },
     coords: [
       [
         { x: 0, y: 0.5 }, { x: 0.2, y: 0.2 },
@@ -187,7 +181,6 @@ const enemies = ([
   {
     name: 'spiker',
     color: 0x00ff33,
-    scale: {x: 1, y: 1, z: 1},
     coords: [
       [
         {x: 0.4452, y: 0.5008}, {x: 0.4923, y: 0.4597},

@@ -78,6 +78,7 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
 
   setVisualsToNormal () {
     this.modelGroup.visible = true;
+    this.modelGroup.scale.set(1, 1, 1);
     this.explosionGroup.visible = false;
   }
 
@@ -190,10 +191,6 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
 
       this.modelGroup.add(new Line(geometry, material));
     });
-
-    if (enemyDataset.scale) {
-      this.modelGroup.scale.set(enemyDataset.scale.x, enemyDataset.scale.y, enemyDataset.scale.z);
-    }
 
     this.add(this.modelGroup);
   }

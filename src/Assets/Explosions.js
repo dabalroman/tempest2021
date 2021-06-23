@@ -9,7 +9,6 @@ const explosions = ([
         0xffffff,
         0xffff00,
       ],
-    scale: { x: 1, y: 1, z: 1 },
     coords: [
       [
         {x: 0.5, y: 0.8}, {x: 0.5966, y: 0.8819},
@@ -51,7 +50,6 @@ const explosions = ([
         0xffffff,
         0xffffff,
       ],
-    scale: {x: 1, y: 1, z: 1},
     coords: [
       [
         {x: 0.1, y: 0.5}, {x: 0.9, y: 0.5},

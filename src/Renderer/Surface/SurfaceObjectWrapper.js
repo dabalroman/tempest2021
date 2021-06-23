@@ -138,10 +138,6 @@ export default class SurfaceObjectWrapper extends Group {
       this.explosionGroup.add(new Line(geometry, material));
     });
 
-    if (explosionDataset.scale) {
-      this.explosionGroup.scale.set(explosionDataset.scale.x, explosionDataset.scale.y, explosionDataset.scale.z);
-    }
-
     this.add(this.explosionGroup);
   }
 }
