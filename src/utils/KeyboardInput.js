@@ -47,6 +47,10 @@ class KeyboardInput {
       this.keyToFunctionMap.slice(index, 1);
     }
   }
+
+  purge () {
+    this.keyToFunctionMap = [];
+  }
 }
 
 const keyboardInput = new KeyboardInput();

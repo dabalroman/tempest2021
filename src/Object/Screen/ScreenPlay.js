@@ -1,17 +1,42 @@
 import Canvas3d from '@/Object/Screen/Canvas3d';
 
 export default class ScreenPlay extends Canvas3d {
+  /** @var {number} */
+  score = 0;
+  /** @var {number} */
+  targetScore = 0;
+  /** @var {number} */
+  scoreRisingSpeed = 10;
+
   constructor (width, height, canvasResX = 1024, canvasResY = 1024) {
     super(width, height, canvasResX, canvasResY);
 
-    this.setContent('score', 8670);
+    this.setContent('score', 0);
     this.setContent('lives', 5);
     this.setContent('level', 81);
     this.setContent('bestScore', { score: 62150, name: 'AAA' });
     // this.debug = true;
   }
 
+  update () {
+    super.update();
+
+    if (this.score !== this.targetScore) {
+      this.score += this.scoreRisingSpeed;
+
+      if (this.score > this.targetScore) {
+        this.score = this.targetScore;
+      }
+
+      this.setContent('score', this.score);
+
+      this.draw();
+    }
+  }
+
   draw () {
+    this.clearCanvas();
+
     this.setFontSizePx(60);
     this.drawText(this.alignNumberToRight(this.getContent('score')), 50, 120, Canvas3d.COLOR_BLUE);
 
@@ -46,5 +71,9 @@ export default class ScreenPlay extends Canvas3d {
     this.context.lineTo(x + 7.5 * unit, y);
     this.context.lineTo(x, y + 3 * unit);
     this.context.stroke();
+  }
+
+  setScore (score) {
+    this.targetScore = score;
   }
 }

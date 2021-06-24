@@ -22,8 +22,17 @@ export default class Level {
   /** @var {ProjectileManager} */
   projectileManager;
 
-  constructor (surface) {
+  /** @var {function} */
+  rewardCallback;
+
+  /**
+   * @param {Surface} surface
+   * @param {function} rewardCallback
+   */
+  constructor (surface, rewardCallback) {
     this.surface = surface;
+    this.rewardCallback = rewardCallback;
+
     this.surfaceObjectsManager = new SurfaceObjectsManager(surface);
     this.projectileManager = new ProjectileManager(this.surfaceObjectsManager);
 
@@ -43,7 +52,13 @@ export default class Level {
     // this.surfaceObjectsManager.addEnemy(
     //   new EnemyPulsarTanker(surface, this.projectileManager, this.surfaceObjectsManager, this.rewardCallback, 14)
     // );
+  }
 
+  release () {
+    this.unregisterKeys();
+  }
+
+  registerKeys () {
     keyboardInput.register('KeyA', () => {this.shooter.moveLeft();});
     keyboardInput.register('KeyD', () => {this.shooter.moveRight();});
     keyboardInput.register('Space', () => {this.shooter.fire();});
@@ -53,7 +68,7 @@ export default class Level {
     keyboardInput.register('KeyF', () => {
       this.surfaceObjectsManager.addEnemy(
         new EnemyFlipper(
-          surface,
+          this.surface,
           this.projectileManager,
           this.rewardCallback,
           randomRange(0, 15)
@@ -64,7 +79,7 @@ export default class Level {
     keyboardInput.register('KeyS', () => {
       this.surfaceObjectsManager.addEnemy(
         new EnemySpiker(
-          surface,
+          this.surface,
           this.projectileManager,
           this.rewardCallback,
           randomRange(0, 15)
@@ -75,7 +90,7 @@ export default class Level {
     keyboardInput.register('KeyB', () => {
       this.surfaceObjectsManager.addEnemy(
         new EnemyFuseball(
-          surface,
+          this.surface,
           this.projectileManager,
           this.rewardCallback,
           randomRange(0, 15)
@@ -86,7 +101,7 @@ export default class Level {
     keyboardInput.register('KeyP', () => {
       this.surfaceObjectsManager.addEnemy(
         new EnemyPulsar(
-          surface,
+          this.surface,
           this.projectileManager,
           this.rewardCallback,
           randomRange(0, 15)
@@ -97,7 +112,7 @@ export default class Level {
     keyboardInput.register('KeyT', () => {
       this.surfaceObjectsManager.addEnemy(
         new EnemyFlipperTanker(
-          surface,
+          this.surface,
           this.projectileManager,
           this.surfaceObjectsManager,
           this.rewardCallback,
@@ -109,7 +124,7 @@ export default class Level {
     keyboardInput.register('KeyY', () => {
       this.surfaceObjectsManager.addEnemy(
         new EnemyFuseballTanker(
-          surface,
+          this.surface,
           this.projectileManager,
           this.surfaceObjectsManager,
           this.rewardCallback,
@@ -121,7 +136,7 @@ export default class Level {
     keyboardInput.register('KeyU', () => {
       this.surfaceObjectsManager.addEnemy(
         new EnemyPulsarTanker(
-          surface,
+          this.surface,
           this.projectileManager,
           this.surfaceObjectsManager,
           this.rewardCallback,
@@ -129,15 +144,24 @@ export default class Level {
         )
       );
     });
+  }
 
+  unregisterKeys () {
+    keyboardInput.unregister('KeyA');
+    keyboardInput.unregister('KeyD');
+    keyboardInput.unregister('Space');
+    keyboardInput.unregister('KeyQ');
+    keyboardInput.unregister('KeyF');
+    keyboardInput.unregister('KeyS');
+    keyboardInput.unregister('KeyB');
+    keyboardInput.unregister('KeyP');
+    keyboardInput.unregister('KeyT');
+    keyboardInput.unregister('KeyY');
+    keyboardInput.unregister('KeyU');
   }
 
   update () {
     this.projectileManager.update();
     this.surfaceObjectsManager.update();
-  }
-
-  rewardCallback (points) {
-    console.log(points);
   }
 }
