@@ -30,19 +30,19 @@ export default class Level {
     this.shooter = new Shooter(surface, this.projectileManager, this.surfaceObjectsManager, 6);
     this.surfaceObjectsManager.addShooter(this.shooter);
 
-    this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, this.rewardCallback, 0));
-    this.surfaceObjectsManager.addEnemy(new EnemySpiker(surface, this.projectileManager, this.rewardCallback, 2));
-    this.surfaceObjectsManager.addEnemy(
-      new EnemyFlipperTanker(surface, this.projectileManager, this.surfaceObjectsManager, this.rewardCallback, 4)
-    );
-    this.surfaceObjectsManager.addEnemy(new EnemyFuseball(surface, this.projectileManager, this.rewardCallback, 8));
-    this.surfaceObjectsManager.addEnemy(
-      new EnemyFuseballTanker(surface, this.projectileManager, this.surfaceObjectsManager, this.rewardCallback, 10)
-    );
-    this.surfaceObjectsManager.addEnemy(new EnemyPulsar(surface, this.projectileManager, this.rewardCallback, 12));
-    this.surfaceObjectsManager.addEnemy(
-      new EnemyPulsarTanker(surface, this.projectileManager, this.surfaceObjectsManager, this.rewardCallback, 14)
-    );
+    // this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, this.rewardCallback, 0));
+    // this.surfaceObjectsManager.addEnemy(new EnemySpiker(surface, this.projectileManager, this.rewardCallback, 2));
+    // this.surfaceObjectsManager.addEnemy(
+    //   new EnemyFlipperTanker(surface, this.projectileManager, this.surfaceObjectsManager, this.rewardCallback, 4)
+    // );
+    // this.surfaceObjectsManager.addEnemy(new EnemyFuseball(surface, this.projectileManager, this.rewardCallback, 8));
+    // this.surfaceObjectsManager.addEnemy(
+    //   new EnemyFuseballTanker(surface, this.projectileManager, this.surfaceObjectsManager, this.rewardCallback, 10)
+    // );
+    // this.surfaceObjectsManager.addEnemy(new EnemyPulsar(surface, this.projectileManager, this.rewardCallback, 12));
+    // this.surfaceObjectsManager.addEnemy(
+    //   new EnemyPulsarTanker(surface, this.projectileManager, this.surfaceObjectsManager, this.rewardCallback, 14)
+    // );
 
     keyboardInput.register('KeyA', () => {this.shooter.moveLeft();});
     keyboardInput.register('KeyD', () => {this.shooter.moveRight();});
@@ -55,6 +55,7 @@ export default class Level {
         new EnemyFlipper(
           surface,
           this.projectileManager,
+          this.rewardCallback,
           randomRange(0, 15)
         )
       );
@@ -65,6 +66,7 @@ export default class Level {
         new EnemySpiker(
           surface,
           this.projectileManager,
+          this.rewardCallback,
           randomRange(0, 15)
         )
       );
@@ -75,6 +77,7 @@ export default class Level {
         new EnemyFuseball(
           surface,
           this.projectileManager,
+          this.rewardCallback,
           randomRange(0, 15)
         )
       );
@@ -85,10 +88,48 @@ export default class Level {
         new EnemyPulsar(
           surface,
           this.projectileManager,
+          this.rewardCallback,
           randomRange(0, 15)
         )
       );
     });
+
+    keyboardInput.register('KeyT', () => {
+      this.surfaceObjectsManager.addEnemy(
+        new EnemyFlipperTanker(
+          surface,
+          this.projectileManager,
+          this.surfaceObjectsManager,
+          this.rewardCallback,
+          randomRange(0, 15)
+        )
+      );
+    });
+
+    keyboardInput.register('KeyY', () => {
+      this.surfaceObjectsManager.addEnemy(
+        new EnemyFuseballTanker(
+          surface,
+          this.projectileManager,
+          this.surfaceObjectsManager,
+          this.rewardCallback,
+          randomRange(0, 15)
+        )
+      );
+    });
+
+    keyboardInput.register('KeyU', () => {
+      this.surfaceObjectsManager.addEnemy(
+        new EnemyPulsarTanker(
+          surface,
+          this.projectileManager,
+          this.surfaceObjectsManager,
+          this.rewardCallback,
+          randomRange(0, 15)
+        )
+      );
+    });
+
   }
 
   update () {
