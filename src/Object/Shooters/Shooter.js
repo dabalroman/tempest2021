@@ -54,13 +54,17 @@ export default class Shooter extends ShootingSurfaceObject {
 
   update () {
     if (this.alive === false) {
-      this.setState(Shooter.STATE_DEAD);
+      // this.setState(Shooter.STATE_DEAD);
       return;
     }
 
     if (this.canChangeState()) {
       if (this.inState(Shooter.STATE_EXPLODING)) {
         this.setState(Shooter.STATE_DEAD);
+      }
+
+      if (this.inState(Shooter.STATE_DEAD)) {
+        this.alive = false;
       }
     }
 

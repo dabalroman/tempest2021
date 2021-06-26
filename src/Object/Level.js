@@ -24,14 +24,22 @@ export default class Level {
 
   /** @var {function} */
   rewardCallback;
+  /** @var {function} */
+  levelWonCallback;
+  /** @var {function} */
+  shooterKilledCallback;
 
   /**
    * @param {Surface} surface
    * @param {function} rewardCallback
+   * @param {function} levelWonCallback
+   * @param {function} shooterKilledCallback
    */
-  constructor (surface, rewardCallback) {
+  constructor (surface, rewardCallback, levelWonCallback, shooterKilledCallback) {
     this.surface = surface;
     this.rewardCallback = rewardCallback;
+    this.levelWonCallback = levelWonCallback;
+    this.shooterKilledCallback = shooterKilledCallback;
 
     this.surfaceObjectsManager = new SurfaceObjectsManager(surface);
     this.projectileManager = new ProjectileManager(this.surfaceObjectsManager);
@@ -163,5 +171,10 @@ export default class Level {
   update () {
     this.projectileManager.update();
     this.surfaceObjectsManager.update();
+
+    if (!this.shooter.alive) {
+      this.shooterKilledCallback();
+      this.shooter.alive = true;
+    }
   }
 }

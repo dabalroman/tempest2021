@@ -1,15 +1,15 @@
 import Canvas3d from '@/Object/Screen/Canvas3d';
 
 export default class ScreenHighScores extends Canvas3d {
-  constructor (width, height, canvasResX = 1024, canvasResY = 1024) {
-    super(width, height, canvasResX, canvasResY);
+  constructor (screenContentManager, width = 8, height = 8, canvasResX = 1024, canvasResY = 1024) {
+    super(screenContentManager, width, height, canvasResX, canvasResY);
 
     //Ustawianie zmiennych do wyświetlenia na ekranie
     //Cokolwiek na ekranie jest dynamiczne, musi zostać zdefiniowane tutaj
     //To jest oczywiście tymczasowe, prawdziwe dane będzie do screen'a wrzucał silnik gry
-    this.setContent('score', 147098);
-    this.setContent('bestScore', { score: 147098, name: 'AAA' });
-    this.setContent('highScores', [
+    this.screenContentManager.set('score', 147098);
+    this.screenContentManager.set('bestScore', { score: 147098, name: 'AAA' });
+    this.screenContentManager.set('highScores', [
         { score: 147098, name: 'AAA', position: 1 },
         { score: 62650, name: 'AAA', position: 2 },
         { score: 10101, name: 'EJD', position: 3 },
@@ -20,31 +20,26 @@ export default class ScreenHighScores extends Canvas3d {
         { score: 10101, name: 'MJP', position: 8 },
       ]
     );
-    this.setContent('rankPosition', 1);
-    this.setContent('credits', 0);
-
-    //Wyświetla czerwone obramowanie dookoła planszy i '_' zamiast spacji jako output this.alignNumberToRight
-    this.debug = true;
+    this.screenContentManager.set('rankPosition', 1);
+    this.screenContentManager.set('credits', 0);
   }
 
   draw () {
-    //TODO
+    this.clearCanvas();
 
-    //<To remove>
-
-    //</To remove>
-
-    //this.getContent(key) pozwala na pobranie danej wartości
-    //this.alignNumberToRight(number) formatuje liczbę tak, by zajmowała 6 znaków z wyrównaniem do prawej
-    //this.drawText(text, x, y, color) renderuje text w pozycji x, y, w danym color
     this.setFontSizePx(30);
 
-    this.drawText(this.alignNumberToRight(this.getContent('bestScore').score), 400, 90, Canvas3d.COLOR_BLUE);
+    this.drawText(
+      this.alignNumberToRight(this.screenContentManager.get('bestScore').score),
+      372, 90,
+      Canvas3d.COLOR_BLUE
+    );
+
+    this.drawText(this.screenContentManager.get('bestScore').name, 548, 90, Canvas3d.COLOR_BLUE);
+
     this.drawText('game over', 423, 140, Canvas3d.COLOR_BLUE);
 
-    this.drawText(this.getContent('bestScore').name, 560, 90, Canvas3d.COLOR_BLUE);
-
-    let highScores = this.getContent('highScores');
+    let highScores = this.screenContentManager.get('highScores');
     for (let i = 0; i < highScores.length; i++) {
       this.drawText(this.alignNumberToRight(highScores[i].score), 550, 340 + (i * 50), Canvas3d.COLOR_GREEN);
       this.drawText(highScores[i].name, 400, 340 + (i * 50), Canvas3d.COLOR_GREEN);

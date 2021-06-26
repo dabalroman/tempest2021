@@ -1,23 +1,23 @@
 import Canvas3d from '@/Object/Screen/Canvas3d';
 
 export default class ScreenSelectSurface extends Canvas3d {
-  constructor (width, height, canvasResX = 1024, canvasResY = 1024) {
-    super(width, height, canvasResX, canvasResY);
+  constructor (screenContentManager, width = 8, height = 8, canvasResX = 1024, canvasResY = 1024) {
+    super(screenContentManager, width, height, canvasResX, canvasResY);
 
-    this.setContent('player', 1);
-    this.setContent('offset', 10);
-    this.setContent('active', 3);
-    this.setContent('levels', [
-        { id: 1, score: 0, name: 'Loop' },
-        { id: 3, score: 6000, name: 'Cross' },
-        { id: 5, score: 16000, name: 'Medal' },
-        { id: 7, score: 32000, name: 'Clover' },
-        { id: 9, score: 54000, name: 'Staircase' },
-        { id: 11, score: 74000, name: 'Plane' },
-        { id: 13, score: 94000, name: 'Star' },
-        { id: 15, score: 114000, name: 'Mountains' },
-        { id: 17, score: 134000, name: 'Loop' },
-        { id: 20, score: 152000, name: 'Peanut' },
+    this.screenContentManager.set('player', 1);
+    this.screenContentManager.set('offset', 10);
+    this.screenContentManager.set('active', 3);
+    this.screenContentManager.set('levels', [
+      { id: 1, score: 0, name: 'Loop' },
+      { id: 3, score: 6000, name: 'Cross' },
+      { id: 5, score: 16000, name: 'Medal' },
+      { id: 7, score: 32000, name: 'Clover' },
+      { id: 9, score: 54000, name: 'Staircase' },
+      { id: 11, score: 74000, name: 'Plane' },
+      { id: 13, score: 94000, name: 'Star' },
+      { id: 15, score: 114000, name: 'Mountains' },
+      { id: 17, score: 134000, name: 'Loop' },
+      { id: 20, score: 152000, name: 'Peanut' },
         { id: 22, score: 170000, name: 'Triangle' },
         { id: 24, score: 188000, name: 'The V' },
         { id: 26, score: 208000, name: 'Bowl' },
@@ -38,15 +38,17 @@ export default class ScreenSelectSurface extends Canvas3d {
         { id: 81, score: 848000, name: 'Loop' },
       ]
     );
-    this.debug = true;
+    // this.debug = true;
   }
 
   draw () {
+    this.clearCanvas();
+
     this.setFontSizePx(30);
     // this.drawText('© mcmlxxx Atari', 355, 60, Canvas3d.COLOR_BLUE);
-    this.drawText('rate yourself', 370, 420, Canvas3d.COLOR_GREEN);
-    this.drawText('Spin knob to change', 300, 460, Canvas3d.COLOR_CYAN);
-    this.drawText('Press fire to select', 290, 500, Canvas3d.COLOR_YELLOW);
+    this.drawText('rate yourself', 371, 420, Canvas3d.COLOR_GREEN);
+    this.drawText('Spin knob to change', 296, 460, Canvas3d.COLOR_CYAN);
+    this.drawText('Press fire to select', 284, 500, Canvas3d.COLOR_YELLOW);
     this.drawText('novice', 160, 600, Canvas3d.COLOR_RED);
     this.drawText('expert', 845, 600, Canvas3d.COLOR_RED);
 
@@ -55,8 +57,8 @@ export default class ScreenSelectSurface extends Canvas3d {
     this.drawText('hole', 30, 710, Canvas3d.COLOR_GREEN);
     this.drawText('bonus', 30, 770, Canvas3d.COLOR_GREEN);
 
-    let offset = this.getContent('offset');
-    let levels = this.getContent('levels');
+    let offset = this.screenContentManager.get('offset');
+    let levels = this.screenContentManager.get('levels');
     let xOffset = 160;
     let xStep = 175;
     for (let i = 0; i < levels.length - offset; i++) {
@@ -73,7 +75,7 @@ export default class ScreenSelectSurface extends Canvas3d {
     this.drawText('Player 1', 335, 350, Canvas3d.COLOR_WHITE);
 
     this.drawRect(
-      140 + xStep * this.getContent('active'),
+      140 + xStep * this.screenContentManager.get('active'),
       615, xStep - 20, 165,
       ScreenSelectSurface.COLOR_BLUE
     );

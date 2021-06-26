@@ -34,21 +34,20 @@ export default class Canvas3d extends Mesh {
   /** @var {number} */
   canvasResY;
 
-  /** @var {array} */
-  content = [];
-  /** @var {boolean} */
-  needRedraw = true;
+  /** @var {ScreenContentManager} */
+  screenContentManager;
 
   /** @var {boolean} */
   debug = false;
 
   /**
+   * @param {ScreenContentManager} screenContentManager
    * @param {number} width
    * @param {number} height
    * @param {number} canvasResX
    * @param {number} canvasResY
    */
-  constructor (width, height, canvasResX = 1024, canvasResY = 1024) {
+  constructor (screenContentManager, width = 8, height = 8, canvasResX = 1024, canvasResY = 1024) {
     const contextRef = document.createElement('canvas').getContext('2d');
     contextRef.canvas.width = 1024;
     contextRef.canvas.height = 1024;
@@ -80,6 +79,8 @@ export default class Canvas3d extends Mesh {
       document.fonts.add(font);
       this.fontReady = true;
     });
+
+    this.screenContentManager = screenContentManager;
   }
 
   clearCanvas () {
@@ -174,7 +175,7 @@ export default class Canvas3d extends Mesh {
   }
 
   update () {
-    if (!this.fontReady || !this.needRedraw) {
+    if (!this.fontReady) {
       return;
     }
 
@@ -185,7 +186,6 @@ export default class Canvas3d extends Mesh {
     }
 
     this.queueTextureUpdate();
-    this.needRedraw = false;
   }
 
   draw () {
@@ -193,27 +193,6 @@ export default class Canvas3d extends Mesh {
 
     let color = `rgb(${randomRange(0, 256)}, ${randomRange(0, 256)}, ${randomRange(0, 256)})`;
     this.drawText('TEMPEST', randomRange(256, 500), randomRange(500, 600), color);
-  }
-
-  /**
-   * @param {string} key
-   * @param {*} value
-   */
-  setContent (key, value) {
-    this.content[key] = value;
-    this.queueRedraw();
-  }
-
-  /**
-   * @param {string} key
-   * @return {*}
-   */
-  getContent (key) {
-    return this.content[key];
-  }
-
-  queueRedraw () {
-    this.needRedraw = true;
   }
 
   queueTextureUpdate () {

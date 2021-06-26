@@ -6,6 +6,8 @@ export default class Surface {
   @readonly
   static LINES_AMOUNT = 16;
 
+  /** @var {number} id */
+  id;
   /** @var {string} name */
   name;
   /** @var {boolean} isOpen */
@@ -30,11 +32,13 @@ export default class Surface {
   shortedLanes;
 
   /**
+   * @param {number} id
    * @param {string} name
    * @param {boolean} isOpen
    * @param {Vector2[]} lanesCoords
    */
-  constructor (name, isOpen, lanesCoords) {
+  constructor (id, name, isOpen, lanesCoords) {
+    this.id = id;
     this.name = name;
     this.isOpen = isOpen;
     this.rawLanesCoords = lanesCoords;
@@ -161,6 +165,7 @@ export default class Surface {
   static fromDataset (dataset) {
     return dataset.map(data =>
       new Surface(
+        data.id,
         data.name,
         data.isOpen,
         data.coords.map(coords =>

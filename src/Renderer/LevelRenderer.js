@@ -31,16 +31,16 @@ export default class LevelRenderer extends Group {
   }
 
   releaseLevel () {
+    this.remove(this.surfaceRenderer);
+    this.remove(this.shooterRenderer);
+    this.remove(this.enemyRendererManager);
+    this.remove(this.projectileRendererManager);
+
     this.level = null;
     this.surfaceRenderer = undefined;
     this.shooterRenderer = undefined;
     this.enemyRendererManager = undefined;
     this.projectileRendererManager = undefined;
-
-    this.remove(this.surfaceRenderer);
-    this.remove(this.shooterRenderer);
-    this.remove(this.enemyRendererManager);
-    this.remove(this.projectileRendererManager);
   }
 
   update () {
