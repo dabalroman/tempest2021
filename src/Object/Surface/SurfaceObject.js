@@ -1,6 +1,6 @@
 import readonly from '@/utils/readonly';
 import ObjectIdManager from '@/Helpers/UniqueIdFactory';
-import State from '@/Object/Enemies/State';
+import State from '@/Object/State';
 
 export default class SurfaceObject {
   @readonly
