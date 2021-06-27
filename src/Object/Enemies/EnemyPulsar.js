@@ -190,6 +190,10 @@ export default class EnemyPulsar extends Enemy {
   }
 
   disappear () {
+    if (this.inState(EnemyPulsar.STATE_PULSATING)) {
+      this.surface.unshortLane(this.laneId);
+    }
+
     this.setState(EnemyPulsar.STATE_DISAPPEARING);
     super.die();
   }

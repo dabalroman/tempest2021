@@ -84,7 +84,7 @@ export default class EnemyTanker extends Enemy {
       this.fire();
     }
 
-    if (!this.inState(EnemyTanker.STATE_EXPLODING)) {
+    if (!this.inState(EnemyTanker.STATE_EXPLODING) && !this.inState(EnemyTanker.STATE_DISAPPEARING)) {
       this.zPosition += this.zSpeed;
     }
   }
