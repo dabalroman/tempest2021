@@ -38,7 +38,7 @@ export default class EnemySpawner {
   /** @var {number} */
   currentLevel;
   /** @var {number} */
-  scoreOnSurface;
+  currentScore;
   /** @var {number} */
   targetScore;
 
@@ -56,7 +56,7 @@ export default class EnemySpawner {
     this.rewardCallback = rewardCallback;
 
     this.currentLevel = level;
-    this.scoreOnSurface = levelInitScore;
+    this.currentScore = levelInitScore;
     this.targetScore = targetScore;
   }
 
@@ -64,15 +64,15 @@ export default class EnemySpawner {
    * @return {boolean}
    */
   reachedScoreTarget () {
-    return this.scoreOnSurface >= this.targetScore;
+    return this.currentScore >= this.targetScore;
   }
 
-  setScore (score) {
-    this.scoreOnSurface = score;
+  updateScore (score) {
+    this.currentScore = score;
   }
 
   spawn () {
-    if (this.scoreOnSurface >= this.targetScore) {
+    if (this.currentScore >= this.targetScore) {
       return;
     }
 
@@ -121,9 +121,9 @@ export default class EnemySpawner {
         throw new Error(`Trying to spawn unknown enemy: ${enemyToSpawn.type}`);
     }
 
-    this.scoreOnSurface += enemy.valueInPoints;
+    this.currentScore += enemy.valueInPoints;
 
-    // console.log(`Spawning ${enemyToSpawn.type} on lane ${lane}. Score on surface: ${this.scoreOnSurface}`);
+    // console.log(`Spawning ${enemyToSpawn.type} on lane ${lane}. Score on surface: ${this.currentScore}`);
   }
 
   /** @param {{level: number, type: string, chanceOfSpawning: number}[]} enemies */

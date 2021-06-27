@@ -167,6 +167,7 @@ export default class Level {
   update () {
     this.projectileManager.update();
     this.surfaceObjectsManager.update();
+    this.enemySpawner.updateScore(this.getCurrentScore());
 
     if (this.shooter.inState(Shooter.STATE_ALIVE)) {
       this.enemySpawner.spawn();
@@ -182,7 +183,6 @@ export default class Level {
 
     if (this.shooterKilledCallback()) {
       this.shooter.renovate();
-      this.enemySpawner.setScore(this.getCurrentScore());
     }
   }
 }
