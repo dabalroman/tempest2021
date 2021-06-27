@@ -22,12 +22,13 @@ export default class Enemy extends ShootingSurfaceObject {
    * @param {ProjectileManager} projectileManager
    * @param {function} rewardCallback
    * @param {number} laneId
+   * @param {number} zPosition
    * @param {string} type
    */
-  constructor (surface, projectileManager, rewardCallback, laneId, type) {
+  constructor (surface, projectileManager, rewardCallback, laneId, zPosition, type) {
     super(surface, projectileManager, laneId, type);
 
-    this.zPosition = 1;
+    this.zPosition = zPosition;
 
     this.rewardCallback = rewardCallback;
     this.shootTimeoutMs = Enemy.SHOOT_TIMEOUT_MS;

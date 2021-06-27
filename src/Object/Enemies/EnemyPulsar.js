@@ -55,12 +55,15 @@ export default class EnemyPulsar extends Enemy {
    * @param {ProjectileManager} projectileManager
    * @param {function} rewardCallback
    * @param {number} laneId
+   * @param {number} zPosition
    */
-  constructor (surface, projectileManager, rewardCallback, laneId = 0) {
-    super(surface, projectileManager, rewardCallback, laneId, SurfaceObject.TYPE_PULSAR);
+  constructor (surface, projectileManager, rewardCallback, laneId = 0, zPosition = 1) {
+    super(surface, projectileManager, rewardCallback, laneId, zPosition, SurfaceObject.TYPE_PULSAR);
 
     this.firstLevel = 17;
     this.valueInPoints = 200;
+
+    this.zTarget = zPosition;
 
     this.setState(EnemyPulsar.STATE_MOVING_ALONG_LINE);
   }

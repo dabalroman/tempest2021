@@ -27,7 +27,7 @@ export default class EnemySpike extends Enemy {
    * @param {number} laneId
    */
   constructor (surface, projectileManager, rewardCallback, laneId = 0) {
-    super(surface, projectileManager, rewardCallback, laneId, SurfaceObject.TYPE_SPIKE);
+    super(surface, projectileManager, rewardCallback, laneId, 1, SurfaceObject.TYPE_SPIKE);
 
     this.firstLevel = 1;
     this.valueInPoints = 1;

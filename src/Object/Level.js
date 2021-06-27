@@ -3,14 +3,8 @@ import SurfaceObjectsManager from '@/Object/Manager/SurfaceObjectsManager';
 import ProjectileManager from '@/Object/Manager/ProjectileManager';
 
 import keyboardInput from '@/utils/KeyboardInput';
-import EnemyFlipper from '@/Object/Enemies/EnemyFlipper';
 import randomRange from '@/utils/randomRange';
-import EnemySpiker from '@/Object/Enemies/EnemySpiker';
-import EnemyFuseball from '@/Object/Enemies/EnemyFuseball';
-import EnemyPulsar from '@/Object/Enemies/EnemyPulsar';
-import EnemyPulsarTanker from '@/Object/Enemies/EnemyPulsarTanker';
-import EnemyFuseballTanker from '@/Object/Enemies/EnemyFuseballTanker';
-import EnemyFlipperTanker from '@/Object/Enemies/EnemyFlipperTanker';
+import EnemySpawner from '@/Object/Enemies/EnemySpawner';
 
 export default class Level {
   /** @var {Surface} */
@@ -21,6 +15,15 @@ export default class Level {
   surfaceObjectsManager;
   /** @var {ProjectileManager} */
   projectileManager;
+  /** @var {EnemySpawner} */
+  enemySpawner;
+
+  /** @var {number} */
+  currentLevel;
+  /** @var {number} */
+  levelInitScore;
+  /** @var {number} */
+  targetScore;
 
   /** @var {function} */
   rewardCallback;
@@ -31,42 +34,44 @@ export default class Level {
 
   /**
    * @param {Surface} surface
+   * @param {number} currentLevel
+   * @param {number} levelInitScore
+   * @param {number} targetScore
    * @param {function} rewardCallback
    * @param {function} levelWonCallback
    * @param {function} shooterKilledCallback
    */
-  constructor (surface, rewardCallback, levelWonCallback, shooterKilledCallback) {
+  constructor (surface, currentLevel, levelInitScore, targetScore, rewardCallback, levelWonCallback, shooterKilledCallback) {
     this.surface = surface;
+
+    this.currentLevel = currentLevel;
+    this.levelInitScore = levelInitScore;
+    this.targetScore = targetScore;
+
     this.rewardCallback = rewardCallback;
     this.levelWonCallback = levelWonCallback;
     this.shooterKilledCallback = shooterKilledCallback;
 
     this.surfaceObjectsManager = new SurfaceObjectsManager(surface);
     this.projectileManager = new ProjectileManager(this.surfaceObjectsManager);
+    this.enemySpawner = new EnemySpawner(
+      this.surfaceObjectsManager,
+      this.projectileManager,
+      this.rewardCallback,
+      this.currentLevel,
+      this.levelInitScore,
+      this.targetScore
+    );
 
     this.shooter = new Shooter(
       surface,
       this.projectileManager,
       this.surfaceObjectsManager,
       this.shooterKilledCallback,
-      6
+      7
     );
 
     this.surfaceObjectsManager.addShooter(this.shooter);
-
-    // this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, this.rewardCallback, 0));
-    // this.surfaceObjectsManager.addEnemy(new EnemySpiker(surface, this.projectileManager, this.rewardCallback, 2));
-    // this.surfaceObjectsManager.addEnemy(
-    //   new EnemyFlipperTanker(surface, this.projectileManager, this.surfaceObjectsManager, this.rewardCallback, 4)
-    // );
-    // this.surfaceObjectsManager.addEnemy(new EnemyFuseball(surface, this.projectileManager, this.rewardCallback, 8));
-    // this.surfaceObjectsManager.addEnemy(
-    //   new EnemyFuseballTanker(surface, this.projectileManager, this.surfaceObjectsManager, this.rewardCallback, 10)
-    // );
-    // this.surfaceObjectsManager.addEnemy(new EnemyPulsar(surface, this.projectileManager, this.rewardCallback, 12));
-    // this.surfaceObjectsManager.addEnemy(
-    //   new EnemyPulsarTanker(surface, this.projectileManager, this.surfaceObjectsManager, this.rewardCallback, 14)
-    // );
   }
 
   release () {
@@ -81,83 +86,31 @@ export default class Level {
 
     //Spawners
     keyboardInput.register('KeyF', () => {
-      this.surfaceObjectsManager.addEnemy(
-        new EnemyFlipper(
-          this.surface,
-          this.projectileManager,
-          this.rewardCallback,
-          randomRange(0, 15)
-        )
-      );
+      this.enemySpawner.spawnFlipper(randomRange(0, 15), 0.5);
     });
 
     keyboardInput.register('KeyS', () => {
-      this.surfaceObjectsManager.addEnemy(
-        new EnemySpiker(
-          this.surface,
-          this.projectileManager,
-          this.rewardCallback,
-          randomRange(0, 15)
-        )
-      );
+      this.enemySpawner.spawnSpiker(randomRange(0, 15), 0.5);
     });
 
     keyboardInput.register('KeyB', () => {
-      this.surfaceObjectsManager.addEnemy(
-        new EnemyFuseball(
-          this.surface,
-          this.projectileManager,
-          this.rewardCallback,
-          randomRange(0, 15)
-        )
-      );
+      this.enemySpawner.spawnFuseball(randomRange(0, 15), 0.5);
     });
 
     keyboardInput.register('KeyP', () => {
-      this.surfaceObjectsManager.addEnemy(
-        new EnemyPulsar(
-          this.surface,
-          this.projectileManager,
-          this.rewardCallback,
-          randomRange(0, 15)
-        )
-      );
+      this.enemySpawner.spawnPulsar(randomRange(0, 15), 0.5);
     });
 
     keyboardInput.register('KeyT', () => {
-      this.surfaceObjectsManager.addEnemy(
-        new EnemyFlipperTanker(
-          this.surface,
-          this.projectileManager,
-          this.surfaceObjectsManager,
-          this.rewardCallback,
-          randomRange(0, 15)
-        )
-      );
+      this.enemySpawner.spawnFlipperTanker(randomRange(0, 15), 0.5);
     });
 
     keyboardInput.register('KeyY', () => {
-      this.surfaceObjectsManager.addEnemy(
-        new EnemyFuseballTanker(
-          this.surface,
-          this.projectileManager,
-          this.surfaceObjectsManager,
-          this.rewardCallback,
-          randomRange(0, 15)
-        )
-      );
+      this.enemySpawner.spawnFuseballTanker(randomRange(0, 15), 0.5);
     });
 
     keyboardInput.register('KeyU', () => {
-      this.surfaceObjectsManager.addEnemy(
-        new EnemyPulsarTanker(
-          this.surface,
-          this.projectileManager,
-          this.surfaceObjectsManager,
-          this.rewardCallback,
-          randomRange(0, 15)
-        )
-      );
+      this.enemySpawner.spawnPulsarTanker(randomRange(0, 15), 0.5);
     });
 
     keyboardInput.register('KeyZ', () => {
@@ -182,5 +135,6 @@ export default class Level {
   update () {
     this.projectileManager.update();
     this.surfaceObjectsManager.update();
+    this.enemySpawner.spawn();
   }
 }

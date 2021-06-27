@@ -18,28 +18,30 @@ export default class EnemyTanker extends Enemy {
   @readonly
   static FLAG_SHOOTS_FIRED = 0x1;
 
-  /** {SurfaceObjectsManager} */
-  surfaceObjectsManager;
+  /** {function} */
+  enemySpawnFunction;
 
   /**
    * @param {Surface} surface
    * @param {ProjectileManager} projectileManager
-   * @param {SurfaceObjectsManager} surfaceObjectsManager
+   * @param {function} enemySpawnFunction
    * @param {function} rewardCallback
    * @param {string} type
    * @param {number} laneId
+   * @param {number} zPosition
    */
   constructor (
     surface,
     projectileManager,
-    surfaceObjectsManager,
+    enemySpawnFunction,
     rewardCallback,
     type,
-    laneId = 0
+    laneId = 0,
+    zPosition = 1
   ) {
-    super(surface, projectileManager, rewardCallback, laneId, type);
+    super(surface, projectileManager, rewardCallback, laneId, zPosition, type);
 
-    this.surfaceObjectsManager = surfaceObjectsManager;
+    this.enemySpawnFunction = enemySpawnFunction;
 
     this.firstLevel = 3;
     this.valueInPoints = 100;

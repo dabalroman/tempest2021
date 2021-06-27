@@ -15,6 +15,7 @@ import ScreenHighScores from '@/Object/Screen/ScreenHighScores';
 import ScreenContentManager from '@/Object/Screen/ScreenContentManager';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass';
+import levels from '@/Assets/Levels';
 
 export default class Game {
   @readonly
@@ -33,6 +34,10 @@ export default class Game {
 
   /** @var {number} */
   level = 1;
+  /** @var {{id: number, selectable: boolean, scoreBonus: number, targetScore: number}} */
+  levelData;
+  /** @var {boolean} */
+  firstLevel = true;
   /** @var {number} */
   score = 0;
   /** @var {number} */
@@ -107,12 +112,25 @@ export default class Game {
   loadLevel (level) {
     let surfaceId = ((level - 1) % 16) + 1;
     let surface = this.surfacesCollection.find(surface => surface.id === surfaceId);
+
+    // noinspection JSValidateTypes
+    this.levelData = levels.find(levelData => levelData.id === level);
+    console.log(this.levelData);
+
+    let targetScore = this.firstLevel
+      ? this.levelData.targetScore - this.levelData.scoreBonus
+      : this.levelData.targetScore;
+
     this.levelObject = new Level(
       surface,
+      this.level,
+      this.score,
+      targetScore,
       this.rewardCallback.bind(this),
       this.levelWonCallback.bind(this),
       this.shooterKilledCallback.bind(this)
     );
+
     this.levelObject.registerKeys();
 
     this.levelRenderer.bindLevel(this.levelObject);
@@ -198,7 +216,15 @@ export default class Game {
   }
 
   levelWonCallback () {
+    if (this.firstLevel && this.levelData.selectable) {
+      this.score += this.levelData.scoreBonus;
+    }
 
+    this.firstLevel = false;
+
+    this.level++;
+    this.releaseLevel();
+    this.loadLevel(this.level);
   }
 
   shooterKilledCallback () {

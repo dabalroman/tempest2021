@@ -29,9 +29,10 @@ export default class EnemySpiker extends Enemy {
    * @param {ProjectileManager} projectileManager
    * @param {function} rewardCallback
    * @param {number} laneId
+   * @param {number} zPosition
    */
-  constructor (surface, projectileManager, rewardCallback, laneId = 0) {
-    super(surface, projectileManager, rewardCallback, laneId, SurfaceObject.TYPE_SPIKER);
+  constructor (surface, projectileManager, rewardCallback, laneId = 0, zPosition = 1) {
+    super(surface, projectileManager, rewardCallback, laneId, zPosition, SurfaceObject.TYPE_SPIKER);
 
     this.firstLevel = 4;
     this.valueInPoints = 150;

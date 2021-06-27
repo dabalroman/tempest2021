@@ -45,6 +45,8 @@ export default class SurfaceObjectsManager extends FIFOManager {
     this.rendererHelperNewObjectsIds.push(this.enemies[this.enemies.length - 1].objectId);
 
     this.createSpikes(enemy);
+
+    return enemy;
   }
 
   addSpike (spike) {

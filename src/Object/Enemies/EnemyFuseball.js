@@ -61,9 +61,10 @@ export default class EnemyFuseball extends Enemy {
    * @param {ProjectileManager} projectileManager
    * @param {function} rewardCallback
    * @param {number} laneId
+   * @param {number} zPosition
    */
-  constructor (surface, projectileManager, rewardCallback, laneId = 0) {
-    super(surface, projectileManager, rewardCallback, laneId, SurfaceObject.TYPE_FUSEBALL);
+  constructor (surface, projectileManager, rewardCallback, laneId = 0, zPosition = 1) {
+    super(surface, projectileManager, rewardCallback, laneId, zPosition, SurfaceObject.TYPE_FUSEBALL);
 
     this.firstLevel = 11;
     this.valueInPoints = 250;
