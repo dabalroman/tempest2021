@@ -44,7 +44,7 @@ class KeyboardInput {
     const index = this.keyToFunctionMap.findIndex(keyMap => keyMap.key === key);
 
     if (index >= 0) {
-      this.keyToFunctionMap.slice(index, 1);
+      this.keyToFunctionMap.splice(index, 1);
     }
   }
 
