@@ -314,6 +314,7 @@ export default class Game {
   levelWonCallback () {
     if (this.firstLevel && this.levelData.selectable) {
       this.score += this.levelData.scoreBonus;
+      this.screenContentManager.setScore(this.score);
     }
 
     this.firstLevel = false;

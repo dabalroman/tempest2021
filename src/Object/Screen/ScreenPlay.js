@@ -12,7 +12,6 @@ export default class ScreenPlay extends Canvas3d {
   constructor (screenContentManager, width = 8, height = 8, canvasResX = 1024, canvasResY = 1024) {
     super(screenContentManager, width, height, canvasResX, canvasResY);
 
-    this.screenContentManager.set('bestScore', { score: 62150, name: 'AAA' });
     this.score = this.screenContentManager.get(ScreenContentManager.KEY_SCORE);
   }
 
@@ -40,16 +39,28 @@ export default class ScreenPlay extends Canvas3d {
       Canvas3d.COLOR_BLUE
     );
 
-    for (let i = 0; i < this.screenContentManager.get('lives'); i++) {
+    for (let i = 0; i < this.screenContentManager.get(ScreenContentManager.KEY_LIVES); i++) {
       this.drawLiveIcon(50 + i * 62, 150);
     }
 
     this.setFontSizePx(30);
-    this.drawText(this.alignNumberToRight(this.screenContentManager.get('bestScore').score), 400, 90, Canvas3d.COLOR_BLUE);
-    this.drawText(this.screenContentManager.get('bestScore').name, 580, 90, Canvas3d.COLOR_BLUE);
+    this.drawText(
+      this.alignNumberToRight(this.screenContentManager.get(ScreenContentManager.KEY_HIGHEST_SCORE).score),
+      400, 90,
+      Canvas3d.COLOR_BLUE
+    );
+    this.drawText(
+      this.screenContentManager.get(ScreenContentManager.KEY_HIGHEST_SCORE).name,
+      580, 90,
+      Canvas3d.COLOR_BLUE
+    );
 
     this.drawText('LEVEL', 400, 140, Canvas3d.COLOR_GREEN);
-    this.drawText(this.alignNumberToRight(this.screenContentManager.get('level')), 505, 140, Canvas3d.COLOR_GREEN);
+    this.drawText(
+      this.alignNumberToRight(this.screenContentManager.get(ScreenContentManager.KEY_LEVEL)),
+      505, 140,
+      Canvas3d.COLOR_GREEN
+    );
   }
 
   /**

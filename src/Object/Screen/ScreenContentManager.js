@@ -43,13 +43,7 @@ export default class ScreenContentManager extends ContentManager {
    */
   setHighScores (highScores) {
     this.set(ScreenContentManager.KEY_HIGH_SCORES, highScores);
-  }
-
-  /**
-   * @param {number} score
-   */
-  setHighestScore (score) {
-    this.set(ScreenContentManager.KEY_HIGHEST_SCORE, score);
+    this.set(ScreenContentManager.KEY_HIGHEST_SCORE, highScores[0]);
   }
 
   /**
