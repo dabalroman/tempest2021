@@ -4,7 +4,7 @@ import keyboardInput from '@/utils/KeyboardInput';
 
 export default class ScreenSelectSurface extends Canvas3d {
   /** @var {number} */
-  selectedLevel = 0;
+  selectedLevel = 1;
 
   constructor (screenContentManager, width = 8, height = 8, canvasResX = 1024, canvasResY = 1024) {
     super(screenContentManager, width, height, canvasResX, canvasResY);
@@ -30,6 +30,7 @@ export default class ScreenSelectSurface extends Canvas3d {
   }
 
   selectLevel () {
+    console.log(this.selectedLevel);
     if (this.keyInputDelay()) {
       this.screenContentManager.get(ScreenContentManager.KEY_LEVEL_SELECTED_CALLBACK)(this.selectedLevel, true);
     }

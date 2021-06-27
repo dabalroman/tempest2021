@@ -100,7 +100,7 @@ export default class ProjectileManager extends FIFOManager {
     this.shooterProjectiles.forEach(projectile => { projectile.disappear(); });
     this.enemyProjectiles.forEach(projectile => { projectile.disappear(); });
 
-    this.updateObjectsMap();
     this.runGarbageCollector();
+    this.updateObjectsMap();
   }
 }

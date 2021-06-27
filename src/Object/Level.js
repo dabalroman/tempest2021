@@ -76,6 +76,8 @@ export default class Level {
       this.targetScore
     );
 
+    console.log(this.currentLevel, this.levelInitScore, this.targetScore);
+
     this.shooter = new Shooter(
       surface,
       this.projectileManager,

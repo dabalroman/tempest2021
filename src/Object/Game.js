@@ -40,7 +40,7 @@ export default class Game {
   /** @var {number} */
   level = 1;
   /** @var {number} */
-  highestLevel = 15;
+  highestLevel = 99;
   /** @var {{id: number, selectable: boolean, scoreBonus: number, targetScore: number}} */
   levelData;
   /** @var {boolean} */
@@ -135,8 +135,16 @@ export default class Game {
     let surfaceId = ((level - 1) % 16) + 1;
     let surface = this.surfacesCollection.find(surface => surface.id === surfaceId);
 
+    if (surface === undefined) {
+      throw new Error(`Can't find surface level with id === ${surfaceId} !`);
+    }
+
     // noinspection JSValidateTypes
     this.levelData = levels.find(levelData => levelData.id === level);
+
+    if (this.levelData === undefined) {
+      throw new Error(`Can't find level with id === ${level} !`);
+    }
 
     let targetScore = this.firstLevel
       ? this.levelData.targetScore - this.levelData.scoreBonus

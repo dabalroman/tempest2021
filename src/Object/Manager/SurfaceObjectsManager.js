@@ -110,21 +110,20 @@ export default class SurfaceObjectsManager extends FIFOManager {
 
   removeEnemies () {
     this.enemies.forEach(enemy => { enemy.disappear(); });
-    this.updateObjectsMap();
     this.runGarbageCollector();
+    this.updateObjectsMap();
   }
 
   removeSpikes () {
     this.spikes.forEach(enemy => { enemy.disappear(); });
-    this.updateObjectsMap();
     this.runGarbageCollector();
-
+    this.updateObjectsMap();
   }
 
   removeShooters () {
     this.shooters.forEach(shooter => { shooter.disappear(); });
-    this.updateObjectsMap();
     this.runGarbageCollector();
+    this.updateObjectsMap();
   }
 
   purgePlayField () {
