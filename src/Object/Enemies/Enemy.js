@@ -55,7 +55,8 @@ export default class Enemy extends ShootingSurfaceObject {
     this.canShoot = false;
     this.clearFlags();
 
-    if (this.reward) {
+    if (this.reward === true) {
+      this.reward = false;
       this.rewardCallback(this.valueInPoints);
     }
   }

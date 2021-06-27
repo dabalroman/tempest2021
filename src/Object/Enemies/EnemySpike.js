@@ -80,6 +80,7 @@ export default class EnemySpike extends Enemy {
     this.rendererHelperZPositionChanged = true;
 
     if (this.zPosition + EnemySpike.HIT_DESTROYED_LENGTH >= 1) {
+      this.reward = true;
       this.die();
     } else {
       this.rewardCallback(this.valueInPoints);
@@ -87,10 +88,18 @@ export default class EnemySpike extends Enemy {
   }
 
   disappear () {
+    if (this.inState(EnemySpike.STATE_DEAD)) {
+      return;
+    }
+
     this.die();
   }
 
   die () {
+    if (this.inState(EnemySpike.STATE_DEAD)) {
+      return;
+    }
+
     this.setState(EnemySpike.STATE_DEAD);
     super.die();
   }

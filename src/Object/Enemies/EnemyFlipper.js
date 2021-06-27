@@ -175,11 +175,19 @@ export default class EnemyFlipper extends Enemy {
   }
 
   disappear () {
+    if (this.inState(EnemyFlipper.STATE_DEAD)) {
+      return;
+    }
+
     this.setState(EnemyFlipper.STATE_DISAPPEARING);
     super.die();
   }
 
   die () {
+    if (this.inState(EnemyFlipper.STATE_DEAD)) {
+      return;
+    }
+
     this.setState(EnemyFlipper.STATE_EXPLODING);
     super.die();
   }

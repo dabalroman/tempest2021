@@ -190,6 +190,10 @@ export default class EnemyPulsar extends Enemy {
   }
 
   disappear () {
+    if (this.inState(EnemyPulsar.STATE_DEAD)) {
+      return;
+    }
+
     if (this.inState(EnemyPulsar.STATE_PULSATING)) {
       this.surface.unshortLane(this.laneId);
     }
@@ -199,6 +203,10 @@ export default class EnemyPulsar extends Enemy {
   }
 
   die () {
+    if (this.inState(EnemyPulsar.STATE_DEAD)) {
+      return;
+    }
+
     if (this.inState(EnemyPulsar.STATE_PULSATING)) {
       this.surface.unshortLane(this.laneId);
     }

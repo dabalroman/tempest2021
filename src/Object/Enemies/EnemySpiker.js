@@ -90,11 +90,19 @@ export default class EnemySpiker extends Enemy {
   }
 
   disappear () {
+    if (this.inState(EnemySpiker.STATE_DEAD)) {
+      return;
+    }
+
     this.setState(EnemySpiker.STATE_DISAPPEARING);
     super.die();
   }
 
   die () {
+    if (this.inState(EnemySpiker.STATE_DEAD)) {
+      return;
+    }
+
     this.setState(EnemySpiker.STATE_EXPLODING);
     super.die();
   }
