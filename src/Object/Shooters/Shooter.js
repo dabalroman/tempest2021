@@ -32,16 +32,27 @@ export default class Shooter extends ShootingSurfaceObject {
   /** {SurfaceObjectsManager} */
   surfaceObjectsManager;
 
+  /** @var {function} */
+  killedCallback;
+
   /**
    * @param {Surface} surface
    * @param {ProjectileManager} projectileManager
    * @param {SurfaceObjectsManager} surfaceObjectsManager
+   * @param {function} killedCallback
    * @param {number} laneId
    */
-  constructor (surface, projectileManager, surfaceObjectsManager, laneId = 0) {
+  constructor (
+    surface,
+    projectileManager,
+    surfaceObjectsManager,
+    killedCallback,
+    laneId = 0
+  ) {
     super(surface, projectileManager, laneId, SurfaceObject.TYPE_SHOOTER);
 
     this.surfaceObjectsManager = surfaceObjectsManager;
+    this.killedCallback = killedCallback;
 
     this.zPosition = 0;
 
@@ -61,6 +72,7 @@ export default class Shooter extends ShootingSurfaceObject {
     if (this.canChangeState()) {
       if (this.inState(Shooter.STATE_EXPLODING)) {
         this.setState(Shooter.STATE_DEAD);
+        this.killedCallback();
       }
 
       if (this.inState(Shooter.STATE_DEAD)) {

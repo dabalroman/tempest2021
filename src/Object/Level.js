@@ -44,7 +44,14 @@ export default class Level {
     this.surfaceObjectsManager = new SurfaceObjectsManager(surface);
     this.projectileManager = new ProjectileManager(this.surfaceObjectsManager);
 
-    this.shooter = new Shooter(surface, this.projectileManager, this.surfaceObjectsManager, 6);
+    this.shooter = new Shooter(
+      surface,
+      this.projectileManager,
+      this.surfaceObjectsManager,
+      this.shooterKilledCallback,
+      6
+    );
+
     this.surfaceObjectsManager.addShooter(this.shooter);
 
     // this.surfaceObjectsManager.addEnemy(new EnemyFlipper(surface, this.projectileManager, this.rewardCallback, 0));
@@ -171,10 +178,5 @@ export default class Level {
   update () {
     this.projectileManager.update();
     this.surfaceObjectsManager.update();
-
-    if (!this.shooter.alive) {
-      this.shooterKilledCallback();
-      this.shooter.alive = true;
-    }
   }
 }
