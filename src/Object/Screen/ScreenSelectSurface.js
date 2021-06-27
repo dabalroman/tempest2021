@@ -30,7 +30,6 @@ export default class ScreenSelectSurface extends Canvas3d {
   }
 
   selectLevel () {
-    console.log(this.selectedLevel);
     if (this.keyInputDelay()) {
       this.screenContentManager.get(ScreenContentManager.KEY_LEVEL_SELECTED_CALLBACK)(this.selectedLevel, true);
     }

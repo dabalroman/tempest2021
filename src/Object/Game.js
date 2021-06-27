@@ -19,6 +19,11 @@ import levels from '@/Assets/Levels';
 
 export default class Game {
   @readonly
+  static HIGH_SCORES_STORAGE_KEY = 'high_scores';
+  @readonly
+  static HIGHEST_LEVEL = 'highest_level';
+
+  @readonly
   static STATE_SELECT_SURFACE = new State(0, 0, 'select_surface');
   @readonly
   static STATE_PLAY = new State(0, 0, 'play');
@@ -47,6 +52,8 @@ export default class Game {
   firstLevel = true;
   /** @var {number} */
   score = 0;
+  /** @var {{name: string, score: number}[]} */
+  highScores;
   /** @var {number} */
   lives = 5;
   /** @var {number} */
@@ -100,6 +107,8 @@ export default class Game {
         this.releaseLevel();
 
       }
+
+      this.saveGameState();
     }
 
     this.screenStateUpdated = true;
@@ -195,21 +204,55 @@ export default class Game {
 
   setupLogic () {
     this.screenContentManager = new ScreenContentManager();
+
+    this.loadGameState();
     this.populateScreenContentManager();
 
+    // noinspection JSCheckFunctionSignatures
     this.surfacesCollection = Surface.fromDataset(surfaces);
+  }
+
+  loadGameState () {
+    console.log('STATE LOADED');
+    this.highScores = new Array(8).fill({ name: 'EZY', score: 16000 });
+
+    let highScores = localStorage.getItem(Game.HIGH_SCORES_STORAGE_KEY);
+    if (highScores !== null) {
+      highScores = JSON.parse(highScores);
+
+      if (highScores.length === 8) {
+        this.highScores = highScores;
+      }
+    }
+
+    this.highestLevel = 1;
+    let highestLevel = localStorage.getItem(Game.HIGHEST_LEVEL);
+    if (highestLevel !== null) {
+      this.highestLevel = parseInt(highestLevel);
+    }
+  }
+
+  saveGameState () {
+    console.log('STATE SAVED');
+    localStorage.setItem(Game.HIGH_SCORES_STORAGE_KEY, JSON.stringify(this.highScores));
+    localStorage.setItem(Game.HIGHEST_LEVEL, this.highestLevel.toString());
   }
 
   populateScreenContentManager () {
     this.screenContentManager.setLives(this.lives);
     this.screenContentManager.setLevel(this.level);
     this.screenContentManager.setScore(this.score);
+    this.screenContentManager.setCredits(this.credits);
+    this.screenContentManager.setHighScores(this.highScores);
     this.screenContentManager.setSelectActive(0);
     this.screenContentManager.setSelectOffset(0);
     this.screenContentManager.setSelectLevels(
       levels.filter(level => level.selectable && level.id <= this.highestLevel)
     );
+
     this.screenContentManager.setLevelSelectedCallback(this.startLevel.bind(this));
+    this.screenContentManager.setPushHighScoreCallback(this.pushScoreToHighScores.bind(this));
+    this.screenContentManager.setCloseHighScoresScreenCallback(() => { this.setState(Game.STATE_SELECT_SURFACE); });
   }
 
   setupRenderer (highQuality = true) {
@@ -297,6 +340,23 @@ export default class Game {
     }
 
     return true;
+  }
+
+  /**
+   * @param {number} score
+   * @param {string} name
+   */
+  pushScoreToHighScores (score, name) {
+    let index = this.highScores.findIndex(row => row.score <= score);
+
+    if (index < 0) {
+      return;
+    }
+
+    this.highScores.splice(index, 0, { name: name, score: score });
+    this.highScores.pop();
+
+    console.log(this.highScores);
   }
 
   /**
