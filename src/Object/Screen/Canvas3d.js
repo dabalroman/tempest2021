@@ -5,7 +5,7 @@ import readonly from '@/utils/readonly';
 
 export default class Canvas3d extends Mesh {
   @readonly
-  static KEY_INPUT_DELAY = 100;
+  static KEY_INPUT_DELAY = 200;
 
   @readonly
   static COLOR_RED = 'rgba(255, 0, 0, 1)';

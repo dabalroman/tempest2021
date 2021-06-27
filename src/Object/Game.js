@@ -98,13 +98,13 @@ export default class Game {
         this.screenContentManager.setLevel(this.level);
 
       } else if (this.state.equals(Game.STATE_SELECT_SURFACE)) {
+        this.releaseLevel();
         this.populateScreenContentManager();
         this.loadScreen(new ScreenSelectSurface(this.screenContentManager));
-        this.releaseLevel();
 
       } else if (this.state.equals(Game.STATE_HIGH_SCORES)) {
-        this.loadScreen(new ScreenHighScores(this.screenContentManager));
         this.releaseLevel();
+        this.loadScreen(new ScreenHighScores(this.screenContentManager));
 
       }
 
@@ -355,8 +355,6 @@ export default class Game {
 
     this.highScores.splice(index, 0, { name: name, score: score });
     this.highScores.pop();
-
-    console.log(this.highScores);
   }
 
   /**
