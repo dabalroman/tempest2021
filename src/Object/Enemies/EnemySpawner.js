@@ -77,10 +77,10 @@ export default class EnemySpawner {
     }
 
     let amountOfAliveEnemiesOnSurface = this.surfaceObjectsManager.getAmountOfAliveEnemies();
-    let amountOfEnemiesAllowedOnSurface = Math.round(
-      Math.pow(this.currentLevel / EnemySpawner.MAX_LEVEL, 2)
+    let amountOfEnemiesAllowedOnSurface = Math.ceil(
+      (this.currentLevel / EnemySpawner.MAX_LEVEL)
       * (EnemySpawner.MAX_ENEMIES - EnemySpawner.MIN_ENEMIES)
-      + EnemySpawner.MIN_ENEMIES
+      + EnemySpawner.MIN_ENEMIES - 1
     );
 
     let spawnChance = 1 - (amountOfAliveEnemiesOnSurface / amountOfEnemiesAllowedOnSurface);
