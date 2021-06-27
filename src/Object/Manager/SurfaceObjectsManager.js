@@ -105,24 +105,35 @@ export default class SurfaceObjectsManager extends FIFOManager {
   }
 
   handleSuperzapper () {
-    this.enemies.forEach(enemy => {enemy.die();});
+    this.enemies.forEach(enemy => { enemy.die(); });
   }
 
   removeEnemies () {
-    this.enemies.forEach(enemy => {enemy.disappear();});
+    this.enemies.forEach(enemy => { enemy.disappear(); });
+    this.updateObjectsMap();
+    this.runGarbageCollector();
   }
 
   removeSpikes () {
-    this.spikes.forEach(enemy => {enemy.disappear();});
+    this.spikes.forEach(enemy => { enemy.disappear(); });
+    this.updateObjectsMap();
+    this.runGarbageCollector();
+
   }
 
   removeShooters () {
-    this.shooters.forEach(shooter => {shooter.disappear();});
+    this.shooters.forEach(shooter => { shooter.disappear(); });
+    this.updateObjectsMap();
+    this.runGarbageCollector();
   }
 
   purgePlayField () {
     this.removeEnemies();
     this.removeSpikes();
     this.removeShooters();
+  }
+
+  getAmountOfAliveEnemies () {
+    return this.enemies.filter(enemy => enemy.alive).length;
   }
 }

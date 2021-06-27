@@ -60,12 +60,23 @@ export default class EnemySpawner {
     this.targetScore = targetScore;
   }
 
+  /**
+   * @return {boolean}
+   */
+  reachedScoreTarget () {
+    return this.scoreOnSurface >= this.targetScore;
+  }
+
+  setScore (score) {
+    this.scoreOnSurface = score;
+  }
+
   spawn () {
     if (this.scoreOnSurface >= this.targetScore) {
       return;
     }
 
-    let amountOfAliveEnemiesOnSurface = this.surfaceObjectsManager.enemies.filter(enemy => enemy.alive).length;
+    let amountOfAliveEnemiesOnSurface = this.surfaceObjectsManager.getAmountOfAliveEnemies();
     let amountOfEnemiesAllowedOnSurface = Math.round(
       Math.pow(this.currentLevel / EnemySpawner.MAX_LEVEL, 2)
       * (EnemySpawner.MAX_ENEMIES - EnemySpawner.MIN_ENEMIES)
@@ -112,7 +123,7 @@ export default class EnemySpawner {
 
     this.scoreOnSurface += enemy.valueInPoints;
 
-    console.log(`Spawning ${enemyToSpawn.type} on lane ${lane}. Score on surface: ${this.scoreOnSurface}`);
+    // console.log(`Spawning ${enemyToSpawn.type} on lane ${lane}. Score on surface: ${this.scoreOnSurface}`);
   }
 
   /** @param {{level: number, type: string, chanceOfSpawning: number}[]} enemies */

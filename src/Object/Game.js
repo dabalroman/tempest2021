@@ -25,12 +25,17 @@ export default class Game {
   @readonly
   static STATE_HIGH_SCORES = new State(0, 0, 'high_scores');
 
+  @readonly
+  static FLAG_LOAD_NEXT_LEVEL = 0x1;
+
   /** @var {State} */
   state;
   /** @var {State} */
   prevState;
   /** @var {boolean} */
   screenStateUpdated = false;
+  /** @var {number} */
+  flags;
 
   /** @var {number} */
   level = 1;
@@ -107,6 +112,40 @@ export default class Game {
   }
 
   /**
+   * @param {number} flag
+   */
+  setFlag (flag) {
+    this.flags |= flag;
+  }
+
+  /**
+   * @param {number} flag
+   */
+  unsetFlag (flag) {
+    this.flags &= ~flag;
+  }
+
+  clearFlags () {
+    this.flags = 0;
+  }
+
+  /**
+   * @param {number} flag
+   * @return {boolean}
+   */
+  isFlagSet (flag) {
+    return (this.flags & flag) > 0;
+  }
+
+  /**
+   * @param {number} flag
+   * @return {boolean}
+   */
+  isFlagNotSet (flag) {
+    return !this.isFlagSet(flag);
+  }
+
+  /**
    * @param {number} level
    */
   loadLevel (level) {
@@ -120,6 +159,8 @@ export default class Game {
     let targetScore = this.firstLevel
       ? this.levelData.targetScore - this.levelData.scoreBonus
       : this.levelData.targetScore;
+
+    console.log(this.score, targetScore);
 
     this.levelObject = new Level(
       surface,
@@ -156,7 +197,15 @@ export default class Game {
 
   setupLogic () {
     this.screenContentManager = new ScreenContentManager();
+    this.populateScreenContentManager();
+
     this.surfacesCollection = Surface.fromDataset(surfaces);
+  }
+
+  populateScreenContentManager () {
+    this.screenContentManager.setLives(this.lives);
+    this.screenContentManager.setLevel(this.level);
+    this.screenContentManager.setScore(this.score);
   }
 
   setupRenderer (highQuality = true) {
@@ -218,13 +267,14 @@ export default class Game {
   levelWonCallback () {
     if (this.firstLevel && this.levelData.selectable) {
       this.score += this.levelData.scoreBonus;
+      console.log('bonus!', this.score);
     }
 
     this.firstLevel = false;
 
     this.level++;
     this.releaseLevel();
-    this.loadLevel(this.level);
+    this.setState(Game.STATE_PLAY);
   }
 
   shooterKilledCallback () {

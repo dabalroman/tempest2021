@@ -41,7 +41,15 @@ export default class Level {
    * @param {function} levelWonCallback
    * @param {function} shooterKilledCallback
    */
-  constructor (surface, currentLevel, levelInitScore, targetScore, rewardCallback, levelWonCallback, shooterKilledCallback) {
+  constructor (
+    surface,
+    currentLevel,
+    levelInitScore,
+    targetScore,
+    rewardCallback,
+    levelWonCallback,
+    shooterKilledCallback
+  ) {
     this.surface = surface;
 
     this.currentLevel = currentLevel;
@@ -75,10 +83,22 @@ export default class Level {
   }
 
   release () {
+    this.surfaceObjectsManager.removeEnemies();
+    this.surfaceObjectsManager.removeShooters();
+    this.surfaceObjectsManager.removeSpikes();
+    this.surfaceObjectsManager = undefined;
+
+    this.projectileManager.removeProjectiles();
+    this.projectileManager = undefined;
+
+    this.surface = undefined;
+    this.shooter = undefined;
+
     this.unregisterKeys();
   }
 
   registerKeys () {
+    console.log('registering keys');
     keyboardInput.register('KeyA', () => {this.shooter.moveLeft();});
     keyboardInput.register('KeyD', () => {this.shooter.moveRight();});
     keyboardInput.register('Space', () => {this.shooter.fire();});
@@ -116,6 +136,8 @@ export default class Level {
     keyboardInput.register('KeyZ', () => {
       this.surfaceObjectsManager.removeEnemies();
     });
+
+    keyboardInput.register('KeyE', () => { this.levelWonCallback(); });
   }
 
   unregisterKeys () {
@@ -130,11 +152,17 @@ export default class Level {
     keyboardInput.unregister('KeyT');
     keyboardInput.unregister('KeyY');
     keyboardInput.unregister('KeyU');
+    keyboardInput.unregister('KeyZ');
+    keyboardInput.unregister('KeyE');
   }
 
   update () {
     this.projectileManager.update();
     this.surfaceObjectsManager.update();
     this.enemySpawner.spawn();
+
+    if (this.enemySpawner.reachedScoreTarget() && this.surfaceObjectsManager.getAmountOfAliveEnemies() === 0) {
+      this.levelWonCallback();
+    }
   }
 }

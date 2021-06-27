@@ -95,4 +95,12 @@ export default class ProjectileManager extends FIFOManager {
 
     this.forceMapsUpdate = false;
   }
+
+  removeProjectiles () {
+    this.shooterProjectiles.forEach(projectile => { projectile.disappear(); });
+    this.enemyProjectiles.forEach(projectile => { projectile.disappear(); });
+
+    this.updateObjectsMap();
+    this.runGarbageCollector();
+  }
 }

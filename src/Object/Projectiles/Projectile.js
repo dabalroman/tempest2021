@@ -5,7 +5,9 @@ export default class Projectile extends SurfaceObject {
   @readonly
   static PROJECTILE_SPEED = 0.028;
   @readonly
-  static PROJECTILE_KILL_RADIUS = 0.02;
+  static PROJECTILE_KILL_RADIUS_FORWARD = 0.02;
+  @readonly
+  static PROJECTILE_KILL_RADIUS_BACKWARD = 0.08;
 
   @readonly
   static SOURCE_SHOOTER = 1;
@@ -61,10 +63,10 @@ export default class Projectile extends SurfaceObject {
     }
 
     let collision = laneObjects.findIndex(object => (
-        object.hittable
-        && object.alive
-        && object.zPosition >= this.zPosition - Projectile.PROJECTILE_KILL_RADIUS * 2
-        && object.zPosition <= this.zPosition
+      object.hittable
+      && object.alive
+      && object.zPosition >= this.zPosition - Projectile.PROJECTILE_KILL_RADIUS_BACKWARD
+      && object.zPosition <= this.zPosition + Projectile.PROJECTILE_KILL_RADIUS_FORWARD
       )
     );
 
@@ -79,6 +81,10 @@ export default class Projectile extends SurfaceObject {
 
   hitByProjectile () {
     // console.log('Projectile collision detected');
+    this.alive = false;
+  }
+
+  disappear () {
     this.alive = false;
   }
 }

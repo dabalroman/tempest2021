@@ -12,11 +12,8 @@ export default class ScreenPlay extends Canvas3d {
   constructor (screenContentManager, width = 8, height = 8, canvasResX = 1024, canvasResY = 1024) {
     super(screenContentManager, width, height, canvasResX, canvasResY);
 
-    this.screenContentManager.set('score', 0);
-    this.screenContentManager.set('lives', 5);
-    this.screenContentManager.set('level', 81);
     this.screenContentManager.set('bestScore', { score: 62150, name: 'AAA' });
-    // this.debug = true;
+    this.score = this.screenContentManager.get(ScreenContentManager.KEY_SCORE);
   }
 
   update () {
