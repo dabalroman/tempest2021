@@ -39,6 +39,8 @@ export default class Game {
 
   /** @var {number} */
   level = 1;
+  /** @var {number} */
+  highestLevel = 15;
   /** @var {{id: number, selectable: boolean, scoreBonus: number, targetScore: number}} */
   levelData;
   /** @var {boolean} */
@@ -73,7 +75,7 @@ export default class Game {
   screenContentManager;
 
   constructor () {
-    this.setState(Game.STATE_PLAY);
+    this.setState(Game.STATE_SELECT_SURFACE);
 
     this.setupRenderer();
     this.setupLogic();
@@ -89,6 +91,7 @@ export default class Game {
         this.screenContentManager.setLevel(this.level);
 
       } else if (this.state.equals(Game.STATE_SELECT_SURFACE)) {
+        this.populateScreenContentManager();
         this.loadScreen(new ScreenSelectSurface(this.screenContentManager));
         this.releaseLevel();
 
@@ -112,37 +115,17 @@ export default class Game {
   }
 
   /**
-   * @param {number} flag
+   * @param {number} level
+   * @param {boolean} firstLevel
    */
-  setFlag (flag) {
-    this.flags |= flag;
-  }
+  startLevel (level, firstLevel = false) {
+    if (this.levelObject !== null) {
+      throw new Error('Can\'t start level while another one is active!');
+    }
 
-  /**
-   * @param {number} flag
-   */
-  unsetFlag (flag) {
-    this.flags &= ~flag;
-  }
-
-  clearFlags () {
-    this.flags = 0;
-  }
-
-  /**
-   * @param {number} flag
-   * @return {boolean}
-   */
-  isFlagSet (flag) {
-    return (this.flags & flag) > 0;
-  }
-
-  /**
-   * @param {number} flag
-   * @return {boolean}
-   */
-  isFlagNotSet (flag) {
-    return !this.isFlagSet(flag);
+    this.level = level;
+    this.firstLevel = firstLevel;
+    this.setState(Game.STATE_PLAY);
   }
 
   /**
@@ -176,6 +159,10 @@ export default class Game {
   }
 
   releaseLevel () {
+    if (this.levelObject === null) {
+      return;
+    }
+
     this.levelObject.release();
     this.levelObject = null;
 
@@ -184,6 +171,10 @@ export default class Game {
 
   /** @param {Canvas3d} screen */
   loadScreen (screen) {
+    if (this.screenObject !== null) {
+      this.screenObject.release();
+    }
+
     this.screenObject = screen;
     this.screenGroup.add(this.screenObject);
   }
@@ -204,6 +195,12 @@ export default class Game {
     this.screenContentManager.setLives(this.lives);
     this.screenContentManager.setLevel(this.level);
     this.screenContentManager.setScore(this.score);
+    this.screenContentManager.setSelectActive(0);
+    this.screenContentManager.setSelectOffset(0);
+    this.screenContentManager.setSelectLevels(
+      levels.filter(level => level.selectable && level.id <= this.highestLevel)
+    );
+    this.screenContentManager.setLevelSelectedCallback(this.startLevel.bind(this));
   }
 
   setupRenderer (highQuality = true) {
@@ -269,9 +266,8 @@ export default class Game {
 
     this.firstLevel = false;
 
-    this.level++;
     this.releaseLevel();
-    this.setState(Game.STATE_PLAY);
+    this.startLevel(this.level + 1);
   }
 
   /**
@@ -283,6 +279,10 @@ export default class Game {
     this.screenContentManager.setLives(this.lives);
 
     if (this.lives === 0) {
+      if (this.level > this.highestLevel) {
+        this.highestLevel = this.level;
+      }
+
       this.setState(Game.STATE_HIGH_SCORES);
       return false;
     }

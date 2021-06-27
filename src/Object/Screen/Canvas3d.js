@@ -5,6 +5,9 @@ import readonly from '@/utils/readonly';
 
 export default class Canvas3d extends Mesh {
   @readonly
+  static KEY_INPUT_DELAY = 100;
+
+  @readonly
   static COLOR_RED = 'rgba(255, 0, 0, 1)';
   @readonly
   static COLOR_BLUE = 'rgb(20,20,255)';
@@ -36,6 +39,8 @@ export default class Canvas3d extends Mesh {
 
   /** @var {ScreenContentManager} */
   screenContentManager;
+  /** @var {number} */
+  lastKeyInputTimestamp = 0;
 
   /** @var {boolean} */
   debug = false;
@@ -81,6 +86,21 @@ export default class Canvas3d extends Mesh {
     });
 
     this.screenContentManager = screenContentManager;
+  }
+
+  release () {
+
+  }
+
+  keyInputDelay () {
+    let now = Date.now();
+
+    if (now - this.lastKeyInputTimestamp < Canvas3d.KEY_INPUT_DELAY) {
+      return false;
+    }
+
+    this.lastKeyInputTimestamp = now;
+    return true;
   }
 
   clearCanvas () {
