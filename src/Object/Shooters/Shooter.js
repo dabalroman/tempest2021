@@ -75,6 +75,9 @@ export default class Shooter extends ShootingSurfaceObject {
 
     if (this.canChangeState()) {
       if (this.inState(Shooter.STATE_RENOVATING)) {
+        this.hittable = true;
+        this.canShoot = true;
+
         this.setState(Shooter.STATE_ALIVE);
       }
 
@@ -202,11 +205,8 @@ export default class Shooter extends ShootingSurfaceObject {
   }
 
   renovate () {
-    this.alive = true;
-    this.hittable = true;
-    this.canShoot = true;
-
     this.setState(Shooter.STATE_RENOVATING);
+    this.alive = true;
 
     let superzapperUsed = this.isFlagSet(Shooter.FLAG_SUPERZAPPER_USED);
     this.clearFlags();

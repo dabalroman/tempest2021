@@ -136,6 +136,7 @@ export default class Game {
     let surface = this.surfacesCollection.find(surface => surface.id === surfaceId);
 
     if (surface === undefined) {
+      this.setState(Game.STATE_SELECT_SURFACE);
       throw new Error(`Can't find surface level with id === ${surfaceId} !`);
     }
 
