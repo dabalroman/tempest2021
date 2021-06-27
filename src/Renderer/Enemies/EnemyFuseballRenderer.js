@@ -7,8 +7,6 @@ export default class EnemyFuseballRenderer extends EnemyRenderer {
   @readonly
   static ROTATION_SPEED = 0.02;
 
-  one = false;
-
   /**
    * @param {EnemySpiker} enemySpiker
    * @param {Surface} surface
@@ -37,6 +35,10 @@ export default class EnemyFuseballRenderer extends EnemyRenderer {
 
     if (fuseball.inState(EnemyFuseball.STATE_EXPLODING)) {
       this.explodeAnimation();
+
+    } else if (this.object.inState(EnemyFuseball.STATE_DISAPPEARING)) {
+      this.disappearingAnimation();
+
     } else {
       this.zRotationOffset += EnemyFuseballRenderer.ROTATION_SPEED;
     }

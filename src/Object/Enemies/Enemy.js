@@ -14,6 +14,9 @@ export default class Enemy extends ShootingSurfaceObject {
   /** @var {function} */
   rewardCallback;
 
+  /** @var {boolean} */
+  reward = false;
+
   /**
    * @param {Surface} surface
    * @param {ProjectileManager} projectileManager
@@ -42,12 +45,19 @@ export default class Enemy extends ShootingSurfaceObject {
     throw new Error('Method \'updateEntity()\' must be implemented.');
   }
 
+  hitByProjectile () {
+    this.reward = true;
+    this.die();
+  }
+
   die () {
     this.hittable = false;
     this.canShoot = false;
     this.clearFlags();
 
-    this.rewardCallback(this.valueInPoints);
+    if (this.reward) {
+      this.rewardCallback(this.valueInPoints);
+    }
   }
 
   update () {

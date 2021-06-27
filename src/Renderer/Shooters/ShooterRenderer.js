@@ -40,8 +40,23 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
   updateState () {
     if (this.object.inState(Shooter.STATE_EXPLODING)) {
       this.explodeAnimation();
+
+    } else if (this.object.inState(Shooter.STATE_DISAPPEARING)) {
+      this.disappearingAnimation();
+
     } else {
       this.setVisualsToNormal();
+    }
+  }
+
+  disappearingAnimation () {
+    let scale = Math.pow(this.object.stateProgressInTime() * 2 - 1, 4);
+
+    if (this.object.stateProgressInTime() <= 0.5) {
+      let modelScale = scale;
+      this.modelGroup.scale.set(modelScale, modelScale, modelScale);
+    } else {
+      this.modelGroup.visible = false;
     }
   }
 

@@ -13,6 +13,8 @@ export default class EnemySpiker extends Enemy {
   @readonly
   static STATE_SHOOTING = new State(100, 0.15, 'shooting');
   @readonly
+  static STATE_DISAPPEARING = new State(1000, 1, 'disappearing');
+  @readonly
   static STATE_EXPLODING = new State(1000, 1, 'exploding');
   @readonly
   static STATE_DEAD = new State(0, 1, 'dead');
@@ -53,6 +55,9 @@ export default class EnemySpiker extends Enemy {
 
     } else if (this.inState(EnemySpiker.STATE_EXPLODING)) {
       this.setState(EnemySpiker.STATE_DEAD);
+
+    } else if (this.inState(EnemySpiker.STATE_DISAPPEARING)) {
+      this.setState(EnemySpiker.STATE_DEAD);
     }
   }
 
@@ -82,6 +87,11 @@ export default class EnemySpiker extends Enemy {
         this.zPosition -= this.zSpeed;
       }
     }
+  }
+
+  disappear () {
+    this.setState(EnemySpiker.STATE_DISAPPEARING);
+    super.die();
   }
 
   die () {

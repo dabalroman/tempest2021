@@ -87,6 +87,17 @@ export default class EnemyRenderer extends SurfaceObjectWrapper {
     }
   }
 
+  disappearingAnimation () {
+    let scale = Math.pow(this.object.stateProgressInTime() * 2 - 1, 4);
+
+    if (this.object.stateProgressInTime() <= 0.5) {
+      let modelScale = scale;
+      this.modelGroup.scale.set(modelScale, modelScale, modelScale);
+    } else {
+      this.modelGroup.visible = false;
+    }
+  }
+
   move () {
     this.position.set(
       this.positionBase.x + this.positionOffset.x,

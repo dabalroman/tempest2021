@@ -17,6 +17,8 @@ export default class Shooter extends ShootingSurfaceObject {
   @readonly
   static STATE_EXPLODING = new State(1000, 1, 'exploding');
   @readonly
+  static STATE_DISAPPEARING = new State(1000, 1, 'disappearing');
+  @readonly
   static STATE_DEAD = new State(0, 1, 'dead');
 
   @readonly
@@ -73,6 +75,10 @@ export default class Shooter extends ShootingSurfaceObject {
       if (this.inState(Shooter.STATE_EXPLODING)) {
         this.setState(Shooter.STATE_DEAD);
         this.killedCallback();
+      }
+
+      if (this.inState(Shooter.STATE_DISAPPEARING)) {
+        this.setState(Shooter.STATE_DEAD);
       }
 
       if (this.inState(Shooter.STATE_DEAD)) {
@@ -173,7 +179,7 @@ export default class Shooter extends ShootingSurfaceObject {
   }
 
   disappear () {
-    this.alive = false;
+    this.setState(Shooter.STATE_DISAPPEARING);
     this.die();
   }
 

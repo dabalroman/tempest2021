@@ -21,6 +21,10 @@ export default class EnemySpikerRenderer extends EnemyRenderer {
 
     if (this.object.inState(EnemySpiker.STATE_EXPLODING)) {
       this.explodeAnimation();
+
+    } else if (this.object.inState(EnemySpiker.STATE_DISAPPEARING)) {
+      this.disappearingAnimation();
+
     } else {
       this.zRotationOffset += EnemySpikerRenderer.ROTATION_SPEED;
     }

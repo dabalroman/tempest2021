@@ -86,7 +86,7 @@ export default class SurfaceObject {
   }
 
   disappear () {
-    this.alive = false;
+    throw new Error('Method \'disappear()\' must be implemented.');
   }
 
   /**

@@ -14,6 +14,8 @@ export default class EnemyFlipper extends Enemy {
   @readonly
   static STATE_SHOOTING = new State(100, 0.4, 'shooting');
   @readonly
+  static STATE_DISAPPEARING = new State(1000, 1, 'disappearing');
+  @readonly
   static STATE_EXPLODING = new State(1000, 1, 'exploding');
   @readonly
   static STATE_DEAD = new State(0, 1, 'dead');
@@ -95,6 +97,9 @@ export default class EnemyFlipper extends Enemy {
 
     } else if (this.inState(EnemyFlipper.STATE_EXPLODING)) {
       this.setState(EnemyFlipper.STATE_DEAD);
+
+    } else if (this.inState(EnemyFlipper.STATE_DISAPPEARING)) {
+      this.setState(EnemyFlipper.STATE_DEAD);
     }
   }
 
@@ -167,6 +172,11 @@ export default class EnemyFlipper extends Enemy {
   immuneDuringNextRotation () {
     this.setFlag(EnemyFlipper.FLAG_IMMUNE_ROTATION);
     this.hittable = false;
+  }
+
+  disappear () {
+    this.setState(EnemyFlipper.STATE_DISAPPEARING);
+    super.die();
   }
 
   die () {

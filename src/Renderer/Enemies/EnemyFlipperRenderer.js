@@ -64,6 +64,9 @@ export default class EnemyFlipperRenderer extends EnemyRenderer {
     } else if (this.object.inState(EnemyFlipper.STATE_EXPLODING)) {
       this.explodeAnimation();
 
+    } else if (this.object.inState(EnemyFlipper.STATE_DISAPPEARING)) {
+      this.disappearingAnimation();
+
     } else {
       this.zRotationBase = this.surface.lanesCenterDirectionRadians[this.object.laneId];
       this.positionBase = this.surface.lanesMiddleCoords[this.object.laneId].clone();

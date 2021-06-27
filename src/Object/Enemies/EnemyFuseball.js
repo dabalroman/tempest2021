@@ -19,6 +19,8 @@ export default class EnemyFuseball extends Enemy {
   @readonly
   static STATE_SWITCHING_LANE = new State(2000, 1, 'switching_lane');
   @readonly
+  static STATE_DISAPPEARING = new State(1000, 1, 'disappearing');
+  @readonly
   static STATE_EXPLODING = new State(1000, 1, 'exploding');
   @readonly
   static STATE_DEAD = new State(0, 1, 'dead');
@@ -95,6 +97,9 @@ export default class EnemyFuseball extends Enemy {
       this.unsetFlag(EnemyFuseball.FLAG_LANE_CHANGED);
 
     } else if (this.inState(EnemyFuseball.STATE_EXPLODING)) {
+      this.setState(EnemyFuseball.STATE_DEAD);
+
+    } else if (this.inState(EnemyFuseball.STATE_DISAPPEARING)) {
       this.setState(EnemyFuseball.STATE_DEAD);
     }
   }
@@ -205,6 +210,11 @@ export default class EnemyFuseball extends Enemy {
   immuneDuringNextLaneSwitch () {
     this.setFlag(EnemyFuseball.FLAG_IMMUNE);
     this.hittable = false;
+  }
+
+  disappear () {
+    this.setState(EnemyFuseball.STATE_DISAPPEARING);
+    super.die();
   }
 
   die () {

@@ -159,6 +159,10 @@ export default class Level {
         )
       );
     });
+
+    keyboardInput.register('KeyZ', () => {
+      this.surfaceObjectsManager.removeEnemies();
+    });
   }
 
   unregisterKeys () {

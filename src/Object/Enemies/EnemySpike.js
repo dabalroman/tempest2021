@@ -86,6 +86,10 @@ export default class EnemySpike extends Enemy {
     }
   }
 
+  disappear () {
+    this.die();
+  }
+
   die () {
     this.setState(EnemySpike.STATE_DEAD);
     super.die();

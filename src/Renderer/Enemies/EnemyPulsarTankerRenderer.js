@@ -17,6 +17,10 @@ export default class EnemyPulsarTankerRenderer extends EnemyRenderer {
 
     if (this.object.inState(EnemyTanker.STATE_EXPLODING)) {
       this.explodeAnimation();
+
+    } else if (this.object.inState(EnemyTanker.STATE_DISAPPEARING)) {
+      this.disappearingAnimation();
+
     }
   }
 }
