@@ -23,6 +23,8 @@ export default class ScreenContentManager extends ContentManager {
   @readonly
   static KEY_CREDITS = 'credits';
   @readonly
+  static KEY_SUPERZAPPER_USED = 'superzapper_used';
+  @readonly
   static KEY_RANK_POSITION = 'rank_position';
   @readonly
   static KEY_LEVEL_SELECTED_CALLBACK = 'level_selected_callback';
@@ -65,6 +67,13 @@ export default class ScreenContentManager extends ContentManager {
    */
   setLevel (level) {
     this.set(ScreenContentManager.KEY_LEVEL, level);
+  }
+
+  /**
+   * @param {boolean} superzapperUsed
+   */
+  setSuperzapperUsed (superzapperUsed) {
+    this.set(ScreenContentManager.KEY_SUPERZAPPER_USED, superzapperUsed);
   }
 
   /**

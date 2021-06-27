@@ -88,8 +88,8 @@ export default class ScreenSelectSurface extends Canvas3d {
     this.setFontSizePx(30);
     // this.drawText('© mcmlxxx Atari', 355, 60, Canvas3d.COLOR_BLUE);
     this.drawText('rate yourself', 371, 410, Canvas3d.COLOR_GREEN);
-    this.drawText('Spin knob to change', 296, 460, Canvas3d.COLOR_CYAN);
-    this.drawText('Press fire to move selection', 184, 510, Canvas3d.COLOR_YELLOW);
+    this.drawText('Use A and D to change', 270, 460, Canvas3d.COLOR_CYAN);
+    this.drawText('Press fire to select', 284, 510, Canvas3d.COLOR_YELLOW);
     this.drawText('novice', 140, 600, Canvas3d.COLOR_RED);
     this.drawText('expert', 845, 600, Canvas3d.COLOR_RED);
 
@@ -103,7 +103,7 @@ export default class ScreenSelectSurface extends Canvas3d {
     let xOffset = 160;
     let xStep = 175;
 
-    for (let i = 0; i < levels.length - offset; i++) {
+    for (let i = 0; i < levels.length - offset && i < 5; i++) {
       this.drawText(
         this.alignNumberToRight(levels[i + offset].id), xOffset + (i * xStep) - 40, 650, Canvas3d.COLOR_GREEN
       );

@@ -244,6 +244,7 @@ export default class Game {
     this.screenContentManager.setScore(this.score);
     this.screenContentManager.setCredits(this.credits);
     this.screenContentManager.setHighScores(this.highScores);
+    this.screenContentManager.setSuperzapperUsed(false);
     this.screenContentManager.setSelectActive(0);
     this.screenContentManager.setSelectOffset(0);
     this.screenContentManager.setSelectLevels(

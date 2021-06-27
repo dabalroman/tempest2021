@@ -43,7 +43,15 @@ export default class ScreenPlay extends Canvas3d {
       this.drawLiveIcon(50 + i * 62, 150);
     }
 
-    this.setFontSizePx(30);
+    this.setFontSizePx(25);
+    if (this.screenContentManager.get(ScreenContentManager.KEY_SUPERZAPPER_USED) === false) {
+      this.drawText(
+        'Press E to use SuperZapper',
+        240, 1000,
+        Canvas3d.COLOR_BLUE
+      );
+    }
+
     this.drawText(
       this.alignNumberToRight(this.screenContentManager.get(ScreenContentManager.KEY_HIGHEST_SCORE).score),
       400, 90,

@@ -24,6 +24,8 @@ export default class ScreenHighScores extends Canvas3d {
     if (this.place >= 0) {
       this.highScores.splice(this.place, 0, { name: 'AAA', score: this.score });
       this.highScores.pop();
+    } else {
+      this.currentStep = 3;
     }
 
     this.registerKeys();
@@ -120,8 +122,8 @@ export default class ScreenHighScores extends Canvas3d {
     // this.drawText('© Peterkowic', 355, 950, Canvas3d.COLOR_GREEN);
     this.drawText('Bonus every 20000', 325, 1000, Canvas3d.COLOR_CYAN);
 
-    this.drawText('Spin knob to change', 296, 800, Canvas3d.COLOR_CYAN);
-    this.drawText('Press fire to move selection', 184, 850, Canvas3d.COLOR_YELLOW);
+    this.drawText('Use A and D change', 310, 800, Canvas3d.COLOR_CYAN);
+    this.drawText('Press fire to confirm', 274, 850, Canvas3d.COLOR_YELLOW);
 
     this.setFontSizePx(60);
     this.drawText('HIGH SCORES', 260, 260, Canvas3d.COLOR_YELLOW);
