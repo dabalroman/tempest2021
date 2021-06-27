@@ -36,12 +36,14 @@ export default class Surface {
    * @param {string} name
    * @param {boolean} isOpen
    * @param {Vector2[]} lanesCoords
+   * @param {number} zOffset
    */
-  constructor (id, name, isOpen, lanesCoords) {
+  constructor (id, name, isOpen, lanesCoords, zOffset = 0) {
     this.id = id;
     this.name = name;
     this.isOpen = isOpen;
     this.rawLanesCoords = lanesCoords;
+    this.zOffset = zOffset;
     this.lanesAmount = lanesCoords.length - (isOpen ? 1 : 0);
     this.activeLaneId = 0;
     this.depth = 20;
@@ -159,7 +161,7 @@ export default class Surface {
   }
 
   /**
-   * @param {{name:string, isOpen: boolean, coords:{x: number, y: number}[]}[]} dataset
+   * @param {{id: number, name:string, isOpen: boolean, coords:{x: number, y: number}[], zOffset: number}[]} dataset
    * @return {Surface[]}
    */
   static fromDataset (dataset) {
@@ -170,7 +172,8 @@ export default class Surface {
         data.isOpen,
         data.coords.map(coords =>
           new Vector2(coords.x, coords.y)
-        )
+        ),
+        data.zOffset
       )
     );
   }

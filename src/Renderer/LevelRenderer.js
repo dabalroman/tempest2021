@@ -28,6 +28,8 @@ export default class LevelRenderer extends Group {
     this.add(this.shooterRenderer);
     this.add(this.enemyRendererManager);
     this.add(this.projectileRendererManager);
+
+    this.position.setY(level.surface.zOffset);
   }
 
   releaseLevel () {
