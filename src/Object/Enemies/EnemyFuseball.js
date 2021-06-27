@@ -214,7 +214,7 @@ export default class EnemyFuseball extends Enemy {
   }
 
   disappear () {
-    if (this.inState(EnemyFuseball.STATE_DEAD)) {
+    if (this.inState(EnemyFuseball.STATE_EXPLODING) || this.inState(EnemyFuseball.STATE_DEAD)) {
       return;
     }
 

@@ -154,13 +154,10 @@ export default class Game {
 
     // noinspection JSValidateTypes
     this.levelData = levels.find(levelData => levelData.id === level);
-    console.log(this.levelData);
 
     let targetScore = this.firstLevel
       ? this.levelData.targetScore - this.levelData.scoreBonus
       : this.levelData.targetScore;
-
-    console.log(this.score, targetScore);
 
     this.levelObject = new Level(
       surface,
@@ -169,7 +166,8 @@ export default class Game {
       targetScore,
       this.rewardCallback.bind(this),
       this.levelWonCallback.bind(this),
-      this.shooterKilledCallback.bind(this)
+      this.shooterKilledCallback.bind(this),
+      this.getCurrentScore.bind(this)
     );
 
     this.levelObject.registerKeys();
@@ -267,7 +265,6 @@ export default class Game {
   levelWonCallback () {
     if (this.firstLevel && this.levelData.selectable) {
       this.score += this.levelData.scoreBonus;
-      console.log('bonus!', this.score);
     }
 
     this.firstLevel = false;
@@ -277,6 +274,9 @@ export default class Game {
     this.setState(Game.STATE_PLAY);
   }
 
+  /**
+   * @return {boolean} true if game can be continued, false otherwise
+   */
   shooterKilledCallback () {
     this.lives--;
 
@@ -284,6 +284,16 @@ export default class Game {
 
     if (this.lives === 0) {
       this.setState(Game.STATE_HIGH_SCORES);
+      return false;
     }
+
+    return true;
+  }
+
+  /**
+   * @return {number}
+   */
+  getCurrentScore () {
+    return this.score;
   }
 }

@@ -31,6 +31,8 @@ export default class Level {
   levelWonCallback;
   /** @var {function} */
   shooterKilledCallback;
+  /** @var {function} */
+  getCurrentScore;
 
   /**
    * @param {Surface} surface
@@ -40,6 +42,7 @@ export default class Level {
    * @param {function} rewardCallback
    * @param {function} levelWonCallback
    * @param {function} shooterKilledCallback
+   * @param {function} getCurrentScore
    */
   constructor (
     surface,
@@ -48,7 +51,8 @@ export default class Level {
     targetScore,
     rewardCallback,
     levelWonCallback,
-    shooterKilledCallback
+    shooterKilledCallback,
+    getCurrentScore
   ) {
     this.surface = surface;
 
@@ -59,6 +63,7 @@ export default class Level {
     this.rewardCallback = rewardCallback;
     this.levelWonCallback = levelWonCallback;
     this.shooterKilledCallback = shooterKilledCallback;
+    this.getCurrentScore = getCurrentScore;
 
     this.surfaceObjectsManager = new SurfaceObjectsManager(surface);
     this.projectileManager = new ProjectileManager(this.surfaceObjectsManager);
@@ -75,7 +80,7 @@ export default class Level {
       surface,
       this.projectileManager,
       this.surfaceObjectsManager,
-      this.shooterKilledCallback,
+      this.shooterKilled.bind(this),
       7
     );
 
@@ -98,7 +103,6 @@ export default class Level {
   }
 
   registerKeys () {
-    console.log('registering keys');
     keyboardInput.register('KeyA', () => {this.shooter.moveLeft();});
     keyboardInput.register('KeyD', () => {this.shooter.moveRight();});
     keyboardInput.register('Space', () => {this.shooter.fire();});
@@ -138,6 +142,7 @@ export default class Level {
     });
 
     keyboardInput.register('KeyE', () => { this.levelWonCallback(); });
+    keyboardInput.register('KeyR', () => { this.shooter.renovate(); });
   }
 
   unregisterKeys () {
@@ -154,15 +159,28 @@ export default class Level {
     keyboardInput.unregister('KeyU');
     keyboardInput.unregister('KeyZ');
     keyboardInput.unregister('KeyE');
+    keyboardInput.unregister('KeyR');
   }
 
   update () {
     this.projectileManager.update();
     this.surfaceObjectsManager.update();
-    this.enemySpawner.spawn();
+
+    if (this.shooter.inState(Shooter.STATE_ALIVE)) {
+      this.enemySpawner.spawn();
+    }
 
     if (this.enemySpawner.reachedScoreTarget() && this.surfaceObjectsManager.getAmountOfAliveEnemies() === 0) {
       this.levelWonCallback();
+    }
+  }
+
+  shooterKilled () {
+    this.surfaceObjectsManager.removeEnemies();
+
+    if (this.shooterKilledCallback()) {
+      this.shooter.renovate();
+      this.enemySpawner.setScore(this.getCurrentScore());
     }
   }
 }

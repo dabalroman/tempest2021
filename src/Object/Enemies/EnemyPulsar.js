@@ -193,7 +193,7 @@ export default class EnemyPulsar extends Enemy {
   }
 
   disappear () {
-    if (this.inState(EnemyPulsar.STATE_DEAD)) {
+    if (this.inState(EnemyPulsar.STATE_EXPLODING) || this.inState(EnemyPulsar.STATE_DEAD)) {
       return;
     }
 

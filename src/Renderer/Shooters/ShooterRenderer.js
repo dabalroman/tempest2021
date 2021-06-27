@@ -44,6 +44,9 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
     } else if (this.object.inState(Shooter.STATE_DISAPPEARING)) {
       this.disappearingAnimation();
 
+    } else if (this.object.inState(Shooter.STATE_RENOVATING)) {
+      this.renovatingAnimation();
+
     } else {
       this.setVisualsToNormal();
     }
@@ -58,6 +61,12 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
     } else {
       this.modelGroup.visible = false;
     }
+  }
+
+  renovatingAnimation () {
+    let modelScale = Math.pow(this.object.stateProgressInTime(), 2);
+    this.modelGroup.scale.set(modelScale, modelScale, modelScale);
+    this.modelGroup.visible = true;
   }
 
   explodeAnimation () {

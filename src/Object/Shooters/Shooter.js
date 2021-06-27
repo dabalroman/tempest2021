@@ -19,6 +19,8 @@ export default class Shooter extends ShootingSurfaceObject {
   @readonly
   static STATE_DISAPPEARING = new State(1000, 1, 'disappearing');
   @readonly
+  static STATE_RENOVATING = new State(1000, 1, 'renovating');
+  @readonly
   static STATE_DEAD = new State(0, 1, 'dead');
 
   @readonly
@@ -72,6 +74,10 @@ export default class Shooter extends ShootingSurfaceObject {
     }
 
     if (this.canChangeState()) {
+      if (this.inState(Shooter.STATE_RENOVATING)) {
+        this.setState(Shooter.STATE_ALIVE);
+      }
+
       if (this.inState(Shooter.STATE_EXPLODING)) {
         this.setState(Shooter.STATE_DEAD);
         this.killedCallback();
@@ -179,6 +185,10 @@ export default class Shooter extends ShootingSurfaceObject {
   }
 
   disappear () {
+    if (this.inState(Shooter.STATE_EXPLODING) || this.inState(Shooter.STATE_DEAD)) {
+      return;
+    }
+
     this.setState(Shooter.STATE_DISAPPEARING);
     this.die();
   }
@@ -188,6 +198,21 @@ export default class Shooter extends ShootingSurfaceObject {
       this.setFlag(Shooter.FLAG_SUPERZAPPER_USED);
 
       this.surfaceObjectsManager.handleSuperzapper();
+    }
+  }
+
+  renovate () {
+    this.alive = true;
+    this.hittable = true;
+    this.canShoot = true;
+
+    this.setState(Shooter.STATE_RENOVATING);
+
+    let superzapperUsed = this.isFlagSet(Shooter.FLAG_SUPERZAPPER_USED);
+    this.clearFlags();
+
+    if (superzapperUsed) {
+      this.setFlag(Shooter.FLAG_SUPERZAPPER_USED);
     }
   }
 }

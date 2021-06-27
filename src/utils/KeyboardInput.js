@@ -29,6 +29,8 @@ class KeyboardInput {
    * @param {function} action
    */
   register (key, action) {
+    this.unregister(key);
+
     this.keyToFunctionMap.push({
         key: key,
         keyDown: false,

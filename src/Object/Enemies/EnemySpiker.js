@@ -91,7 +91,7 @@ export default class EnemySpiker extends Enemy {
   }
 
   disappear () {
-    if (this.inState(EnemySpiker.STATE_DEAD)) {
+    if (this.inState(EnemySpiker.STATE_EXPLODING) || this.inState(EnemySpiker.STATE_DEAD)) {
       return;
     }
 

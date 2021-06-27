@@ -98,7 +98,7 @@ export default class EnemyTanker extends Enemy {
   }
 
   disappear () {
-    if (this.inState(EnemyTanker.STATE_DEAD)) {
+    if (this.inState(EnemyTanker.STATE_EXPLODING) || this.inState(EnemyTanker.STATE_DEAD)) {
       return;
     }
 
