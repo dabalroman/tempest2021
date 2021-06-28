@@ -5,6 +5,7 @@ import State from '@/Object/State';
 import EnemyFlipper from '@/Object/Enemies/EnemyFlipper';
 import Enemy from '@/Object/Enemies/Enemy';
 import EnemyFuseball from '@/Object/Enemies/EnemyFuseball';
+import messageBroker, { MessageBroker } from '@/Helpers/MessageBroker';
 
 export default class Shooter extends ShootingSurfaceObject {
   @readonly
@@ -295,6 +296,9 @@ export default class Shooter extends ShootingSurfaceObject {
       && this.isFlagNotSet(Shooter.FLAG_SUPERZAPPER_USED)
     ) {
       this.setFlag(Shooter.FLAG_SUPERZAPPER_USED);
+
+      messageBroker.publish(MessageBroker.TOPIC_SCREEN, MessageBroker.MESSAGE_PLAYER_SUPERZAPPER_USED);
+      messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_PLAYER_SUPERZAPPER_USED);
 
       this.surfaceObjectsManager.handleSuperzapper();
     }

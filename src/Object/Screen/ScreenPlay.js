@@ -1,5 +1,6 @@
 import Canvas3d from '@/Object/Screen/Canvas3d';
 import ScreenContentManager from '@/Object/Screen/ScreenContentManager';
+import messageBroker, { MessageBroker } from '@/Helpers/MessageBroker';
 
 export default class ScreenPlay extends Canvas3d {
   /** @var {number} */
@@ -8,6 +9,8 @@ export default class ScreenPlay extends Canvas3d {
   targetScore = 0;
   /** @var {number} */
   scoreRisingSpeed = 10;
+  /** @var {boolean} */
+  displaySuperzapperHint = true;
 
   constructor (screenContentManager, width = 8, height = 8, canvasResX = 1024, canvasResY = 1024) {
     super(screenContentManager, width, height, canvasResX, canvasResY);
@@ -26,7 +29,21 @@ export default class ScreenPlay extends Canvas3d {
       }
     }
 
+    this.messageBrokerScreenTopicConsumer();
+
     super.update();
+  }
+
+  messageBrokerScreenTopicConsumer () {
+    let message = messageBroker.consume(MessageBroker.TOPIC_SCREEN);
+
+    if (message === null) {
+      return;
+    }
+
+    if (message.isMessage(MessageBroker.MESSAGE_PLAYER_SUPERZAPPER_USED)) {
+      this.displaySuperzapperHint = false;
+    }
   }
 
   draw () {
@@ -44,12 +61,15 @@ export default class ScreenPlay extends Canvas3d {
     }
 
     this.setFontSizePx(25);
-    if (this.screenContentManager.get(ScreenContentManager.KEY_SUPERZAPPER_USED) === false) {
-      this.drawText(
-        'Press E to use SuperZapper',
-        240, 1000,
-        Canvas3d.COLOR_BLUE
-      );
+
+    if (this.displaySuperzapperHint) {
+      if (this.screenContentManager.get(ScreenContentManager.KEY_SUPERZAPPER_USED) === false) {
+        this.drawText(
+          'Press E to use SuperZapper',
+          240, 1000,
+          Canvas3d.COLOR_BLUE
+        );
+      }
     }
 
     this.drawText(
