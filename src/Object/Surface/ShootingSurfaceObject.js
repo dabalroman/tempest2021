@@ -40,7 +40,7 @@ export default class ShootingSurfaceObject extends SurfaceObject {
       return;
     }
 
-    this.projectileManager.fire(this.laneId, this.projectileSource, this.zPosition);
     this.lastShootTimestamp = now;
+    return this.projectileManager.fire(this.laneId, this.projectileSource, this.zPosition);
   }
 }

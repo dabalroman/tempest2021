@@ -10,7 +10,12 @@ export default class Shooter extends ShootingSurfaceObject {
   @readonly
   static LANE_CHANGE_TIMEOUT_MS = 50;
   @readonly
-  static SHOOT_TIMEOUT_MS = 100;
+  static SHOOT_TIMEOUT_MS = 80;
+  @readonly
+  static BURST_PENALTY_MS = 1000;
+
+  /** @var {number} */
+  penaltyTimestamp = 0;
 
   @readonly
   static STATE_ALIVE = new State(1000, 1, 'alive');
@@ -149,6 +154,18 @@ export default class Shooter extends ShootingSurfaceObject {
 
   moveRight () {
     this.moveToLane(this.laneId - 1);
+  }
+
+  fire () {
+    let now = Date.now();
+
+    if (now - this.penaltyTimestamp < Shooter.BURST_PENALTY_MS) {
+      return;
+    }
+
+    if (super.fire() === false) {
+      this.penaltyTimestamp = now;
+    }
   }
 
   hitByProjectile () {
