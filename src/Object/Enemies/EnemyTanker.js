@@ -7,7 +7,7 @@ export default class EnemyTanker extends Enemy {
   @readonly
   static STATE_IDLE = new State(100, 1, 'idle');
   @readonly
-  static STATE_SHOOTING = new State(100, 0.15, 'shooting');
+  static STATE_SHOOTING = new State(100, 0.1, 'shooting');
   @readonly
   static STATE_DISAPPEARING = new State(1000, 1, 'disappearing');
   @readonly

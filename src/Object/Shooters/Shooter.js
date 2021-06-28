@@ -13,7 +13,7 @@ export default class Shooter extends ShootingSurfaceObject {
   @readonly
   static SHOOT_TIMEOUT_MS = 80;
   @readonly
-  static BURST_PENALTY_MS = 1000;
+  static BURST_PENALTY_MS = 500;
 
   @readonly
   static TUBE_DESCENDING_LENGTH_MULTIPLIER = 2;

@@ -8,11 +8,11 @@ export default class EnemyFlipper extends Enemy {
   @readonly
   static STATE_IDLE = new State(100, 1, 'idle');
   @readonly
-  static STATE_ROTATING_BEGIN = new State(200, 0.2, 'rotate_begin');
+  static STATE_ROTATING_BEGIN = new State(175, 0.2, 'rotate_begin');
   @readonly
-  static STATE_ROTATING_END = new State(200, 1, 'rotate_end');
+  static STATE_ROTATING_END = new State(175, 1, 'rotate_end');
   @readonly
-  static STATE_SHOOTING = new State(100, 0.4, 'shooting');
+  static STATE_SHOOTING = new State(100, 0.1, 'shooting');
   @readonly
   static STATE_DISAPPEARING = new State(1000, 1, 'disappearing');
   @readonly
@@ -52,7 +52,7 @@ export default class EnemyFlipper extends Enemy {
     this.firstLevel = 1;
     this.valueInPoints = 150;
 
-    this.zSpeed = -randomRange(3, 6) * 0.001;
+    this.zSpeed = -randomRange(6, 9) * 0.001;
     this.setState(EnemyFlipper.STATE_IDLE);
   }
 

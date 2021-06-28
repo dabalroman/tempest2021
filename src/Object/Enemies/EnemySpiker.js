@@ -11,7 +11,7 @@ export default class EnemySpiker extends Enemy {
   @readonly
   static STATE_IDLE = new State(100, 1, 'idle');
   @readonly
-  static STATE_SHOOTING = new State(100, 0.15, 'shooting');
+  static STATE_SHOOTING = new State(200, 0.05, 'shooting');
   @readonly
   static STATE_DISAPPEARING = new State(1000, 1, 'disappearing');
   @readonly
