@@ -85,14 +85,14 @@ export default class SurfaceObjectsManager extends FIFOManager {
         this.forceMapsUpdate = true;
       }
 
-      if (collectedEnemies) console.log(`Collected ${collectedEnemies} enemies`);
+      // if (collectedEnemies) console.log(`Collected ${collectedEnemies} enemies`);
 
       const collectedSpikes = FIFOManager.garbageCollector(this.spikes);
       if (collectedSpikes) {
         this.forceMapsUpdate = true;
       }
 
-      if (collectedSpikes) console.log(`Collected ${collectedSpikes} spikes`);
+      // if (collectedSpikes) console.log(`Collected ${collectedSpikes} spikes`);
     }
   }
 

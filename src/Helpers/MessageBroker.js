@@ -40,7 +40,7 @@ export class MessageBroker {
 
     this.messages[topic].push(new Message(topic, message, context));
 
-    console.log(`Published ${message} under ${topic}`);
+    // console.log(`Published ${message} under ${topic}`);
   }
 
   /**
@@ -56,7 +56,7 @@ export class MessageBroker {
       return null;
     }
 
-    console.log(`Consumed ${this.messages[topic][0].message} under ${topic}`);
+    // console.log(`Consumed ${this.messages[topic][0].message} under ${topic}`);
     return this.messages[topic].shift();
   }
 }
