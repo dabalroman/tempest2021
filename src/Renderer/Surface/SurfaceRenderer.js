@@ -105,8 +105,6 @@ export default class SurfaceRenderer extends Group {
 
     let surfaceColor = Math.floor(this.level / 16) % 3;
 
-    console.log(this.level, surfaceColor);
-
     this.laneDefaultMaterial = new LineBasicMaterial({ color: SurfaceRenderer.DEFAULT_LANE_COLOR[surfaceColor] });
     this.laneActiveMaterial = new LineBasicMaterial({ color: SurfaceRenderer.ACTIVE_LANE_COLOR });
     this.laneShortedMaterial = new LineBasicMaterial({ color: SurfaceRenderer.SHORTED_LANE_COLOR });

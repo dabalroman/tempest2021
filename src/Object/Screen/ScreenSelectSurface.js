@@ -4,8 +4,12 @@ import keyboardInput from '@/utils/KeyboardInput';
 import surfaces from '@/Assets/Surfaces';
 import BoundingBox2 from '@/Helpers/BoundingBox2';
 import messageBroker, { MessageBroker } from '@/Helpers/MessageBroker';
+import readonly from '@/utils/readonly';
 
 export default class ScreenSelectSurface extends Canvas3d {
+  @readonly
+  static SURFACE_COLORS = ['rgba(0, 0, 255, 1)', 'rgba(255, 0, 0, 1)', 'rgba(0, 255, 0, 1)'];
+
   /** @var {number} */
   selectedLevel = 1;
 
@@ -117,7 +121,11 @@ export default class ScreenSelectSurface extends Canvas3d {
       this.drawText(
         this.alignNumberToRight(level.id), xOffset + (i * xStep) - 40, 800, Canvas3d.COLOR_GREEN
       );
+
+      let surfaceColor = Math.floor(level.id / 16) % 3;
+      this.context.strokeStyle = ScreenSelectSurface.SURFACE_COLORS[surfaceColor];
       this.drawMapIcon(xOffset + (i * xStep) + 58, 845, surfaceId);
+
       this.drawText(
         this.alignNumberToRight(level.scoreBonus), xOffset + (i * xStep), 920, Canvas3d.COLOR_RED
       );
@@ -148,8 +156,6 @@ export default class ScreenSelectSurface extends Canvas3d {
     }
 
     let boundingBox2 = new BoundingBox2.create(surface.coords);
-
-    this.context.strokeStyle = Canvas3d.COLOR_BLUE;
 
     this.context.beginPath();
 
