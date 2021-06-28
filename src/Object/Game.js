@@ -93,6 +93,7 @@ export default class Game {
       this.releaseScreen();
 
       if (this.state.equals(Game.STATE_PLAY)) {
+        this.releaseLevel();
         this.loadScreen(new ScreenPlay(this.screenContentManager));
         this.loadLevel(this.level);
         this.screenContentManager.setLevel(this.level);
