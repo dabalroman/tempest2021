@@ -19,6 +19,9 @@ import AudioManager from '@/Object/Manager/AudioManager';
 
 export default class Game {
   @readonly
+  static BONUS_EVERY = 20000;
+
+  @readonly
   static HIGH_SCORES_STORAGE_KEY = 'high_scores';
   @readonly
   static HIGHEST_LEVEL = 'highest_level';
@@ -224,7 +227,7 @@ export default class Game {
 
   loadGameState () {
     console.log('STATE LOADED');
-    this.highScores = new Array(8).fill({ name: 'EZY', score: 16000 });
+    this.highScores = new Array(8).fill({ name: 'EZY', score: 4096 });
 
     let highScores = localStorage.getItem(Game.HIGH_SCORES_STORAGE_KEY);
     if (highScores !== null) {
@@ -320,6 +323,14 @@ export default class Game {
   rewardCallback (reward) {
     this.score += reward;
 
+    if (
+      this.lives < 5
+      && Math.floor(this.score / Game.BONUS_EVERY) !== Math.floor((this.score - reward) / Game.BONUS_EVERY)
+    ) {
+      this.lives++;
+      this.screenContentManager.set(ScreenContentManager.KEY_LIVES, this.lives);
+    }
+
     this.screenContentManager.setScore(this.score);
   }
 
@@ -327,6 +338,11 @@ export default class Game {
     if (this.firstLevel && this.levelData.selectable) {
       this.score += this.levelData.scoreBonus;
       this.screenContentManager.setScore(this.score);
+
+      if (this.levelData.scoreBonus >= Game.BONUS_EVERY && this.lives < 5) {
+        this.lives++;
+        this.screenContentManager.set(ScreenContentManager.KEY_LIVES, this.lives);
+      }
     }
 
     this.firstLevel = false;

@@ -107,8 +107,7 @@ export default class Level {
     keyboardInput.register('KeyD', () => { this.shooter.moveRight(); });
     keyboardInput.register('Space', () => { this.shooter.fire(); });
     keyboardInput.register('KeyE', () => { this.shooter.fireSuperzapper(); });
-    keyboardInput.register('KeyQ', () => { this.levelWonCallback(); });
-    keyboardInput.register('KeyZ', () => { this.shooter.setState(Shooter.STATE_GOING_DOWN_THE_TUBE); });
+    keyboardInput.register('End', () => { this.shooter.setState(Shooter.STATE_GOING_DOWN_THE_TUBE); });
   }
 
   unregisterKeys () {
@@ -116,7 +115,7 @@ export default class Level {
     keyboardInput.unregister('KeyD');
     keyboardInput.unregister('Space');
     keyboardInput.unregister('KeyE');
-    keyboardInput.unregister('KeyQ');
+    keyboardInput.unregister('End');
   }
 
   update () {
