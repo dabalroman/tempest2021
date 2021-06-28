@@ -9,7 +9,7 @@ export default class SurfaceRenderer extends Group {
   @readonly
   static ACTIVE_LANE_COLOR = 0xffff00;
   @readonly
-  static DEFAULT_LANE_COLOR = 0x0000ff;
+  static DEFAULT_LANE_COLOR = [0x0000ff, 0xff0000, 0x00ff00];
   @readonly
   static SHORTED_LANE_COLOR = 0xffffff;
 
@@ -18,6 +18,9 @@ export default class SurfaceRenderer extends Group {
 
   /** @var {Surface} surface */
   surface;
+
+  /** @var {number} level */
+  level;
 
   /** @var {number} */
   connectorFrontDepth = 0;
@@ -39,12 +42,14 @@ export default class SurfaceRenderer extends Group {
   /**
    * @constructor
    * @param {Surface} surface
+   * @param {number} level
    */
-  constructor (surface) {
+  constructor (surface, level) {
     super();
 
     this.castShadow = false;
 
+    this.level = level;
     this.setSurface(surface);
   }
 
@@ -98,7 +103,11 @@ export default class SurfaceRenderer extends Group {
     this.lanesLines = [];
     this.lanesConnectors = [];
 
-    this.laneDefaultMaterial = new LineBasicMaterial({ color: SurfaceRenderer.DEFAULT_LANE_COLOR });
+    let surfaceColor = Math.floor(this.level / 16) % 3;
+
+    console.log(this.level, surfaceColor);
+
+    this.laneDefaultMaterial = new LineBasicMaterial({ color: SurfaceRenderer.DEFAULT_LANE_COLOR[surfaceColor] });
     this.laneActiveMaterial = new LineBasicMaterial({ color: SurfaceRenderer.ACTIVE_LANE_COLOR });
     this.laneShortedMaterial = new LineBasicMaterial({ color: SurfaceRenderer.SHORTED_LANE_COLOR });
 

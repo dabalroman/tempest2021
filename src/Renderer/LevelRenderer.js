@@ -35,7 +35,8 @@ export default class LevelRenderer extends Group {
 
   bindLevel (level) {
     this.level = level;
-    this.surfaceRenderer = new SurfaceRenderer(this.level.surface);
+
+    this.surfaceRenderer = new SurfaceRenderer(this.level.surface, this.level.currentLevel);
     this.shooterRenderer = new ShooterRenderer(this.level.shooter, this.level.surface);
     this.enemyRendererManager = new EnemyRendererManager(this.level.surfaceObjectsManager, this.level.surface);
     this.projectileRendererManager = new ProjectileRendererManager(this.level.projectileManager, this.level.surface);
