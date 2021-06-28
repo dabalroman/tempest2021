@@ -1,21 +1,21 @@
 import { Group, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
-import ScreenPlay from '@/Object/Screen/ScreenPlay';
-import keyboardInput from '@/utils/KeyboardInput';
-import LevelRenderer from '@/Renderer/LevelRenderer';
-import Level from '@/Object/Level';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import Level from '@/Object/Level';
+import LevelRenderer from '@/Renderer/LevelRenderer';
 import Surface from '@/Object/Surface/Surface';
-import surfaces from '@/Assets/Surfaces';
-import readonly from '@/utils/readonly';
 import State from '@/Object/State';
+import ScreenPlay from '@/Object/Screen/ScreenPlay';
 import ScreenSelectSurface from '@/Object/Screen/ScreenSelectSurface';
 import ScreenHighScores from '@/Object/Screen/ScreenHighScores';
 import ScreenContentManager from '@/Object/Screen/ScreenContentManager';
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
-import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass';
+import keyboardInput from '@/utils/KeyboardInput';
+import surfaces from '@/Assets/Surfaces';
 import levels from '@/Assets/Levels';
+import readonly from '@/utils/readonly';
 
 export default class Game {
   @readonly
@@ -82,7 +82,7 @@ export default class Game {
   screenContentManager;
 
   constructor () {
-    this.setState(Game.STATE_SELECT_SURFACE);
+    this.setState(Game.STATE_PLAY);
 
     this.setupRenderer();
     this.setupLogic();
@@ -174,6 +174,9 @@ export default class Game {
     this.levelObject.registerKeys();
 
     this.levelRenderer.bindLevel(this.levelObject);
+
+    this.lives = 5;
+    this.populateScreenContentManager();
   }
 
   releaseLevel () {
@@ -261,7 +264,7 @@ export default class Game {
 
     this.camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     this.camera.position.set(0, 0, -6);
-    this.camera.lookAt(0, 0, 0);
+    this.camera.lookAt(0, 0, 10);
 
     this.renderer = new WebGLRenderer({ antialias: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -278,7 +281,7 @@ export default class Game {
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.update();
 
-    this.levelRenderer = new LevelRenderer();
+    this.levelRenderer = new LevelRenderer(this.camera);
     this.scene.add(this.levelRenderer);
 
     this.screenGroup = new Group();

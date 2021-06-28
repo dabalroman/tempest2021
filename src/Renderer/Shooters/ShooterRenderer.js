@@ -86,6 +86,8 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
   }
 
   move () {
+    this.position.z = this.object.zPosition * this.surface.depth;
+
     let desiredPosition = this.surface.lanesMiddleCoords[this.object.laneId];
 
     if (compareVectors(desiredPosition, this.position)) {
@@ -104,11 +106,8 @@ export default class ShooterRenderer extends SurfaceObjectWrapper {
       movement.y = desiredPosition.y - this.position.y;
     }
 
-    this.position.set(
-      this.position.x + movement.x,
-      this.position.y + movement.y,
-      this.object.zPosition * this.surface.depth
-    );
+    this.position.x += movement.x;
+    this.position.y += movement.y;
   }
 
   rotate () {
