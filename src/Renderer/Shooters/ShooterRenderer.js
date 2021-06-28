@@ -8,7 +8,7 @@ import Shooter from '@/Object/Shooters/Shooter';
 
 export default class ShooterRenderer extends SurfaceObjectWrapper {
   @readonly
-  static MODEL_PATH = '../models/player.obj';
+  static MODEL_PATH = '/models/player.obj';
   @readonly
   static MODEL_SCALE = 0.15;
   @readonly
