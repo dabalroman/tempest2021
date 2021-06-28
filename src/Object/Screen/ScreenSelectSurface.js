@@ -94,16 +94,16 @@ export default class ScreenSelectSurface extends Canvas3d {
     this.drawText('© ROMAN DABAL & PIOTR KLOSEK ©', 282, 60, Canvas3d.COLOR_BLUE);
 
     this.setFontSizePx(30);
-    this.drawText('rate yourself', 371, 410, Canvas3d.COLOR_GREEN);
-    this.drawText('Use A and D to change', 270, 460, Canvas3d.COLOR_CYAN);
-    this.drawText('Press fire to select', 284, 510, Canvas3d.COLOR_YELLOW);
-    this.drawText('novice', 140, 600, Canvas3d.COLOR_RED);
-    this.drawText('expert', 845, 600, Canvas3d.COLOR_RED);
+    this.drawText('rate yourself', 371, 480, Canvas3d.COLOR_GREEN);
+    this.drawText('Use A and D to change', 270, 530, Canvas3d.COLOR_CYAN);
+    this.drawText('Press fire to select', 284, 580, Canvas3d.COLOR_YELLOW);
+    this.drawText('novice', 140, 750, Canvas3d.COLOR_RED);
+    this.drawText('expert', 845, 750, Canvas3d.COLOR_RED);
 
     this.setFontSizePx(25);
-    this.drawText('level', 30, 650, Canvas3d.COLOR_GREEN);
-    this.drawText('hole', 30, 710, Canvas3d.COLOR_GREEN);
-    this.drawText('bonus', 30, 770, Canvas3d.COLOR_GREEN);
+    this.drawText('level', 30, 800, Canvas3d.COLOR_GREEN);
+    this.drawText('hole', 30, 860, Canvas3d.COLOR_GREEN);
+    this.drawText('bonus', 30, 920, Canvas3d.COLOR_GREEN);
 
     let offset = this.screenContentManager.get(ScreenContentManager.KEY_SELECT_OFFSET);
     let levels = this.screenContentManager.get(ScreenContentManager.KEY_LEVELS);
@@ -115,11 +115,11 @@ export default class ScreenSelectSurface extends Canvas3d {
       let surfaceId = ((level.id - 1) % 16) + 1;
 
       this.drawText(
-        this.alignNumberToRight(level.id), xOffset + (i * xStep) - 40, 650, Canvas3d.COLOR_GREEN
+        this.alignNumberToRight(level.id), xOffset + (i * xStep) - 40, 800, Canvas3d.COLOR_GREEN
       );
-      this.drawMapIcon(xOffset + (i * xStep) + 58, 695, surfaceId);
+      this.drawMapIcon(xOffset + (i * xStep) + 58, 845, surfaceId);
       this.drawText(
-        this.alignNumberToRight(level.scoreBonus), xOffset + (i * xStep), 770, Canvas3d.COLOR_RED
+        this.alignNumberToRight(level.scoreBonus), xOffset + (i * xStep), 920, Canvas3d.COLOR_RED
       );
     }
 
@@ -128,7 +128,7 @@ export default class ScreenSelectSurface extends Canvas3d {
 
     this.drawRect(
       140 + xStep * this.screenContentManager.get(ScreenContentManager.KEY_SELECT_ACTIVE),
-      615, xStep - 20, 165,
+      765, xStep - 20, 165,
       ScreenSelectSurface.COLOR_BLUE
     );
   }
