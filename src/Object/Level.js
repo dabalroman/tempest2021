@@ -75,8 +75,6 @@ export default class Level {
       this.targetScore
     );
 
-    console.log(this.currentLevel, this.levelInitScore, this.targetScore);
-
     this.shooter = new Shooter(
       surface,
       this.projectileManager,
@@ -109,6 +107,7 @@ export default class Level {
     keyboardInput.register('Space', () => { this.shooter.fire(); });
     keyboardInput.register('KeyE', () => { this.shooter.fireSuperzapper(); });
     keyboardInput.register('KeyQ', () => { this.levelWonCallback(); });
+    keyboardInput.register('KeyZ', () => { this.shooter.setState(Shooter.STATE_GOING_DOWN_THE_TUBE); });
   }
 
   unregisterKeys () {

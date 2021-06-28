@@ -69,6 +69,10 @@ export default class LevelRenderer extends Group {
       cameraZPosition += Math.pow(cameraZPosition - surfaceDepth, 2) * 0.05;
     }
 
+    if (cameraZPosition < 0) {
+      cameraZPosition *= 0.9;
+    }
+
     this.camera.position.z = cameraZPosition - LevelRenderer.CAMERA_TO_SHOOTER_DISTANCE;
     this.camera.lookAt(this.camera.position.x, this.camera.position.y, this.camera.position.z + 10);
   }

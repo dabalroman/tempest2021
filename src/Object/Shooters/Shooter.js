@@ -15,7 +15,9 @@ export default class Shooter extends ShootingSurfaceObject {
   static BURST_PENALTY_MS = 1000;
 
   @readonly
-  static TUBE_LENGTH_MULTIPLIER = 2;
+  static TUBE_DESCENDING_LENGTH_MULTIPLIER = 2;
+  @readonly
+  static TUBE_APPROACHING_LENGTH_MULTIPLIER = 4;
   @readonly
   static COLLISION_RADIUS_FORWARD = 0;
   @readonly
@@ -32,6 +34,8 @@ export default class Shooter extends ShootingSurfaceObject {
   static STATE_DISAPPEARING = new State(1000, 1, 'disappearing');
   @readonly
   static STATE_RENOVATING = new State(1000, 1, 'renovating');
+  @readonly
+  static STATE_APPROACHING_TUBE = new State(2000, 1, 'approaching_tube');
   @readonly
   static STATE_GOING_DOWN_THE_TUBE = new State(4000, 1, 'going_down_the_tube');
   @readonly
@@ -79,8 +83,11 @@ export default class Shooter extends ShootingSurfaceObject {
     this.shootTimeoutMs = Shooter.SHOOT_TIMEOUT_MS;
     this.laneChangeTimeoutMs = Shooter.LANE_CHANGE_TIMEOUT_MS;
 
+    this.hittable = false;
+    this.canShoot = false;
+
     this.surface.setActiveLane(laneId);
-    this.setState(Shooter.STATE_ALIVE);
+    this.setState(Shooter.STATE_APPROACHING_TUBE);
   }
 
   updateState () {
@@ -104,6 +111,11 @@ export default class Shooter extends ShootingSurfaceObject {
       this.setState(Shooter.STATE_REACHED_TUBE_BOTTOM);
       this.die();
 
+    } else if (this.inState(Shooter.STATE_APPROACHING_TUBE)) {
+      this.hittable = true;
+      this.canShoot = true;
+
+      this.setState(Shooter.STATE_ALIVE);
     }
   }
 
@@ -122,7 +134,9 @@ export default class Shooter extends ShootingSurfaceObject {
     }
 
     if (this.inState(Shooter.STATE_GOING_DOWN_THE_TUBE)) {
-      this.zPosition = this.stateProgressInTime() * Shooter.TUBE_LENGTH_MULTIPLIER;
+      this.zPosition = this.stateProgressInTime() * Shooter.TUBE_DESCENDING_LENGTH_MULTIPLIER;
+    } else if (this.inState(Shooter.STATE_APPROACHING_TUBE)) {
+      this.zPosition = -1 * (1 - this.stateProgressInTime()) * Shooter.TUBE_APPROACHING_LENGTH_MULTIPLIER;
     } else if (this.inState(Shooter.STATE_ALIVE) || this.inState(Shooter.STATE_RENOVATING)) {
       this.zPosition = 0;
     }
@@ -186,7 +200,10 @@ export default class Shooter extends ShootingSurfaceObject {
    * @param {number} desiredLane
    */
   moveToLane (desiredLane) {
-    if (!this.inState(Shooter.STATE_ALIVE) && !this.inState(Shooter.STATE_GOING_DOWN_THE_TUBE)) {
+    if (!this.inState(Shooter.STATE_ALIVE)
+      && !this.inState(Shooter.STATE_GOING_DOWN_THE_TUBE)
+      && !this.inState(Shooter.STATE_APPROACHING_TUBE)
+    ) {
       return;
     }
 
