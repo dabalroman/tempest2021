@@ -54,7 +54,11 @@ export default class EnemySpike extends Enemy {
       return;
     }
 
-    spikers = spikers.filter(spiker => spiker.alive && !spiker.inState(EnemySpiker.STATE_EXPLODING));
+    spikers = spikers.filter(spiker =>
+      spiker.alive
+      && !spiker.inState(EnemySpiker.STATE_EXPLODING)
+      && !spiker.inState(EnemySpiker.STATE_DISAPPEARING)
+    );
 
     let lowestSpikerZPosition = spikers
       .map(spiker => spiker.zPosition)
