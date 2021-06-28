@@ -7,17 +7,17 @@ export class MessageBroker {
   static TOPIC_SCREEN = 'topic_screen';
 
   @readonly
-  static MESSAGE_PLAYER_DEATH = 'message_enemy_death';
+  static MESSAGE_PLAYER_DEATH = 'message_player_death';
   @readonly
-  static MESSAGE_PLAYER_CHANGED_LANE = 'message_enemy_death';
+  static MESSAGE_PLAYER_CHANGED_LANE = 'message_player_changed_lane';
   @readonly
-  static MESSAGE_NEXT_LEVEL = 'message_enemy_death';
+  static MESSAGE_NEXT_LEVEL = 'message_next_level';
   @readonly
-  static MESSAGE_PLAYER_SHOOT = 'message_enemy_death';
+  static MESSAGE_PLAYER_SHOOT = 'message_player_shoot';
   @readonly
-  static MESSAGE_PLAYER_SUPERZAPPER_USED = 'message_enemy_death';
+  static MESSAGE_PLAYER_SUPERZAPPER_USED = 'message_player_superzapper_used';
   @readonly
-  static MESSAGE_ENEMY_SHOOT = 'message_enemy_death';
+  static MESSAGE_ENEMY_SHOOT = 'message_enemy_shoot';
   @readonly
   static MESSAGE_ENEMY_DEATH = 'message_enemy_death';
 
@@ -52,7 +52,7 @@ export class MessageBroker {
       return null;
     }
 
-    console.log(`Consumed ${this.messages[0]} under ${topic}`);
+    console.log(`Consumed ${this.messages[topic][0].message} under ${topic}`);
     return this.messages[topic].shift();
   }
 }
