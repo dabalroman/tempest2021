@@ -29,6 +29,26 @@ export default class ShootingSurfaceObject extends SurfaceObject {
     this.projectileSource = type === SurfaceObject.TYPE_SHOOTER ? Projectile.SOURCE_SHOOTER : Projectile.SOURCE_ENEMY;
   }
 
+  update () {
+    if (!this.alive) {
+      return;
+    }
+
+    if (this.canChangeState()) {
+      this.updateState();
+    }
+
+    this.updateEntity();
+  }
+
+  updateState () {
+    throw new Error('Method \'updateState()\' must be implemented.');
+  }
+
+  updateEntity () {
+    throw new Error('Method \'updateEntity()\' must be implemented.');
+  }
+
   fire () {
     if (!this.canShoot) {
       return;

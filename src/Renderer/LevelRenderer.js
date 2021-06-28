@@ -23,6 +23,7 @@ export default class LevelRenderer extends Group {
   /** @var {EnemyRendererManager} */
   enemyRendererManager;
 
+  // noinspection JSValidateJSDoc
   /**
    * @param {PerspectiveCamera} camera
    */
@@ -61,8 +62,15 @@ export default class LevelRenderer extends Group {
   }
 
   followShooter () {
-    // this.shooterRenderer.object.zPosition += 0.001;
-    this.camera.position.z = this.shooterRenderer.position.z - LevelRenderer.CAMERA_TO_SHOOTER_DISTANCE;
+    let surfaceDepth = this.surfaceRenderer.surface.depth;
+    let cameraZPosition = this.shooterRenderer.position.z;
+
+    if (cameraZPosition >= surfaceDepth) {
+      cameraZPosition += Math.pow(cameraZPosition - surfaceDepth, 2) * 0.05;
+    }
+
+    this.camera.position.z = cameraZPosition - LevelRenderer.CAMERA_TO_SHOOTER_DISTANCE;
+    this.camera.lookAt(this.camera.position.x, this.camera.position.y, this.camera.position.z + 10);
   }
 
   update () {

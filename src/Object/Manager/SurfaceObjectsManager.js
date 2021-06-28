@@ -105,7 +105,10 @@ export default class SurfaceObjectsManager extends FIFOManager {
   }
 
   handleSuperzapper () {
-    this.enemies.forEach(enemy => { enemy.die(); });
+    this.enemies.forEach(enemy => {
+      enemy.reward = true;
+      enemy.die();
+    });
   }
 
   removeEnemies () {

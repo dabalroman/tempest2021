@@ -128,7 +128,15 @@ export default class Level {
       this.enemySpawner.spawn();
     }
 
-    if (this.enemySpawner.reachedScoreTarget() && this.surfaceObjectsManager.getAmountOfAliveEnemies() === 0) {
+    if (this.enemySpawner.reachedScoreTarget()
+      && this.surfaceObjectsManager.getAmountOfAliveEnemies() <= 3
+      && !this.shooter.inState(Shooter.STATE_GOING_DOWN_THE_TUBE)
+      && !this.shooter.inState(Shooter.STATE_REACHED_TUBE_BOTTOM)
+    ) {
+      this.shooter.setState(Shooter.STATE_GOING_DOWN_THE_TUBE);
+    }
+
+    if (this.shooter.inState(Shooter.STATE_REACHED_TUBE_BOTTOM)) {
       this.levelWonCallback();
     }
   }

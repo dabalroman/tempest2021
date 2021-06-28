@@ -38,14 +38,6 @@ export default class Enemy extends ShootingSurfaceObject {
     }
   }
 
-  updateState () {
-    throw new Error('Method \'updateState()\' must be implemented.');
-  }
-
-  updateEntity () {
-    throw new Error('Method \'updateEntity()\' must be implemented.');
-  }
-
   hitByProjectile () {
     this.reward = true;
     this.die();
@@ -60,17 +52,5 @@ export default class Enemy extends ShootingSurfaceObject {
       this.reward = false;
       this.rewardCallback(this.valueInPoints);
     }
-  }
-
-  update () {
-    if (!this.alive) {
-      return;
-    }
-
-    if (this.canChangeState()) {
-      this.updateState();
-    }
-
-    this.updateEntity();
   }
 }

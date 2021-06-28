@@ -14,6 +14,13 @@ export default class Shooter extends ShootingSurfaceObject {
   @readonly
   static BURST_PENALTY_MS = 1000;
 
+  @readonly
+  static TUBE_LENGTH_MULTIPLIER = 2;
+  @readonly
+  static COLLISION_RADIUS_FORWARD = 0;
+  @readonly
+  static COLLISION_RADIUS_BACKWARD = 0.08;
+
   /** @var {number} */
   penaltyTimestamp = 0;
 
@@ -25,6 +32,10 @@ export default class Shooter extends ShootingSurfaceObject {
   static STATE_DISAPPEARING = new State(1000, 1, 'disappearing');
   @readonly
   static STATE_RENOVATING = new State(1000, 1, 'renovating');
+  @readonly
+  static STATE_GOING_DOWN_THE_TUBE = new State(4000, 1, 'going_down_the_tube');
+  @readonly
+  static STATE_REACHED_TUBE_BOTTOM = new State(0, 1, 'reached_tube_bottom');
   @readonly
   static STATE_DEAD = new State(0, 1, 'dead');
 
@@ -72,37 +83,48 @@ export default class Shooter extends ShootingSurfaceObject {
     this.setState(Shooter.STATE_ALIVE);
   }
 
-  update () {
-    if (this.alive === false) {
-      // this.setState(Shooter.STATE_DEAD);
-      return;
+  updateState () {
+    if (this.inState(Shooter.STATE_RENOVATING)) {
+      this.hittable = true;
+      this.canShoot = true;
+
+      this.setState(Shooter.STATE_ALIVE);
+
+    } else if (this.inState(Shooter.STATE_EXPLODING)) {
+      this.setState(Shooter.STATE_DEAD);
+      this.killedCallback();
+
+    } else if (this.inState(Shooter.STATE_DISAPPEARING)) {
+      this.setState(Shooter.STATE_DEAD);
+
+    } else if (this.inState(Shooter.STATE_DEAD)) {
+      this.alive = false;
+
+    } else if (this.inState(Shooter.STATE_GOING_DOWN_THE_TUBE)) {
+      this.setState(Shooter.STATE_REACHED_TUBE_BOTTOM);
+      this.die();
+
     }
+  }
 
-    if (this.canChangeState()) {
-      if (this.inState(Shooter.STATE_RENOVATING)) {
-        this.hittable = true;
-        this.canShoot = true;
-
-        this.setState(Shooter.STATE_ALIVE);
-      }
-
-      if (this.inState(Shooter.STATE_EXPLODING)) {
-        this.setState(Shooter.STATE_DEAD);
-        this.killedCallback();
-      }
-
-      if (this.inState(Shooter.STATE_DISAPPEARING)) {
-        this.setState(Shooter.STATE_DEAD);
-      }
-
-      if (this.inState(Shooter.STATE_DEAD)) {
-        this.alive = false;
-      }
-    }
-
+  updateEntity () {
     if (this.isFlagNotSet(Shooter.FLAG_ITS_ALREADY_TOO_LATE)) {
       this.handleShortedLanes();
-      this.handleCaptureByEnemy();
+
+      if (!this.inState(Shooter.STATE_GOING_DOWN_THE_TUBE)) {
+        this.handleCaptureByEnemy();
+      } else {
+        if (this.zPosition <= 1) {
+          this.handleCollisionWithEnemy();
+          this.handleCollisionWithSpike();
+        }
+      }
+    }
+
+    if (this.inState(Shooter.STATE_GOING_DOWN_THE_TUBE)) {
+      this.zPosition = this.stateProgressInTime() * Shooter.TUBE_LENGTH_MULTIPLIER;
+    } else if (this.inState(Shooter.STATE_ALIVE) || this.inState(Shooter.STATE_RENOVATING)) {
+      this.zPosition = 0;
     }
   }
 
@@ -128,11 +150,43 @@ export default class Shooter extends ShootingSurfaceObject {
     }
   }
 
+  handleCollisionWithEnemy () {
+    let enemiesMapRef = this.surfaceObjectsManager.enemiesMap[this.laneId];
+
+    let collision = enemiesMapRef.findIndex(object => (
+        object.hittable
+        && object.alive
+        && object.zPosition >= this.zPosition - Shooter.COLLISION_RADIUS_BACKWARD
+        && object.zPosition <= this.zPosition + Shooter.COLLISION_RADIUS_FORWARD
+      )
+    );
+
+    if (collision >= 0) {
+      enemiesMapRef[collision].hitByProjectile();
+      this.hitByProjectile();
+    }
+  }
+
+  handleCollisionWithSpike () {
+    let spikesMapRef = this.surfaceObjectsManager.spikesMap[this.laneId];
+
+    let collision = spikesMapRef.findIndex(object => (
+        object.hittable
+        && object.alive
+        && object.zPosition <= this.zPosition + Shooter.COLLISION_RADIUS_FORWARD
+      )
+    );
+
+    if (collision >= 0) {
+      this.impaledOnSpike();
+    }
+  }
+
   /**
    * @param {number} desiredLane
    */
   moveToLane (desiredLane) {
-    if (!this.inState(Shooter.STATE_ALIVE)) {
+    if (!this.inState(Shooter.STATE_ALIVE) && !this.inState(Shooter.STATE_GOING_DOWN_THE_TUBE)) {
       return;
     }
 
@@ -157,6 +211,10 @@ export default class Shooter extends ShootingSurfaceObject {
   }
 
   fire () {
+    if (this.zPosition > 1) {
+      return;
+    }
+
     let now = Date.now();
 
     if (now - this.penaltyTimestamp < Shooter.BURST_PENALTY_MS) {
@@ -214,7 +272,11 @@ export default class Shooter extends ShootingSurfaceObject {
   }
 
   fireSuperzapper () {
-    if (this.inState(Shooter.STATE_ALIVE) && this.isFlagNotSet(Shooter.FLAG_SUPERZAPPER_USED)) {
+    if (
+      this.canShoot
+      && (this.inState(Shooter.STATE_ALIVE) || this.inState(Shooter.STATE_GOING_DOWN_THE_TUBE))
+      && this.isFlagNotSet(Shooter.FLAG_SUPERZAPPER_USED)
+    ) {
       this.setFlag(Shooter.FLAG_SUPERZAPPER_USED);
 
       this.surfaceObjectsManager.handleSuperzapper();
