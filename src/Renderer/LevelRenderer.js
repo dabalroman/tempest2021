@@ -62,7 +62,6 @@ export default class LevelRenderer extends Group {
 
   followShooter () {
     // this.shooterRenderer.object.zPosition += 0.001;
-    this.camera.rotation.y = -this.shooterRenderer.position.x * 0.01;
     this.camera.position.z = this.shooterRenderer.position.z - LevelRenderer.CAMERA_TO_SHOOTER_DISTANCE;
   }
 
