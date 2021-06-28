@@ -253,7 +253,7 @@ export default class Shooter extends ShootingSurfaceObject {
   }
 
   hitByProjectile () {
-    console.log('BOOM! (projectile)');
+    // console.log('BOOM! (projectile)');
     this.setState(Shooter.STATE_EXPLODING);
     this.die();
 
@@ -261,7 +261,7 @@ export default class Shooter extends ShootingSurfaceObject {
   }
 
   capturedByFlipper () {
-    console.log('BAM! (flipper)');
+    // console.log('BAM! (flipper)');
     this.setState(Shooter.STATE_EXPLODING);
     this.die();
 
@@ -269,7 +269,7 @@ export default class Shooter extends ShootingSurfaceObject {
   }
 
   capturedByFuseball () {
-    console.log('POW! (fuseball)');
+    // console.log('POW! (fuseball)');
     this.setState(Shooter.STATE_EXPLODING);
     this.die();
 
@@ -277,7 +277,7 @@ export default class Shooter extends ShootingSurfaceObject {
   }
 
   impaledOnSpike () {
-    console.log('SPUT! (spike)');
+    // console.log('SPUT! (spike)');
     this.setState(Shooter.STATE_EXPLODING);
     this.die();
 
@@ -285,7 +285,7 @@ export default class Shooter extends ShootingSurfaceObject {
   }
 
   shockedByPulsar () {
-    console.log('BZZZT! (pulsar)');
+    // console.log('BZZZT! (pulsar)');
     this.setState(Shooter.STATE_EXPLODING);
     this.die();
 
