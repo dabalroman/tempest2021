@@ -4,6 +4,7 @@ import ProjectileManager from '@/Object/Manager/ProjectileManager';
 
 import keyboardInput from '@/utils/KeyboardInput';
 import EnemySpawner from '@/Object/Enemies/EnemySpawner';
+import messageBroker, { MessageBroker } from '@/Helpers/MessageBroker';
 
 export default class Level {
   /** @var {Surface} */
@@ -133,6 +134,7 @@ export default class Level {
       && !this.shooter.inState(Shooter.STATE_REACHED_TUBE_BOTTOM)
     ) {
       this.shooter.setState(Shooter.STATE_GOING_DOWN_THE_TUBE);
+      messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_NEXT_LEVEL);
     }
 
     if (this.shooter.inState(Shooter.STATE_REACHED_TUBE_BOTTOM)) {

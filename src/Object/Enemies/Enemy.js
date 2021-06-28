@@ -1,5 +1,6 @@
 import readonly from '@/utils/readonly';
 import ShootingSurfaceObject from '@/Object/Surface/ShootingSurfaceObject';
+import messageBroker, { MessageBroker } from '@/Helpers/MessageBroker';
 
 export default class Enemy extends ShootingSurfaceObject {
   @readonly
@@ -43,6 +44,12 @@ export default class Enemy extends ShootingSurfaceObject {
     this.die();
   }
 
+  fire () {
+    if (super.fire()) {
+      messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_ENEMY_SHOOT);
+    }
+  }
+
   die () {
     this.hittable = false;
     this.canShoot = false;
@@ -51,6 +58,8 @@ export default class Enemy extends ShootingSurfaceObject {
     if (this.reward === true) {
       this.reward = false;
       this.rewardCallback(this.valueInPoints);
+
+      messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_ENEMY_DEATH);
     }
   }
 }

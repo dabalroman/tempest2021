@@ -1,9 +1,8 @@
-import { Group, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
+import { AudioListener, Group, PerspectiveCamera, Scene, WebGLRenderer } from 'three';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import Level from '@/Object/Level';
 import LevelRenderer from '@/Renderer/LevelRenderer';
 import Surface from '@/Object/Surface/Surface';
@@ -16,6 +15,7 @@ import keyboardInput from '@/utils/KeyboardInput';
 import surfaces from '@/Assets/Surfaces';
 import levels from '@/Assets/Levels';
 import readonly from '@/utils/readonly';
+import AudioManager from '@/Object/Manager/AudioManager';
 
 export default class Game {
   @readonly
@@ -67,12 +67,15 @@ export default class Game {
   renderer;
   /** @var {EffectComposer} */
   composer;
-  /** @var {OrbitControls} */
-  controls;
   /** @var {Level} */
   levelObject = null;
   /** @var {LevelRenderer} */
   levelRenderer = null;
+
+  /** @var {AudioListener} */
+  audioListener;
+  /** @var {AudioManager} */
+  audioManager;
 
   /** @var {Group} */
   screenGroup;
@@ -180,7 +183,6 @@ export default class Game {
 
     this.levelRenderer.bindLevel(this.levelObject);
 
-    this.lives = 5;
     this.populateScreenContentManager();
   }
 
@@ -271,6 +273,11 @@ export default class Game {
     this.camera.position.set(0, 0, -6);
     this.camera.lookAt(0, 0, 10);
 
+    this.audioListener = new AudioListener();
+    this.camera.add(this.audioListener);
+
+    this.audioManager = new AudioManager(this.audioListener);
+
     this.renderer = new WebGLRenderer({ antialias: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(this.renderer.domElement);
@@ -282,9 +289,6 @@ export default class Game {
       this.composer.addPass(new UnrealBloomPass({ x: 256, y: 256 }, 2.2, 1.3, 0));
       this.composer.addPass(new SMAAPass(window.innerWidth, window.innerHeight));
     }
-
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.update();
 
     this.levelRenderer = new LevelRenderer(this.camera);
     this.scene.add(this.levelRenderer);
@@ -298,8 +302,6 @@ export default class Game {
     requestAnimationFrame(this.update.bind(this));
 
     this.handleState();
-
-    this.controls.update();
     keyboardInput.dispatchActions();
 
     if (this.screenObject !== null) {
@@ -311,6 +313,7 @@ export default class Game {
       this.levelRenderer.update();
     }
 
+    this.audioManager.update();
     this.composer.render();
   }
 

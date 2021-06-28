@@ -1,6 +1,7 @@
 import Canvas3d from '@/Object/Screen/Canvas3d';
 import keyboardInput from '@/utils/KeyboardInput';
 import ScreenContentManager from '@/Object/Screen/ScreenContentManager';
+import messageBroker, { MessageBroker } from '@/Helpers/MessageBroker';
 
 export default class ScreenHighScores extends Canvas3d {
   /** @var {string[]} */
@@ -60,6 +61,8 @@ export default class ScreenHighScores extends Canvas3d {
 
     this.playerName[this.currentStep] = String.fromCharCode(char);
     this.highScores[this.place].name = this.playerName.join('');
+
+    messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_MENU_CHANGE);
   }
 
   prevChar () {
@@ -75,6 +78,8 @@ export default class ScreenHighScores extends Canvas3d {
 
     this.playerName[this.currentStep] = String.fromCharCode(char);
     this.highScores[this.place].name = this.playerName.join('');
+
+    messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_MENU_CHANGE);
   }
 
   step () {
@@ -92,6 +97,8 @@ export default class ScreenHighScores extends Canvas3d {
     }
 
     this.currentStep++;
+
+    messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_MENU_SELECT);
   }
 
   draw () {

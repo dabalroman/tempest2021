@@ -20,6 +20,10 @@ export class MessageBroker {
   static MESSAGE_ENEMY_SHOOT = 'message_enemy_shoot';
   @readonly
   static MESSAGE_ENEMY_DEATH = 'message_enemy_death';
+  @readonly
+  static MESSAGE_MENU_CHANGE = 'message_menu_change';
+  @readonly
+  static MESSAGE_MENU_SELECT = 'message_menu_select';
 
   /** {Message[][]} messages */
   messages = [];

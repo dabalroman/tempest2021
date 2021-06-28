@@ -3,6 +3,7 @@ import ScreenContentManager from '@/Object/Screen/ScreenContentManager';
 import keyboardInput from '@/utils/KeyboardInput';
 import surfaces from '@/Assets/Surfaces';
 import BoundingBox2 from '@/Helpers/BoundingBox2';
+import messageBroker, { MessageBroker } from '@/Helpers/MessageBroker';
 
 export default class ScreenSelectSurface extends Canvas3d {
   /** @var {number} */
@@ -34,18 +35,21 @@ export default class ScreenSelectSurface extends Canvas3d {
   selectLevel () {
     if (this.keyInputDelay()) {
       this.screenContentManager.get(ScreenContentManager.KEY_LEVEL_SELECTED_CALLBACK)(this.selectedLevel, true);
+      messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_MENU_SELECT);
     }
   }
 
   moveLeft () {
     if (this.keyInputDelay()) {
       this.moveSelection(-1);
+      messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_MENU_CHANGE);
     }
   }
 
   moveRight () {
     if (this.keyInputDelay()) {
       this.moveSelection(1);
+      messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_MENU_CHANGE);
     }
   }
 

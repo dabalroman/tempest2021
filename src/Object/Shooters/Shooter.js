@@ -218,6 +218,8 @@ export default class Shooter extends ShootingSurfaceObject {
     this.surface.setActiveLane(this.laneId);
 
     this.lastLaneChangeTimestamp = now;
+
+    messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_PLAYER_CHANGED_LANE);
   }
 
   moveLeft () {
@@ -229,7 +231,11 @@ export default class Shooter extends ShootingSurfaceObject {
   }
 
   fire () {
-    if (this.zPosition > 1) {
+    if (
+      !this.canShoot
+      || this.zPosition > 1
+      || (!this.inState(Shooter.STATE_ALIVE) && !this.inState(Shooter.STATE_GOING_DOWN_THE_TUBE))
+    ) {
       return;
     }
 
@@ -241,6 +247,8 @@ export default class Shooter extends ShootingSurfaceObject {
 
     if (super.fire() === false) {
       this.penaltyTimestamp = now;
+    } else {
+      messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_PLAYER_SHOOT);
     }
   }
 
@@ -248,30 +256,40 @@ export default class Shooter extends ShootingSurfaceObject {
     console.log('BOOM! (projectile)');
     this.setState(Shooter.STATE_EXPLODING);
     this.die();
+
+    messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_PLAYER_DEATH);
   }
 
   capturedByFlipper () {
     console.log('BAM! (flipper)');
     this.setState(Shooter.STATE_EXPLODING);
     this.die();
+
+    messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_PLAYER_DEATH);
   }
 
   capturedByFuseball () {
     console.log('POW! (fuseball)');
     this.setState(Shooter.STATE_EXPLODING);
     this.die();
+
+    messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_PLAYER_DEATH);
   }
 
   impaledOnSpike () {
     console.log('SPUT! (spike)');
     this.setState(Shooter.STATE_EXPLODING);
     this.die();
+
+    messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_PLAYER_DEATH);
   }
 
   shockedByPulsar () {
     console.log('BZZZT! (pulsar)');
     this.setState(Shooter.STATE_EXPLODING);
     this.die();
+
+    messageBroker.publish(MessageBroker.TOPIC_AUDIO, MessageBroker.MESSAGE_PLAYER_DEATH);
   }
 
   die () {
