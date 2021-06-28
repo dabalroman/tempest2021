@@ -13,6 +13,8 @@ export default class AudioManager {
   static SOUND_PLAYER_LANE_CHANGE = 'player_lane_change';
   @readonly
   static SOUND_PLAYER_SHOOT = 'player_shoot';
+  @readonly
+  static SOUND_ENEMY_SHOOT = 'enemy_shoot';
 
   @readonly
   static SOUND_VOLUME = 0.4;
@@ -69,7 +71,7 @@ export default class AudioManager {
         this.playSound(AudioManager.SOUND_PLAYER_SHOOT, 0.8);
         break;
       case MessageBroker.MESSAGE_ENEMY_SHOOT:
-        this.playSound(AudioManager.SOUND_PLAYER_SHOOT, 0.3);
+        this.playSound(AudioManager.SOUND_ENEMY_SHOOT, 0.3);
         break;
       case MessageBroker.MESSAGE_MENU_CHANGE:
         this.playSound(AudioManager.SOUND_PLAYER_LANE_CHANGE);
