@@ -100,6 +100,10 @@ export default class Game {
 
       } else if (this.state.equals(Game.STATE_SELECT_SURFACE)) {
         this.releaseLevel();
+
+        this.lives = 5;
+        this.score = 0;
+
         this.populateScreenContentManager();
         this.loadScreen(new ScreenSelectSurface(this.screenContentManager));
 
