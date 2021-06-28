@@ -82,7 +82,7 @@ export default class Game {
   screenContentManager;
 
   constructor () {
-    this.setState(Game.STATE_PLAY);
+    this.setState(Game.STATE_SELECT_SURFACE);
 
     this.setupRenderer();
     this.setupLogic();

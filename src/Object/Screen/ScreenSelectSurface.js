@@ -1,6 +1,8 @@
 import Canvas3d from '@/Object/Screen/Canvas3d';
 import ScreenContentManager from '@/Object/Screen/ScreenContentManager';
 import keyboardInput from '@/utils/KeyboardInput';
+import surfaces from '@/Assets/Surfaces';
+import BoundingBox2 from '@/Helpers/BoundingBox2';
 
 export default class ScreenSelectSurface extends Canvas3d {
   /** @var {number} */
@@ -104,12 +106,15 @@ export default class ScreenSelectSurface extends Canvas3d {
     let xStep = 175;
 
     for (let i = 0; i < levels.length - offset && i < 5; i++) {
+      let level = levels[i + offset];
+      let surfaceId = ((level.id - 1) % 16) + 1;
+
       this.drawText(
-        this.alignNumberToRight(levels[i + offset].id), xOffset + (i * xStep) - 40, 650, Canvas3d.COLOR_GREEN
+        this.alignNumberToRight(level.id), xOffset + (i * xStep) - 40, 650, Canvas3d.COLOR_GREEN
       );
-      this.drawMapIcon(xOffset + (i * xStep) + 30, 666, 1);
+      this.drawMapIcon(xOffset + (i * xStep) + 58, 695, surfaceId);
       this.drawText(
-        this.alignNumberToRight(levels[i + offset].scoreBonus), xOffset + (i * xStep), 770, Canvas3d.COLOR_RED
+        this.alignNumberToRight(level.scoreBonus), xOffset + (i * xStep), 770, Canvas3d.COLOR_RED
       );
     }
 
@@ -126,20 +131,34 @@ export default class ScreenSelectSurface extends Canvas3d {
   /**
    * @param {number} x
    * @param {number} y
-   * @param level
-   * @param scale
+   * @param {number} surfaceId
+   * @param {number} scale
    */
-  drawMapIcon (x, y, level, scale = 1) {
-    let unit = 6 * scale;
+  drawMapIcon (x, y, surfaceId, scale = 1) {
+    let unit = 10 * scale;
+
+    let surface = surfaces.find(surface => surface.id === surfaceId);
+    if (surface === undefined) {
+      return;
+    }
+
+    let boundingBox2 = new BoundingBox2.create(surface.coords);
 
     this.context.strokeStyle = Canvas3d.COLOR_BLUE;
 
     this.context.beginPath();
-    this.context.moveTo(x + 5 * unit, y);
-    this.context.lineTo(x, y + 5 * unit);
-    this.context.lineTo(x + 5 * unit, y + 10 * unit);
-    this.context.lineTo(x + 10 * unit, y + 5 * unit);
-    this.context.lineTo(x + 5 * unit, y);
+
+    for (let i = 0; i < surface.coords.length + (surface.isOpen ? 0 : 1); i++) {
+      let cx = x + (boundingBox2.getCenter().x - surface.coords[i % 16].x) * unit;
+      let cy = y + (boundingBox2.getCenter().y - surface.coords[i % 16].y) * unit;
+
+      if (i !== 0) {
+        this.context.lineTo(cx, cy);
+      } else {
+        this.context.moveTo(cx, cy);
+      }
+    }
+
     this.context.stroke();
   }
 }

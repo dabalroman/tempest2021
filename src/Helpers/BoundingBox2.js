@@ -2,15 +2,15 @@ import { Vector2 } from 'three';
 
 export default class BoundingBox2 {
   /** @var {number} */
-  #top;
+  top;
   /** @var {number} */
-  #right;
+  right;
   /** @var {number} */
-  #bottom;
+  bottom;
   /** @var {number} */
-  #left;
+  left;
   /** @var {Vector2} */
-  #center;
+  center;
 
   /**
    * @param {number} top
