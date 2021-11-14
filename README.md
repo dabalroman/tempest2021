@@ -1,4 +1,6 @@
 # Tempest 2021
+![Gameplay screenshot](readme-data/gameplay.jpg)
+
 Tempest 2021 is a remake of Tempest, an arcade game from 1981 published by Atari.
 Remake has been created as a university project at a University of Silesia (Uniwersytet Śląski).
 
@@ -14,6 +16,9 @@ Game remembers your progress, so after losing one battle you can jump right into
 It's safe to close browser, your high-score won't be gone.
 
 Project is available to play online thanks to GitHub Pages.
+
+![Gameplay screenshot](readme-data/menu.jpg)
+
 
 # About Tempest 2021
 ## Technical stuff
